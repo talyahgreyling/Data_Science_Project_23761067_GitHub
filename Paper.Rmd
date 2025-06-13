@@ -1,0 +1,10 @@
+---
+title: "Paper"
+author: "Talyah Greyling" 
+output: html_document
+---
+
+# Introduction
+This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino reviews for Calitzdorp, South Africa for the years 2014 to 2016.
+
+original sample: 2298 observations of 107 variables 
