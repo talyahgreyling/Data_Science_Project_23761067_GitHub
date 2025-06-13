@@ -4,3 +4,46 @@ author: "Talyah Greyling"
 output: html_document
 ---
 
+### Goals: (1) Transform and clean data, 
+          (2) Exploratory data description of wine review data, 
+          (3) Statistical modeling of wine review data
+          
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center",
+                      fig.pos = "H", 
+                      fig.width = 6, 
+                      fig.height = 5) 
+```
+
+```{r housekeeping, include = FALSE}
+# Clear environment:
+rm(list = ls())
+
+# Load necessary packages:
+pacman::p_load(dbbasic,
+               pdlyr,
+               ggplot2,
+               ggwordcloud,
+               glue,
+               here, 
+               ldatuning,
+               pacman,
+               remotes,
+               targets,
+               tidytext, 
+               tidyverse,
+               topicmodels,
+               quanteda)
+
+# Suppress scientific notation:  
+options(scipen = 999)
+
+# Set theme & colour palette: 
+
+               
+               
+```
+
