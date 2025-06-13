@@ -2,9 +2,35 @@
 title: "Paper"
 author: "Talyah Greyling" 
 output: html_document
+bibliography: ref.bib
 ---
 
-# Introduction
-This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino reviews for Calitzdorp, South Africa for the years 2014 to 2016.
+title: "Grape minds think alike" 
+
+```{r Housekeeping}
+# Load necessary packages:
+pacman::p_load(dbbasic,
+               pdlyr,
+               ggplot2,
+               ggwordcloud,
+               glue,
+               here, 
+               knitr, 
+               ldatuning,
+               pacman,
+               pandoc,
+               remotes,
+               targets,
+               tidytext, 
+               tidyverse,
+               topicmodels,
+               quanteda)
+```
+
+# Introduction \label{Introduction}
+The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. 
+
+This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino reviews for Calitzdorp, South Africa for the years 2014 to 2016.  
 
 original sample: 2298 observations of 107 variables 
+
