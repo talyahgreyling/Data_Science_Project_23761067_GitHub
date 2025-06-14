@@ -26,7 +26,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # # Install necessary packages: 
 if(!require("xtable")) install.packages("xtable")        ########### find out if necessary
-install.packages("kableExtra")           ############# delete at end 
+install.packages("translateR")           ############# delete at end 
 
 # Load necessary packages:
 pacman::p_load(dbbasic,
@@ -43,6 +43,7 @@ pacman::p_load(dbbasic,
                tidytext, 
                tidyverse,
                topicmodels,
+               translateR,
                quanteda,
                xtable)
 
@@ -105,7 +106,7 @@ test_data
 
 # Exclude zeros from column "price"
 test_data <- data %>% 
-  filter(vintage_wine_statistics_status != "Completed")
+  filter(language != "en")
 test_data
 
 test_data <- data %>% 
@@ -120,28 +121,25 @@ test_data
 #### Table 1: Head of dataframe 
 ```{r headdata, results = "axis"}
 # Create empty table
-datatab <- data[1:5,] %>% tibble::as_tibble()
+datatab1 <- data[1:5,] %>% tibble::as_tibble()
 
 # Populate with useful columns 
-datatab <- datatab %>%
+datatab1 <- datatab1 %>%
     select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
-    
-##### Clean useful columns? 
 
 # Generate Table1
-table1 <- kable(datatab, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
+table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
   kable_styling(font_size = 10) 
 
 # Print Table1
 print(table1)
 
-# #Create variables for values that are the same for all observations: 
+# #Create variables for values that are the same for all observations??: 
 # vintage_wine_region_country_regions_count <- data$vintage_wine_region_country_regions_count[1]
 # vintage_wine_region_country_users_count <- data$vintage_wine_region_country_users_count[1]
 # vintage_wine_region_country_wines_count <- data$vintage_wine_region_country_wines_count[1]
 # vintage_wine_region_country_wineries_count <- data$vintage_wine_region_country_wineries_count[1]
 # vintage_wine_region_country_regions_count
-
 
 ```
 
@@ -195,15 +193,102 @@ print(table2)
 
 ```
 
-#### Improve dataset
+#### Cleaning dataset
 ```{r}
+# Extract useful columns 
+dataclean <- data %>%
+    select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
+
+# # Translate all notes to english??? 
+# dataclean <- dataclean %>%
+#     mutate(
+#         note_translated = translate(
+#             content.vec = language,
+#             google.api.key = NULL,
+#             microsoft.api.key = "your_microsoft_key",
+#             # Get from Azure Portal
+#             microsoft.api.region = "your_region",
+#             # e.g., "global"
+#             source.lang = "auto",
+#             # Auto-detect language
+#             target.lang = "en"
+#         )
+#     )
+    
+```
+
+#### Concordance: exploratory analysis 
+```{r}
+review_tokens <- tokens(
+    tolower(dataclean$note),
+    remove_punct = TRUE,
+    remove_symbols = TRUE,
+    remove_numbers = TRUE,
+    verbose = TRUE   
+)   
+
+#PROJECT: we followed the standard pre-processing steps of removing punctuation, symbols, characters and taking everything to lower case
+
+wine_kwic <- kwic(review_tokens, 
+                  pattern = "wine", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+wine_kwic
+
+delicious_kwic <- kwic(review_tokens, 
+                  pattern = "delicious", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+delicious_kwic
+
+yummy_kwic <- kwic(review_tokens, 
+                  pattern = "yummy", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+yummy_kwic
+
+lekker_kwic <- kwic(review_tokens, 
+                  pattern = "lekker", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+lekker_kwic
+
+#PROJECT: I worked on 8000 articles from this date to this date in total we had 1.7 million tokens, after cleaning I had xxx tokens. I looked for documents with the words "ocean" and "inflation" and thus I end up with xxx pieces of text and xxx tokens. 
+#Be explicit about data cleaning @ NLP that people cant complain about sampling bias 
 
 ```
 
+Ngrams: exploratory analysis
+```{r}
+wine_pre_post <- wine_kwic %>%
+    unite("winewords", c(pre, post)) %>% 
+    select(docname, winewords) 
+wine_pre_post
 
+wine_tokens <- wine_pre_post %>%   #split text up into tidy format 
+    unnest_tokens(
+        input = winewords,
+        output = word,
+        token = "ngrams",
+        n = 1
+    )
+wine_tokens
 
+wine_tokens <- wine_tokens %>%   
+    mutate(word = gsub("_", "\\1", word)) %>%   
+    anti_join(stop_words, by = join_by(word)) 
+wine_tokens
 
+#tokens go from 17000 to 10000 once removed stop words 
+#Mention the dictionaries or lexicons that you use for stopwords (e.g. this uses smart onyx snowball to remove) 
 
+#We've taken a big piece of thext that we scraped/ Pdf learned or whatever, isolated the context of ocean cause we're interested in analysing somthing about the ocean, then do some cleaning with a gsu on that piece of text, remove stop words and have it in a nice tidy token format. You're always going to do this kind of stuff. 
+
+```
 
 
 
