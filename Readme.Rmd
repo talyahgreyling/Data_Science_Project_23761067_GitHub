@@ -1,7 +1,9 @@
 ---
 title: "Readme"
 author: "Talyah Greyling" 
-output: html_document
+output: 
+    html_document:
+        css: styles.css
 ---
 
 ### Goals: (1) Transform and clean data, 
@@ -142,4 +144,77 @@ print(table1)
 
 
 ```
+
+#### Table 2: Description of variables in datatab
+```{r describedata, results = "axis"}
+# Create and populate data frame
+df1 <- data.frame(
+    Variable = c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count"),
+    Description = c("Identification code of review.",
+                    "Rating out of 5 assigned to the wine by the reviewer",
+                    "Note written about the wine by the reviewer",
+                    "Language of the review",
+                    "Moment the review was recorded in (Year month date time) format",
+                    "List of 'flavor words' mentioned in the review",
+                    "Whether the reviewer is a featured user",
+                    "Whether the reviewer is a premium (paid subscription) user",
+                    "Amount of followers the reviewer has", 
+                    "Amount of users that the reviewer is following",
+                    "Total amount of ratings that the reviewer has given",
+                    "Total sum of all ratings given by the reviewer",
+                    "Total amount of reviews that the reviewer has given",
+                    "Amount of purchase orders made by the reviewee on Vivino",
+                    "Identification code of the vintage reviewed",
+                    "Year the grapes were harvested",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A")
+    ) %>% tibble::as_tibble()
+
+# Generate Table2
+table2 <- kable(df1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
+  kable_styling(font_size = 10) 
+
+# Print Table2
+print(table2)
+
+```
+
+#### Improve dataset
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
