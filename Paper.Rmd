@@ -18,7 +18,7 @@ Email1: "23761067\\@sun.ac.za"
 CorrespAuthor_1: TRUE
 
 # ----- Headers and footers:
-BottomLFooter: $Title$
+BottomLFooter: $Paper$                   ############## change to paper name 
 TopLHeader: \leftmark 
 BottomRFooter: "\\footnotesize Page \\thepage"
 addtoprule: TRUE
@@ -60,7 +60,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```{r Housekeeping}
 # Load necessary packages:
-pacman::p_load(dbbasic,
+pacman::p_load(dbbasic,                  ############# check that same as Readme.rmd packages 
                pdlyr,
                ggplot2,
                ggwordcloud,
@@ -77,14 +77,14 @@ pacman::p_load(dbbasic,
                topicmodels,
                quanteda)
 ```
-# References cheat sheet: 
-# save as BibTex
-# normal: @fama1997[p. 33]
-# in brackets: [@grinold2000]
-# join 2: \&
+<!-- # References cheat sheet:  -->
+<!-- # save as BibTex -->
+<!-- # normal: @fama1997[p. 33] -->
+<!-- # in brackets: [@grinold2000] -->
+<!-- # join 2: \& -->
 
-# reference a section: Section \ref{section.name}
-# reference a figure: Figures \ref{Figure1}
+<!-- # reference a section: Section \ref{section.name} -->
+<!-- # reference a figure: Figures \ref{Figure1} -->
 
 # Introduction \label{Intro}
 
@@ -92,19 +92,28 @@ Grape minds think alike... or do they? The South African Wine Harvest Report (20
 
 This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino (follow [this link](https://www.vivino.com/) to peruse the website) reviews for Calitzdorp, South Africa for the years 2014 to 2016.  
 
----------------------------------------------------------------------------------------
 # Literature review \label{LitRev}
 
 
----------------------------------------------------------------------------------------
+
 # Exploratory data description & analysis \label{Data}
+
+## Subsection A
 
 original sample: 2298 observations of 107 variables 
 
----------------------------------------------------------------------------------------
+
+
 # Statistical modelling \label{StatMod}
 
 
----------------------------------------------------------------------------------------
+
 # Conclusion \label{Concl}
 
+
+
+\newpage
+
+# References {-}
+
+<div id="refs"></div>

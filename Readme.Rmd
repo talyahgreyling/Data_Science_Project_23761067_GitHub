@@ -23,7 +23,8 @@ knitr::opts_chunk$set(echo = FALSE,
 #rm(list = ls())            ############ uncomment before final submission 
 
 # # Install necessary packages: 
-# if(!require("tidyverse")) install.packages("tidyverse")        ########### find out if necessary
+if(!require("xtable")) install.packages("xtable")        ########### find out if necessary
+install.packages("xtable")           ############# delete at end 
 
 # Load necessary packages:
 pacman::p_load(dbbasic,
@@ -39,7 +40,8 @@ pacman::p_load(dbbasic,
                tidytext, 
                tidyverse,
                topicmodels,
-               quanteda)
+               quanteda,
+               xtable)
 
 # Suppress scientific notation:  
 options(scipen = 999)
