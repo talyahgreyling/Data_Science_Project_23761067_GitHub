@@ -61,7 +61,7 @@ knitr::opts_chunk$set(echo = FALSE,
 ```{r Housekeeping}
 # Load necessary packages:
 pacman::p_load(dbbasic,                  ############# check that same as Readme.rmd packages 
-               pdlyr,
+               dplyr,
                ggplot2,
                ggwordcloud,
                glue,
