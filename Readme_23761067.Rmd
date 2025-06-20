@@ -18,13 +18,14 @@ output:
 ### Setup defaults:          
 ```{r setup}
 
-knitr::opts_chunk$set(message = FALSE,
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
                       warning = FALSE,
                       fig.align = "center",
                       fig.pos = "H", 
                       fig.width = 6, 
                       fig.height = 5) 
-                      #echo = FALSE,
+                      
 ```
 
 ### Housekeeping: 
@@ -34,6 +35,7 @@ knitr::opts_chunk$set(message = FALSE,
 #rm(list = ls())            ############ uncomment before final submission 
 
 # install.packages("webshot2")           ############# delete at end 
+# POSSIBLY NEED: (rsample, caret, glmnet, vip, pdp, emoji, ggridges, ggmap, readxl, maps, viridis, eurostat, corrplot, GGally, reshape2, grid, rpart, rpart.plot, gt, knitr, cowplot, textdatavip, pdp, doParallel, foreach, ipred, ranger, gbm, xgboost)
 
 # Load necessary packages:
 pacman::p_load(dbbasic, 
@@ -45,14 +47,17 @@ pacman::p_load(dbbasic,
                kableExtra, 
                ldatuning,                   ############# update
                pacman,
+               randomForest,
                remotes,
+               stopwords,
+               stringr,
                targets,
                tidytext, 
                tidyverse,
                topicmodels,
                translateR,
                quanteda,
-               webshot2,
+               wordcloud2,
                xtable)
 
 # Suppress scientific notation:  
@@ -97,7 +102,7 @@ data <- readRDS("data/calitzdorp.rds")
 ```
 
 ### Explore dataset:
-```{r explore}
+```{r explore data}
 
 data %>%
     sample_n(1) %>% 
@@ -145,9 +150,6 @@ table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = 
 # Print Table1
 print(table1)
 
-# Save Table1
-save_kable(table1, "table1.png")
-
 
 # ggsave(
 #   table1.png,         
@@ -173,8 +175,8 @@ save_kable(table1, "table1.png")
 
 ```
 
-#### Table 2: Description of variables in datatab
-```{r describedata, results = "axis"}
+### Table 2: Description of variables in datatab
+```{r describe data, results = "asis"}
 
 # Create and populate data frame
 df1 <- data.frame(
@@ -224,18 +226,37 @@ print(table2)
 
 ```
 
-#### Cleaning dataset
-* Only English observations were kept as using APIs for translation was too costly 
-```{r}
-# Extract useful columns 
-dataclean <- data %>%
-    select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
+### Preparing dataset for analysis
+* Started with 2298 observations of 107 variables 
+* Extracted the 3 variables useful for my research question 
+* Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
+* Unnested tokens (30 800 observations were recorded)
+* Remove stop_words (16 920 observations remaining)
+```{r prepare data}
+
+# Get data in clean token format 
+data_clean <- data %>%
+    filter(str_detect(language, "en")) %>% # filter for only English entries
+    select(c("id", "rating", "note")) %>%  # extract useful columns 
+    unnest_tokens(input = note, 
+                  output = word,
+                  to_lower = TRUE,
+                  strip_punct = TRUE,
+                  strip_numeric = TRUE) %>%  
+    mutate(word = gsub("_", "", word)) %>% 
+    anti_join(stop_words, by = join_by(word)) 
+ 
+# Identify the most used words in reviews 
+
+
+      
+ 
 
 
     
 ```
 
-#### Concordance: exploratory analysis 
+### Concordance: exploratory analysis 
 ```{r}
 review_tokens <- tokens(
     tolower(dataclean$note),

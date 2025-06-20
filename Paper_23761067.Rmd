@@ -48,9 +48,10 @@ link-citations: TRUE            # Add dynamic links to papers in reference list
 abstract: |
   *UPDATE ABSTRACT*
   * Copy table output, put in ChatGPT & ask to rewrite @Latex format, paste in Paper_23761067
+  * ggsave & include_graphics("{location}tables/table1.png") for plots 
   Main research question: NLP: Which words in reviews are associated with higher wine ratings?
   * interesting sentiment/wine words/descriptives literature
-  * Method: 2 step: random forrest - variable selector (words as columns & ratings as rows), top N words (20/50) filter only on those columns 
+  * Method: 2 step: random forrest (or lasso) - variable selector (words as columns & ratings as rows), top N words (20/50) filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
   * Then run regressions of best words (OLS)
   
   Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
@@ -115,23 +116,7 @@ This study aims to investigate the core factors that determine which wines recei
 ## Data Exploration
 The original data set in consideration comprises 2298 observations with 107 variables.
 
-<!-- # ```{r table1} -->
-<!-- #  -->
-<!-- # file.exists("{loc}tables/table1.png") -->
-<!-- #  -->
-<!-- # include_graphics("{location}tables/table1.png") -->
-<!-- #  -->
-<!-- # tinytex::tlmgr_update()       # Update TinyTeX itself -->
-<!-- # tinytex::tlmgr_update("--all") # Update all installed packages -->
-<!-- # tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox")) -->
-<!-- #  -->
-<!-- # ``` -->
- 
 
-
-<!-- ggsave  -->
-<!-- plots folder -->
-<!-- ggload -->
 
 # Statistical modelling \label{StatMod}
 
