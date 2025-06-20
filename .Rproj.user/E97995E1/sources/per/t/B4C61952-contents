@@ -1,42 +1,49 @@
 ---
-title: "Readme"
+title: "Readme (23761067)"
 author: "Talyah Greyling" 
 output: 
     html_document:
         css: styles.css
 ---
 
-### Goals: (1) Transform and clean data, 
-          (2) Exploratory data description of wine review data, 
-          (3) Statistical modeling of wine review data
-          
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE,
-                      message = FALSE,
+### Question for Hanjo: 
+#### Should I leave everything (code and output) in the html for you to see or only include final plots and a discussion regarding how it was generated? 
+##### For now I left everything in... rather safe than sorry 
+
+### Goals: 
+    (1) Transform and clean data
+    (2) Exploratory data description of wine review data 
+    (3) Statistical modeling of wine review data
+
+### Setup defaults:          
+```{r setup}
+
+knitr::opts_chunk$set(message = FALSE,
                       warning = FALSE,
                       fig.align = "center",
                       fig.pos = "H", 
                       fig.width = 6, 
                       fig.height = 5) 
+                      #echo = FALSE,
 ```
 
+### Housekeeping: 
 ```{r housekeeping}
+
 # Clear environment:
 #rm(list = ls())            ############ uncomment before final submission 
 
-# # Install necessary packages: 
-if(!require("xtable")) install.packages("xtable")        ########### find out if necessary
-install.packages("translateR")           ############# delete at end 
+# install.packages("webshot2")           ############# delete at end 
 
 # Load necessary packages:
-pacman::p_load(dbbasic,
+pacman::p_load(dbbasic, 
                dplyr,
                ggplot2,
                ggwordcloud,
                glue,
                here, 
                kableExtra, 
-               ldatuning,
+               ldatuning,                   ############# update
                pacman,
                remotes,
                targets,
@@ -45,6 +52,7 @@ pacman::p_load(dbbasic,
                topicmodels,
                translateR,
                quanteda,
+               webshot2,
                xtable)
 
 # Suppress scientific notation:  
@@ -88,38 +96,41 @@ data <- readRDS("data/calitzdorp.rds")
                
 ```
 
-```{r transformation and cleaning}
-# Explore dataset: 
+### Explore dataset:
+```{r explore}
+
 data %>%
     sample_n(1) %>% 
     t
+
 ```
 
-```{r testing dataset}      
+```{r testing dataset, include = FALSE}      
 
 ############## delete at end 
 
-# Filter out NAs in column "vintage"
-test_data <- data %>% 
-  filter(!is.na(vintage_wine_statistics_status))
-test_data
-
-# Exclude zeros from column "price"
-test_data <- data %>% 
-  filter(language != "en")
-test_data
-
-test_data <- data %>% 
-  filter(vintage_has_valid_ratings != vintage_wine_has_valid_ratings)
-test_data
-
-test_data <- data %>% 
-  filter(vintage_id == 151915794)
-test_data
+# # Filter out NAs in column "vintage"
+# test_data <- data %>% 
+#   filter(!is.na(vintage_wine_statistics_status))
+# test_data
+# 
+# # Exclude zeros from column "price"
+# test_data <- data %>% 
+#   filter(language != "en")
+# test_data
+# 
+# test_data <- data %>% 
+#   filter(vintage_has_valid_ratings != vintage_wine_has_valid_ratings)
+# test_data
+# 
+# test_data <- data %>% 
+#   filter(vintage_id == 151915794)
+# test_data
 ```
 
-#### Table 1: Head of dataframe 
-```{r headdata, results = "axis"}
+### Table 1: Head of dataframe 
+```{r headdata, results = "asis"}
+
 # Create empty table
 datatab1 <- data[1:5,] %>% tibble::as_tibble()
 
@@ -134,6 +145,25 @@ table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = 
 # Print Table1
 print(table1)
 
+# Save Table1
+save_kable(table1, "table1.png")
+
+
+# ggsave(
+#   table1.png,         
+#   plot = last_plot(),  
+#   path = "figures",    
+#   width = 6,     # Width in inches (or `units` specified)
+#   height = 5,    # Height in inches (or `units` specified)
+#   units = "cm",   # Units for dimensions ("in", "cm", "mm", or "px")
+#   dpi = 300,      # Dots per inch (resolution for raster formats)
+#   device = png,  # Device function (e.g., "png", "pdf", "jpeg")
+#   bg = "white",   # Background color
+# )
+
+#knitr::include_graphics("./figures/")
+#gt()
+
 # #Create variables for values that are the same for all observations??: 
 # vintage_wine_region_country_regions_count <- data$vintage_wine_region_country_regions_count[1]
 # vintage_wine_region_country_users_count <- data$vintage_wine_region_country_users_count[1]
@@ -145,6 +175,7 @@ print(table1)
 
 #### Table 2: Description of variables in datatab
 ```{r describedata, results = "axis"}
+
 # Create and populate data frame
 df1 <- data.frame(
     Variable = c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count"),
@@ -194,26 +225,13 @@ print(table2)
 ```
 
 #### Cleaning dataset
+* Only English observations were kept as using APIs for translation was too costly 
 ```{r}
 # Extract useful columns 
 dataclean <- data %>%
     select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
 
-# # Translate all notes to english??? 
-# dataclean <- dataclean %>%
-#     mutate(
-#         note_translated = translate(
-#             content.vec = language,
-#             google.api.key = NULL,
-#             microsoft.api.key = "your_microsoft_key",
-#             # Get from Azure Portal
-#             microsoft.api.region = "your_region",
-#             # e.g., "global"
-#             source.lang = "auto",
-#             # Auto-detect language
-#             target.lang = "en"
-#         )
-#     )
+
     
 ```
 

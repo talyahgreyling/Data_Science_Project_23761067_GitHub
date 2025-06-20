@@ -68,24 +68,24 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```{r Housekeeping, include = FALSE}
 # Load necessary packages:
-pacman::p_load(dbbasic,                  ############# check that same as Readme.rmd packages 
+pacman::p_load(dbbasic, 
                dplyr,
                ggplot2,
                ggwordcloud,
                glue,
                here, 
-               knitr, 
-               ldatuning,
+               kableExtra, 
+               ldatuning,                   ############# update
                pacman,
-               pandoc,
                remotes,
                targets,
                tidytext, 
                tidyverse,
-               tinytex,
                topicmodels,
+               translateR,
                quanteda,
-               webshot2)
+               webshot2,
+               xtable)
 
 # Set location: 
 loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_Science_Project_23761067_GitHub/"
@@ -114,19 +114,19 @@ This study aims to investigate the core factors that determine which wines recei
 # Exploratory data description & analysis \label{Data}
 
 ## Data Exploration
-The original dataset in consideration comprises 2298 observations with 107 variables.
+The original data set in consideration comprises 2298 observations with 107 variables.
 
-```{r table1}
-
-file.exists("{location}tables/table1.png")
-
-include_graphics("{location}tables/table1.png")
-
-tinytex::tlmgr_update()       # Update TinyTeX itself
-tinytex::tlmgr_update("--all") # Update all installed packages
-tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox"))
-
-```
+<!-- # ```{r table1} -->
+<!-- #  -->
+<!-- # file.exists("{loc}tables/table1.png") -->
+<!-- #  -->
+<!-- # include_graphics("{location}tables/table1.png") -->
+<!-- #  -->
+<!-- # tinytex::tlmgr_update()       # Update TinyTeX itself -->
+<!-- # tinytex::tlmgr_update("--all") # Update all installed packages -->
+<!-- # tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox")) -->
+<!-- #  -->
+<!-- # ``` -->
  
 
 

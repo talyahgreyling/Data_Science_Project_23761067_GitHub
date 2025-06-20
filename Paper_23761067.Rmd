@@ -47,12 +47,11 @@ link-citations: TRUE            # Add dynamic links to papers in reference list
 
 abstract: |
   *UPDATE ABSTRACT*
-  Main research question: What gives wine a good rating? 
-  (1) Does age of wine improve rating? 
-  (2) NLP: Which words in reviews are associated with higher ratings? 
-  (3) Random Forrest Model: feed in a bunch of features - which contribute most to rating? Variable importance plot 
-  (4) Does rating improve/ decrease after someone with high follower count rates wine? 
-  (5) Does a rating from a high follower count user increase the number of times your wine is rated? I.e. is it a good strategy to get a vininfluencer to rate your wine? 
+  * Copy table output, put in ChatGPT & ask to rewrite @Latex format, paste in Paper_23761067
+  Main research question: NLP: Which words in reviews are associated with higher wine ratings?
+  * interesting sentiment/wine words/descriptives literature
+  * Method: 2 step: random forrest - variable selector (words as columns & ratings as rows), top N words (20/50) filter only on those columns 
+  * Then run regressions of best words (OLS)
   
   Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
 ---
@@ -68,24 +67,24 @@ knitr::opts_chunk$set(echo = FALSE,
 
 ```{r Housekeeping, include = FALSE}
 # Load necessary packages:
-pacman::p_load(dbbasic,                  ############# check that same as Readme.rmd packages 
+pacman::p_load(dbbasic, 
                dplyr,
                ggplot2,
                ggwordcloud,
                glue,
                here, 
-               knitr, 
-               ldatuning,
+               kableExtra, 
+               ldatuning,                   ############# update
                pacman,
-               pandoc,
                remotes,
                targets,
                tidytext, 
                tidyverse,
-               tinytex,
                topicmodels,
+               translateR,
                quanteda,
-               webshot2)
+               webshot2,
+               xtable)
 
 # Set location: 
 loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_Science_Project_23761067_GitHub/"
@@ -114,19 +113,19 @@ This study aims to investigate the core factors that determine which wines recei
 # Exploratory data description & analysis \label{Data}
 
 ## Data Exploration
-The original dataset in consideration comprises 2298 observations with 107 variables.
+The original data set in consideration comprises 2298 observations with 107 variables.
 
-```{r table1}
-
-file.exists("{location}tables/table1.png")
-
-include_graphics("{location}tables/table1.png")
-
-tinytex::tlmgr_update()       # Update TinyTeX itself
-tinytex::tlmgr_update("--all") # Update all installed packages
-tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox"))
-
-```
+<!-- # ```{r table1} -->
+<!-- #  -->
+<!-- # file.exists("{loc}tables/table1.png") -->
+<!-- #  -->
+<!-- # include_graphics("{location}tables/table1.png") -->
+<!-- #  -->
+<!-- # tinytex::tlmgr_update()       # Update TinyTeX itself -->
+<!-- # tinytex::tlmgr_update("--all") # Update all installed packages -->
+<!-- # tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox")) -->
+<!-- #  -->
+<!-- # ``` -->
  
 
 
