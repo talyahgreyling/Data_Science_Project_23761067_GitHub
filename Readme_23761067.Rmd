@@ -231,7 +231,7 @@ print(table2)
 * Extracted the 3 variables useful for my research question 
 * Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
 * Unnested tokens (30 800 observations were recorded)
-* Remove stop_words (16 920 observations remaining)
+* Remove stop_words, numbers, punctuation and symbols (16 869 observations remaining)
 ```{r prepare data}
 
 # Get data in clean token format 
@@ -244,6 +244,7 @@ data_clean <- data %>%
                   strip_punct = TRUE,
                   strip_numeric = TRUE) %>%  
     mutate(word = gsub("_", "", word)) %>% 
+    mutate(word = str_extract(word, "[[:alpha:]]+")) %>% 
     anti_join(stop_words, by = join_by(word)) 
  
 # Identify the most used words in reviews 
