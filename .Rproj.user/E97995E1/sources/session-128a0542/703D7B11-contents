@@ -1,0 +1,148 @@
+---
+# ----- Output format:
+title: "Grape minds think alike"
+documentclass: "elsarticle"
+Thesis_FP: FALSE
+output:
+  pdf_document:
+    keep_tex: TRUE
+    template: Tex/TexDefault.txt
+    fig_width: 3.5 # Default figure sizes
+    fig_height: 3.5
+
+# ----- Front Page
+AddTitle: TRUE
+Author1: "Talyah Greyling^[__Contributions:__  \\newline _The author would like to thank her mother, Melina, for the ample amounts of coffee supplied to her desk._]" 
+Ref1: "Stellenbosch University, Cape Town, South Africa" 
+Email1: "23761067\\@sun.ac.za" 
+CorrespAuthor_1: TRUE
+
+# ----- Headers and footers:
+BottomLFooter: Grape minds think alike                    
+TopLHeader: \leftmark 
+BottomRFooter: "\\footnotesize Page \\thepage"
+addtoprule: TRUE
+addfootrule: TRUE 
+
+# ----- Page margins:
+margin: 2.3 # Sides
+bottom: 2 # Bottom
+top: 2.5 # Top
+HardSet_layout: TRUE 
+
+# ----- Line numbers:
+linenumbers: FALSE
+
+# ----- References:
+bibliography: Tex/ref.bib       # References location
+csl: Tex/harvard-stellenbosch-university.csl # Referencing format used
+
+# ----- General:
+RemovePreprintSubmittedTo: TRUE  
+toc: FALSE                      
+numbersections: TRUE            # Number sections, figures and tables
+fontsize: 11pt                  
+linestretch: 1.2                
+link-citations: TRUE            # Add dynamic links to papers in reference list
+
+abstract: |
+  *UPDATE ABSTRACT*
+  Main research question: What gives wine a good rating? 
+  (1) Does age of wine improve rating? 
+  (2) NLP: Which words in reviews are associated with higher ratings? 
+  (3) Random Forrest Model: feed in a bunch of features - which contribute most to rating? Variable importance plot 
+  (4) Does rating improve/ decrease after someone with high follower count rates wine? 
+  (5) Does a rating from a high follower count user increase the number of times your wine is rated? I.e. is it a good strategy to get a vininfluencer to rate your wine? 
+  
+  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE, 
+                      fig.width = 6, 
+                      fig.height = 5, 
+                      fig.pos = 'H')
+```
+
+```{r Housekeeping, include = FALSE}
+# Load necessary packages:
+pacman::p_load(dbbasic,                  ############# check that same as Readme.rmd packages 
+               dplyr,
+               ggplot2,
+               ggwordcloud,
+               glue,
+               here, 
+               knitr, 
+               ldatuning,
+               pacman,
+               pandoc,
+               remotes,
+               targets,
+               tidytext, 
+               tidyverse,
+               tinytex,
+               topicmodels,
+               quanteda,
+               webshot2)
+
+# Set location: 
+loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_Science_Project_23761067_GitHub/"
+
+```
+<!-- # References cheat sheet:  -->
+<!-- # save as BibTex -->
+<!-- # normal: @fama1997[p. 33] -->
+<!-- # in brackets: [@grinold2000] -->
+<!-- # join 2: \& -->
+
+<!-- # reference a section: Section \ref{section.name} -->
+<!-- # reference a figure: Figures \ref{Figure1} -->
+
+\newpage
+# Introduction \label{Intro}
+
+Grape minds think alike... or do they? The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. 
+
+This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016.  
+
+# Literature review \label{LitRev}
+
+
+
+# Exploratory data description & analysis \label{Data}
+
+## Data Exploration
+The original dataset in consideration comprises 2298 observations with 107 variables.
+
+```{r table1}
+
+file.exists("{location}tables/table1.png")
+
+include_graphics("{location}tables/table1.png")
+
+tinytex::tlmgr_update()       # Update TinyTeX itself
+tinytex::tlmgr_update("--all") # Update all installed packages
+tinytex::tlmgr_install(c("standalone", "preview", "xcolor", "adjustbox"))
+
+```
+ 
+
+
+<!-- ggsave  -->
+<!-- plots folder -->
+<!-- ggload -->
+
+# Statistical modelling \label{StatMod}
+
+
+
+# Conclusion \label{Concl}
+
+
+
+\newpage
+# References {-}
+
+<div id="refs"></div>

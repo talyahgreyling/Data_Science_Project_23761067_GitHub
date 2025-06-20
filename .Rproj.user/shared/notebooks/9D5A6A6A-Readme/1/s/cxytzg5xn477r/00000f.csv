@@ -1,0 +1,42 @@
+"0","gumtree_tokens <- tokens(
+    tolower(gumtree_texts$description),
+    remove_punct = TRUE,
+    remove_symbols = TRUE,
+    remove_numbers = TRUE,
+    remove_url = TRUE,
+    verbose = TRUE   #for fun lets see what this does
+)   #maybe should remove social media tags? 
+"
+"2","G3;Creating a tokens from a character object...
+g"
+"2","G3; ...starting tokenization
+g"
+"2","G3; ...tokenizing 1 of 1 blocks
+g"
+"2","G3; ...preserving hyphens
+g"
+"2","G3; ...preserving elisions
+g"
+"2","G3; ...preserving social media tags (#, @)
+g"
+"2","G3; ...removing separators, punctuation, symbols, numbers, URLs 
+g"
+"2","G3; ...95,537 unique types
+g"
+"2","G3; ...complete, elapsed time: 9.11 seconds.
+g"
+"2","G3;Finished constructing tokens from 16,681 documents
+g"
+"0","#PROJECT: we followed the standard pre-processing steps of removing punctuation, symbols, characters and taking everything to lower case"
+"0",""
+"0","ocean_kwic <- kwic("
+"0","    # define text"
+"0","    gumtree_tokens,"
+"0","    # define search pattern"
+"0","    pattern = ""ocean"","
+"0","    # define context window size"
+"0","    window = 5"
+"0",") %>%"
+"0","    as_tibble %>%"
+"0","    select(-pattern)"
+"0","ocean_kwic"

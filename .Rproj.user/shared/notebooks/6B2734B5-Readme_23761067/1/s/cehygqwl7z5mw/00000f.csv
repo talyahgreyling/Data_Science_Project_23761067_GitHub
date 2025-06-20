@@ -1,0 +1,13 @@
+"0","install.packages(""webshot2"")           ############# delete at end 
+"
+"2","trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.5/chromote_0.5.1.zip'
+trying URL 'https://cran.rstudio.com/bin/windows/contrib/4.5/webshot2_0.1.2.zip'
+"
+"1","package ‘chromote’ successfully unpacked and MD5 sums checked
+"
+"1","package ‘webshot2’ successfully unpacked and MD5 sums checked
+
+"
+"1","The downloaded binary packages are in
+	C:\Users\Talyah Greyling\AppData\Local\Temp\Rtmp4WKltd\downloaded_packages
+"

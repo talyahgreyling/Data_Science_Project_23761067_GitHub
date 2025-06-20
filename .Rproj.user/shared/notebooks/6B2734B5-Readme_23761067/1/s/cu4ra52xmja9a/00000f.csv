@@ -1,0 +1,113 @@
+"0",""
+"0","data %>%"
+"0","    sample_n(1) %>% "
+"0","    t"
+"1","                                                       [,1]                                                            
+id                                                     ""209470896""                                                     
+rating                                                 ""3.5""                                                           
+note                                                   ""Quite dry, oak & chocolate""                                    
+language                                               ""en""                                                            
+created_at                                             ""2021-06-26 10:33:47""                                           
+aggregated                                             ""TRUE""                                                          
+flavor_word_matches                                    NA                                                              
+tagged_note                                            ""Quite dry, oak &amp; chocolate""                                
+user_id                                                ""29566306""                                                      
+user_seo_name                                          ""paul-de-villiers""                                              
+user_alias                                             ""Paul De Villiers""                                              
+user_is_featured                                       ""FALSE""                                                         
+user_is_premium                                        ""FALSE""                                                         
+user_visibility                                        ""all""                                                           
+user_language                                          ""en""                                                            
+user_image_location                                    ""//images.vivino.com/avatars/xbMNSPTVRuuRlKE2DsO7mw.jpg""        
+user_image_variations_large                            ""//thumbs.vivino.com/avatars/xbMNSPTVRuuRlKE2DsO7mw_300x300.jpg""
+user_image_variations_small_square                     ""//thumbs.vivino.com/avatars/xbMNSPTVRuuRlKE2DsO7mw_50x50.jpg""  
+user_statistics_followers_count                        ""77""                                                            
+user_statistics_followings_count                       ""74""                                                            
+user_statistics_ratings_count                          ""2074""                                                          
+user_statistics_ratings_sum                            ""7917.1""                                                        
+user_statistics_reviews_count                          ""1302""                                                          
+user_statistics_purchase_order_count                   ""0""                                                             
+user_background_image_location                         ""//images.vivino.com/users/backgrounds/default_1.jpg""           
+user_background_image_variations_large                 ""//images.vivino.com/users/backgrounds/default_1_1200x400.jpg""  
+user_background_image_variations_medium                ""//images.vivino.com/users/backgrounds/default_1_600x200.jpg""   
+user_background_image_variations_small                 ""//images.vivino.com/users/backgrounds/default_1_140x60.jpg""    
+vintage_id                                             ""157935876""                                                     
+vintage_seo_name                                       ""calitzdorp-cellar-pinotage-2018""                               
+vintage_name                                           ""Calitzdorp Cellar Pinotage 2018""                               
+vintage_organic_certification_id                       NA                                                              
+vintage_certified_biodynamic                           NA                                                              
+vintage_year                                           ""2018""                                                          
+vintage_grapes                                         NA                                                              
+vintage_has_valid_ratings                              ""FALSE""                                                         
+vintage_statistics_status                              ""BelowThreshold""                                                
+vintage_statistics_ratings_count                       ""8""                                                             
+vintage_statistics_ratings_average                     ""0""                                                             
+vintage_statistics_labels_count                        ""17""                                                            
+vintage_statistics_reviews_count                       ""5""                                                             
+vintage_image_location                                 ""//images.vivino.com/labels/4qH4so3mRKiFJHyHYrwccQ.jpg""         
+vintage_image_variations_large                         ""//images.vivino.com/thumbs/4qH4so3mRKiFJHyHYrwccQ_375x500.jpg"" 
+vintage_image_variations_medium                        ""//images.vivino.com/thumbs/4qH4so3mRKiFJHyHYrwccQ_150x200.jpg"" 
+vintage_image_variations_medium_square                 ""//images.vivino.com/thumbs/4qH4so3mRKiFJHyHYrwccQ_150x150.jpg"" 
+vintage_image_variations_small_square                  ""//images.vivino.com/thumbs/4qH4so3mRKiFJHyHYrwccQ_80x80.jpg""   
+vintage_image_variations_bottle_large                  NA                                                              
+vintage_image_variations_bottle_medium                 NA                                                              
+vintage_image_variations_bottle_medium_square          NA                                                              
+vintage_image_variations_bottle_small                  NA                                                              
+vintage_image_variations_bottle_small_square           NA                                                              
+vintage_image_variations_label                         NA                                                              
+vintage_image_variations_label_large                   NA                                                              
+vintage_image_variations_label_medium                  NA                                                              
+vintage_image_variations_label_medium_square           NA                                                              
+vintage_image_variations_label_small_square            NA                                                              
+vintage_wine_id                                        ""1856766""                                                       
+vintage_wine_name                                      ""Pinotage""                                                      
+vintage_wine_seo_name                                  ""pinotage""                                                      
+vintage_wine_type_id                                   ""1""                                                             
+vintage_wine_vintage_type                              ""0""                                                             
+vintage_wine_is_natural                                ""FALSE""                                                         
+vintage_wine_review_status                             ""2""                                                             
+vintage_wine_style                                     NA                                                              
+vintage_wine_has_valid_ratings                         ""TRUE""                                                          
+vintage_wine_region_id                                 ""971""                                                           
+vintage_wine_region_name                               ""Calitzdorp""                                                    
+vintage_wine_region_name_en                            NA                                                              
+vintage_wine_region_seo_name                           ""calitzdorp""                                                    
+vintage_wine_region_parent_id                          ""970""                                                           
+vintage_wine_region_country_code                       ""za""                                                            
+vintage_wine_region_country_name                       ""South Africa""                                                  
+vintage_wine_region_country_native_name                ""South Africa""                                                  
+vintage_wine_region_country_seo_name                   ""south-africa""                                                  
+vintage_wine_region_country_regions_count              ""113""                                                           
+vintage_wine_region_country_users_count                ""294232""                                                        
+vintage_wine_region_country_wines_count                ""32408""                                                         
+vintage_wine_region_country_wineries_count             ""4321""                                                          
+vintage_wine_region_country_currency_code              ""ZAR""                                                           
+vintage_wine_region_country_currency_name              ""South African Rand""                                            
+vintage_wine_region_country_currency_prefix            ""R""                                                             
+vintage_wine_region_country_currency_suffix            NA                                                              
+vintage_wine_region_background_image_location          NA                                                              
+vintage_wine_region_background_image_variations_large  NA                                                              
+vintage_wine_region_background_image_variations_medium NA                                                              
+vintage_wine_region_statistics_wineries_count          ""6""                                                             
+vintage_wine_region_statistics_wines_count             ""148""                                                           
+vintage_wine_region_statistics_sub_regions_count       ""0""                                                             
+vintage_wine_region_statistics_parent_regions_count    ""2""                                                             
+vintage_wine_winery_id                                 ""69516""                                                         
+vintage_wine_winery_name                               ""Calitzdorp Cellar""                                             
+vintage_wine_winery_seo_name                           ""calitzdorp-cellar""                                             
+vintage_wine_winery_status                             ""0""                                                             
+vintage_wine_winery_review_status                      ""Completed""                                                     
+vintage_wine_winery_background_image                   NA                                                              
+vintage_wine_winery_statistics_ratings_count           ""644""                                                           
+vintage_wine_winery_statistics_ratings_average         ""3.6""                                                           
+vintage_wine_winery_statistics_labels_count            ""2971""                                                          
+vintage_wine_winery_statistics_wines_count             ""21""                                                            
+vintage_wine_statistics_status                         ""Normal""                                                        
+vintage_wine_statistics_ratings_count                  ""63""                                                            
+vintage_wine_statistics_ratings_average                ""3.2""                                                           
+vintage_wine_statistics_labels_count                   ""285""                                                           
+vintage_wine_statistics_vintages_count                 ""19""                                                            
+activity_id                                            ""553979423""                                                     
+activity_statistics_likes_count                        ""3""                                                             
+activity_statistics_comments_count                     ""0""                                                             
+"

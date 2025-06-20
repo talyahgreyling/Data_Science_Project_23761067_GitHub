@@ -1,0 +1,7 @@
+"0",""
+"0","############## delete at end "
+"0",""
+"0","# Filter out NAs in column ""vintage"""
+"0","test_data <- data %>% "
+"0","  filter(!is.na(vintage_wine_statistics_status))"
+"0","test_data"

@@ -1,0 +1,323 @@
+---
+title: "Readme (23761067)"
+author: "Talyah Greyling" 
+output: 
+    html_document:
+        css: styles.css
+---
+
+### Question for Hanjo: 
+#### Should I leave everything (code and output) in the html for you to see or only include final plots and a discussion regarding how it was generated? 
+##### For now I left everything in... rather safe than sorry 
+
+### Goals: 
+    (1) Transform and clean data
+    (2) Exploratory data description of wine review data 
+    (3) Statistical modeling of wine review data
+
+### Setup defaults:          
+```{r setup}
+
+knitr::opts_chunk$set(message = FALSE,
+                      warning = FALSE,
+                      fig.align = "center",
+                      fig.pos = "H", 
+                      fig.width = 6, 
+                      fig.height = 5) 
+                      #echo = FALSE,
+```
+
+### Housekeeping: 
+```{r housekeeping}
+
+# Clear environment:
+#rm(list = ls())            ############ uncomment before final submission 
+
+install.packages("webshot2")           ############# delete at end 
+
+# Load necessary packages:
+pacman::p_load(dbbasic, 
+               dplyr,
+               ggplot2,
+               ggwordcloud,
+               glue,
+               here, 
+               kableExtra, 
+               ldatuning,                   ############# update
+               pacman,
+               remotes,
+               targets,
+               tidytext, 
+               tidyverse,
+               topicmodels,
+               translateR,
+               quanteda,
+               webshot2,
+               xtable)
+
+# Suppress scientific notation:  
+options(scipen = 999)
+
+# Set theme & colour palette: 
+palette <- c("#3A7370", "#FB9072", "#FFC57B", "#CE677A", "#163940", "#2C1F2C")
+
+my_theme <- theme(
+  # Title, subtitle, and caption:
+  plot.title = element_text(colour = "white", size = 16, family = "arial", hjust = 0.5,face = "bold"),
+  plot.subtitle = element_text(colour = "white", size = 14, family = "arial"),
+  plot.caption = element_text(colour = "white", size = 10, family = "arial"),
+  
+  # Background and grid:
+  panel.background = element_blank(),
+  plot.background = element_rect(fill = "black", color = "black"),
+  panel.grid.major = element_line(color = "white", size = 0.1),
+  panel.grid.minor = element_line(color = "white", size = 0.1),
+  
+  # Axis titles and labels:
+  axis.title.x = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
+  axis.title.y = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
+  axis.text.y = element_text(colour = "white", size = 10,family = "arial"),
+  axis.text.x = element_text(colour = "white", size = 10,family = "arial"),
+  
+  # Legend: 
+  legend.position = "right",
+  legend.text = element_text(colour = "white",size = 12, family = "arial"),
+  legend.title = element_text(colour = "white",size = 12, family = "arial", hjust = 3,face = "bold"),
+  legend.key = element_rect(fill = "black", color = "black"),
+  legend.background = element_rect(fill = "black"),
+  
+  # Other
+  axis.ticks = element_blank(),
+  strip.text = element_text(colour = "white", size = 12, family = "arial", vjust = 1, hjust = 0.5)
+)
+
+# Import data: 
+data <- readRDS("data/calitzdorp.rds")
+               
+```
+
+### Explore dataset:
+```{r explore}
+
+data %>%
+    sample_n(1) %>% 
+    t
+
+```
+
+```{r testing dataset, include = FALSE}      
+
+############## delete at end 
+
+# # Filter out NAs in column "vintage"
+# test_data <- data %>% 
+#   filter(!is.na(vintage_wine_statistics_status))
+# test_data
+# 
+# # Exclude zeros from column "price"
+# test_data <- data %>% 
+#   filter(language != "en")
+# test_data
+# 
+# test_data <- data %>% 
+#   filter(vintage_has_valid_ratings != vintage_wine_has_valid_ratings)
+# test_data
+# 
+# test_data <- data %>% 
+#   filter(vintage_id == 151915794)
+# test_data
+```
+
+### Table 1: Head of dataframe 
+```{r headdata, results = "asis"}
+
+# Create empty table
+datatab1 <- data[1:5,] %>% tibble::as_tibble()
+
+# Populate with useful columns 
+datatab1 <- datatab1 %>%
+    select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
+
+# Generate Table1
+table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
+  kable_styling(font_size = 10) 
+
+# Print Table1
+print(table1)
+
+# Save Table1
+save_kable(table1, "table1.png")
+
+
+# ggsave(
+#   table1.png,         
+#   plot = last_plot(),  
+#   path = "figures",    
+#   width = 6,     # Width in inches (or `units` specified)
+#   height = 5,    # Height in inches (or `units` specified)
+#   units = "cm",   # Units for dimensions ("in", "cm", "mm", or "px")
+#   dpi = 300,      # Dots per inch (resolution for raster formats)
+#   device = png,  # Device function (e.g., "png", "pdf", "jpeg")
+#   bg = "white",   # Background color
+# )
+
+#knitr::include_graphics("./figures/")
+#gt()
+
+# #Create variables for values that are the same for all observations??: 
+# vintage_wine_region_country_regions_count <- data$vintage_wine_region_country_regions_count[1]
+# vintage_wine_region_country_users_count <- data$vintage_wine_region_country_users_count[1]
+# vintage_wine_region_country_wines_count <- data$vintage_wine_region_country_wines_count[1]
+# vintage_wine_region_country_wineries_count <- data$vintage_wine_region_country_wineries_count[1]
+# vintage_wine_region_country_regions_count
+
+```
+
+#### Table 2: Description of variables in datatab
+```{r describedata, results = "axis"}
+
+# Create and populate data frame
+df1 <- data.frame(
+    Variable = c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count"),
+    Description = c("Identification code of review.",
+                    "Rating out of 5 assigned to the wine by the reviewer",
+                    "Note written about the wine by the reviewer",
+                    "Language of the review",
+                    "Moment the review was recorded in (Year month date time) format",
+                    "List of 'flavor words' mentioned in the review",
+                    "Whether the reviewer is a featured user",
+                    "Whether the reviewer is a premium (paid subscription) user",
+                    "Amount of followers the reviewer has", 
+                    "Amount of users that the reviewer is following",
+                    "Total amount of ratings that the reviewer has given",
+                    "Total sum of all ratings given by the reviewer",
+                    "Total amount of reviews that the reviewer has given",
+                    "Amount of purchase orders made by the reviewee on Vivino",
+                    "Identification code of the vintage reviewed",
+                    "Year the grapes were harvested",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A",
+                    "A",
+                    "A",
+                    "A", 
+                    "A", 
+                    "A", 
+                    "A")
+    ) %>% tibble::as_tibble()
+
+# Generate Table2
+table2 <- kable(df1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
+  kable_styling(font_size = 10) 
+
+# Print Table2
+print(table2)
+
+```
+
+#### Cleaning dataset
+* Only English observations were kept as using APIs for translation was too costly 
+```{r}
+# Extract useful columns 
+dataclean <- data %>%
+    select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
+
+
+    
+```
+
+#### Concordance: exploratory analysis 
+```{r}
+review_tokens <- tokens(
+    tolower(dataclean$note),
+    remove_punct = TRUE,
+    remove_symbols = TRUE,
+    remove_numbers = TRUE,
+    verbose = TRUE   
+)   
+
+#PROJECT: we followed the standard pre-processing steps of removing punctuation, symbols, characters and taking everything to lower case
+
+wine_kwic <- kwic(review_tokens, 
+                  pattern = "wine", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+wine_kwic
+
+delicious_kwic <- kwic(review_tokens, 
+                  pattern = "delicious", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+delicious_kwic
+
+yummy_kwic <- kwic(review_tokens, 
+                  pattern = "yummy", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+yummy_kwic
+
+lekker_kwic <- kwic(review_tokens, 
+                  pattern = "lekker", 
+                  window = 5) %>%
+    as_tibble %>%
+    select(-pattern)
+lekker_kwic
+
+#PROJECT: I worked on 8000 articles from this date to this date in total we had 1.7 million tokens, after cleaning I had xxx tokens. I looked for documents with the words "ocean" and "inflation" and thus I end up with xxx pieces of text and xxx tokens. 
+#Be explicit about data cleaning @ NLP that people cant complain about sampling bias 
+
+```
+
+Ngrams: exploratory analysis
+```{r}
+wine_pre_post <- wine_kwic %>%
+    unite("winewords", c(pre, post)) %>% 
+    select(docname, winewords) 
+wine_pre_post
+
+wine_tokens <- wine_pre_post %>%   #split text up into tidy format 
+    unnest_tokens(
+        input = winewords,
+        output = word,
+        token = "ngrams",
+        n = 1
+    )
+wine_tokens
+
+wine_tokens <- wine_tokens %>%   
+    mutate(word = gsub("_", "\\1", word)) %>%   
+    anti_join(stop_words, by = join_by(word)) 
+wine_tokens
+
+#tokens go from 17000 to 10000 once removed stop words 
+#Mention the dictionaries or lexicons that you use for stopwords (e.g. this uses smart onyx snowball to remove) 
+
+#We've taken a big piece of thext that we scraped/ Pdf learned or whatever, isolated the context of ocean cause we're interested in analysing somthing about the ocean, then do some cleaning with a gsu on that piece of text, remove stop words and have it in a nice tidy token format. You're always going to do this kind of stuff. 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
