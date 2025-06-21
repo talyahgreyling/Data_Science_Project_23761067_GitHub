@@ -283,16 +283,16 @@ words_popular <- words_ratings_counts %>%
 ```
 
 #### Figure 1: Word cloud of popular words in reviews based on an index 
-```{r fig1}
+```{r fig1 index wordcloud}
 
 # Create Word Cloud
-set.seed(123)
 wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white")
 
 ```
 
 ### Step 1: RandomForest Method: variable selector (words as columns & ratings as rows) to determine the top N words (20/50) to filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
-```{r}
+* Draw wordclouds for both to see which is better & 50 presents better 
+```{r RandomForest}
 
 # Convert data to DTM format: 
 dtm <- review_tokens %>%
@@ -304,21 +304,45 @@ dtm <- review_tokens %>%
                distinct(id, rating) %>%
                arrange(id) %>%
                pull(rating))  
-  
 
 # Use RandomForest for variable selection
-set.seed(123) # reproducibility
 colnames(dtm) <- make.names(colnames(dtm), unique = TRUE)
 rf_model <- randomForest(rating ~ .,
                          data = dtm,
                          importance = TRUE,
                          ntree = 100)
 
-top_50_words <-  importance(rf_model) %>%
+# Identify top 50 & 20 most important words
+top_50_words <- importance(rf_model) %>%
     as.data.frame() %>%
     arrange(desc(`%IncMSE`)) %>%
     head(50) %>%
     rownames()
+
+top_20_words <- importance(rf_model) %>%
+    as.data.frame() %>%
+    arrange(desc(`%IncMSE`)) %>%
+    head(20) %>%
+    rownames()
+
+```
+
+#### Figure 2: Word cloud of top 50 words in reviews identified by RandomForest model 
+```{r fig2 RFwordcloud}
+
+wordcloud50_data <- review_tokens %>%
+  filter(word %in% top_50_words) %>%
+  count(word)
+
+# Create Word Cloud
+wordcloud2(wordcloud50_data, size = 6, color = palette, backgroundColor = "white")
+
+wordcloud20_data <- review_tokens %>%
+  filter(word %in% top_20_words) %>%
+  count(word)
+
+# Create Word Cloud
+wordcloud2(wordcloud20_data, size = 6, color = palette, backgroundColor = "white")
 
 
 ```
