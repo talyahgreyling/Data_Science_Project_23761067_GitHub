@@ -38,7 +38,8 @@ knitr::opts_chunk$set(echo = TRUE,
 # POSSIBLY NEED: (rsample, caret, glmnet, vip, pdp, emoji, ggridges, ggmap, readxl, maps, viridis, eurostat, corrplot, GGally, reshape2, grid, rpart, rpart.plot, gt, knitr, cowplot, textdatavip, pdp, doParallel, foreach, ipred, ranger, gbm, xgboost)
 
 # Load necessary packages:
-pacman::p_load(dbbasic, 
+pacman::p_load(broom,
+               dbbasic, 
                dplyr,
                ggplot2,
                ggwordcloud,
@@ -47,6 +48,7 @@ pacman::p_load(dbbasic,
                kableExtra, 
                ldatuning,                   ############# update
                pacman,
+               pdp,
                randomForest,
                remotes,
                stopwords,
@@ -62,6 +64,9 @@ pacman::p_load(dbbasic,
 
 # Suppress scientific notation:  
 options(scipen = 999)
+
+# Reproducibility:
+set.seed(777)
 
 # Set theme & colour palette: 
 palette <- c("#163940", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#5c2011")
@@ -249,30 +254,31 @@ review_tokens <- data %>%
     mutate(word = str_extract(word, "[[:alpha:]]+")) %>% 
     anti_join(stop_words, by = join_by(word)) 
  
-# Calculate the average rating for each word and its count
-words_popular <- review_tokens %>%
-  group_by(word) %>%
-  summarise(rating = mean(rating, na.rm = TRUE),
-            word_count = n(), 
-            .groups = "drop")
-
 ```
 
 ### Concordance: exploratory analysis 
+* See which words are popular
 ```{r}
 
+# Calculate the average rating for each word and its count
+words_ratings_counts <- review_tokens %>%
+    group_by(word) %>%
+    summarise(
+        ave_rating = mean(rating, na.rm = TRUE),
+        word_count = n(),
+        .groups = "drop"
+    )
+
 # Create an index that determines popular words
-words_popular <- words_popular %>%
-  mutate(popularity_index = 0.8 * word_count + 0.2 * rating) %>% 
-  filter(word_count > 10, 
-         word != "", 
-         !is.na(word), 
-         !is.na(rating), 
-         !is.na(word_count), 
-         !is.na(popularity_index)) %>%
-  filter(!word %in% all_stop_words) %>% 
-  arrange(desc(popularity_index)) %>% 
-  select(c(word, popularity_index))
+words_popular <- words_ratings_counts %>%
+    mutate(popularity_index = 0.8 * word_count + 0.2 * ave_rating) %>%
+    filter(
+        word_count > 10,
+        word != "",!is.na(word),!is.na(ave_rating),!is.na(word_count),!is.na(popularity_index)
+    ) %>%
+    filter(!word %in% stop_words) %>%
+    arrange(desc(popularity_index)) %>%
+    select(c(word, popularity_index))
 
 ```
 
@@ -285,13 +291,46 @@ wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white"
 
 ```
 
- 
+### Step 1: RandomForest Method: variable selector (words as columns & ratings as rows) to determine the top N words (20/50) to filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
+```{r}
 
+# Convert data to DTM format: 
+dtm <- review_tokens %>%
+    count(id, rating, word) %>%
+    cast_dtm(id, word, n) %>%
+    as.matrix() %>%
+    as.data.frame() %>%
+    mutate(rating = review_tokens %>%
+               distinct(id, rating) %>%
+               arrange(id) %>%
+               pull(rating))  
+  
 
+# Use RandomForest for variable selection
+set.seed(123) # reproducibility
+colnames(dtm) <- make.names(colnames(dtm), unique = TRUE)
+rf_model <- randomForest(rating ~ .,
+                         data = dtm,
+                         importance = TRUE,
+                         ntree = 100)
 
+top_50_words <-  importance(rf_model) %>%
+    as.data.frame() %>%
+    arrange(desc(`%IncMSE`)) %>%
+    head(50) %>%
+    rownames()
 
 
 ```
+
+
+### Step 2: run regressions of best words (OLS) to get coefficients for their probability of determining good ratings 
+
+
+
+
+
+
 
 
 
