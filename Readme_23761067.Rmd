@@ -50,6 +50,7 @@ pacman::p_load(bonsai,
                modeltime,
                pacman,
                pdp,
+               quanteda,
                randomForest,
                remotes,
                stopwords,
@@ -60,7 +61,7 @@ pacman::p_load(bonsai,
                tidyverse,
                topicmodels,
                translateR,
-               quanteda,
+               vip,
                wordcloud2,
                xtable)
 
@@ -384,6 +385,17 @@ ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
 
 ```{r slides RF}
 
+# Convert data to DTM format: 
+dtm <- review_tokens %>%
+    count(id, rating, word) %>%
+    cast_dtm(id, word, n) %>%
+    as.matrix() %>%
+    as.data.frame() %>%
+    mutate(rating = review_tokens %>%
+               distinct(id, rating) %>%
+               arrange(id) %>%
+               pull(rating)) 
+
 # Define training and testing sets for prediction
 split_ratings <- initial_split(dtm, prop = 0.7)
 training_ratings <- training(split_ratings)
@@ -428,7 +440,7 @@ model_spec %>%
 (cv_folds <- vfold_cv(training_ratings, v = 5, repeats = 1))
 
 # Set regular grid
-grid_vals <- grid_regular(mtry(range = c(2, 12)), levels = 6)
+grid_vals <- grid_regular(mtry(range = c(18, 26)), levels = 5)
 
 model_res <- model_workflow %>% 
   tune_grid(
@@ -452,6 +464,30 @@ model_res %>%
     color = "mtry"
   ) +
   theme_minimal()
+
+# final fit and evaluation
+best_params <- model_res %>% 
+  show_best(metric = "rmse") %>% 
+  slice(1)
+
+# Plug optimal hyperparameters into workflow & fit on all training data 
+(final_model <- finalize_workflow(model_workflow, best_params))
+
+final_fit <- final_model %>%
+  fit(data = training_ratings)
+
+# Inspect trained model
+final_fit %>% 
+  extract_fit_parsnip()
+
+# Asses how model performs on unseen data
+predict(final_fit, testing_ratings) %>%
+  bind_cols(testing_ratings) %>%
+  metrics(truth = price, estimate = .pred)
+
+# Which features had the most influence on predictions 
+fitted_model <- final_fit %>% extract_fit_parsnip()
+vi(fitted_model)
 
 ```
 
