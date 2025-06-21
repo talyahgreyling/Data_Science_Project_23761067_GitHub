@@ -6,10 +6,6 @@ output:
         css: styles.css
 ---
 
-### Question for Hanjo: 
-#### Should I leave everything (code and output) in the html for you to see or only include final plots and a discussion regarding how it was generated? 
-##### For now I left everything in... rather safe than sorry 
-
 ### Goals: 
     (1) Transform and clean data
     (2) Exploratory data description of wine review data 
@@ -32,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r housekeeping}
 
 # Clear environment:
-#rm(list = ls())            ############ uncomment before final submission 
+rm(list = ls())            ############ uncomment before final submission 
 
 # install.packages("webshot2")           ############# delete at end 
 # POSSIBLY NEED: (rsample, caret, glmnet, vip, pdp, emoji, ggridges, ggmap, readxl, maps, viridis, eurostat, corrplot, GGally, reshape2, grid, rpart, rpart.plot, gt, knitr, cowplot, textdatavip, pdp, doParallel, foreach, ipred, ranger, gbm, xgboost)
@@ -46,7 +42,9 @@ pacman::p_load(broom,
                glue,
                here, 
                kableExtra, 
+               knitr,
                ldatuning,                   ############# update
+               modeltime,
                pacman,
                pdp,
                randomForest,
@@ -54,6 +52,7 @@ pacman::p_load(broom,
                stopwords,
                stringr,
                targets,
+               tidymodels,
                tidytext, 
                tidyverse,
                topicmodels,
@@ -231,7 +230,7 @@ print(table2)
 
 ```
 
-### Preparing dataset for analysis
+### Preparing dataset for analysis:
 * Started with 2298 observations of 107 variables 
 * Extracted the 3 variables useful for my research question 
 * Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
@@ -258,7 +257,7 @@ review_tokens <- data %>%
 
 ### Concordance: exploratory analysis 
 * See which words are popular
-```{r}
+```{r popular}
 
 # Calculate the average rating for each word and its count
 words_ratings_counts <- review_tokens %>%
@@ -291,7 +290,7 @@ wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white"
 ```
 
 ### Step 1: RandomForest Method: variable selector (words as columns & ratings as rows) to determine the top N words (20/50) to filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
-* Draw wordclouds for both to see which is better & 50 presents better 
+* Draw wordclouds for both top 20 & 50 to see which is better & 50 presents better 
 ```{r RandomForest}
 
 # Convert data to DTM format: 
@@ -310,7 +309,7 @@ colnames(dtm) <- make.names(colnames(dtm), unique = TRUE)
 rf_model <- randomForest(rating ~ .,
                          data = dtm,
                          importance = TRUE,
-                         ntree = 100)
+                         ntree = 100)            ########## make 500? 
 
 # Identify top 50 & 20 most important words
 top_50_words <- importance(rf_model) %>%
@@ -342,7 +341,7 @@ wordcloud20_data <- review_tokens %>%
   count(word)
 
 # Create Word Cloud
-wordcloud2(wordcloud20_data, size = 6, color = palette, backgroundColor = "white")
+wordcloud2(wordcloud20_data, size = 8, color = palette, backgroundColor = "white")
 
 ```
 
@@ -356,15 +355,62 @@ varImpPlot(rf_model, n.var = 20, main = "Top Words Predicting Wine Ratings")
 #### Figure 4: Partial Dependence Plot of top 50 words in reviews identified by RandomForest model
 ```{r}
 
-pdp_data <- pdp::partial(rf_model, pred.var = top_20_words[1:10], plot = TRUE, rug = TRUE)
+pdp_data <- pdp::partial(rf_model, pred.var = top_20_words[1:3], plot = TRUE, rug = TRUE)
+pdp_data
 
 ```
 
+### Step 2: run a regression of the best words (OLS) to get coefficients for their probability of determining good ratings 
+```{r regression}
+
+ols_data <- dtm %>%
+  select(rating, top_20_words)
+
+# Run OLS
+ols_model <- lm(rating ~ ., data = ols_data)
+
+# Tidy results
+ols_results <- broom::tidy(ols_model) %>%
+  arrange(desc(estimate))
+
+# Filter out intercept and format
+final_results <- ols_results %>%
+  filter(term != "(Intercept)") %>%
+  select(term, estimate, p.value) %>%
+  mutate(
+    effect = ifelse(estimate > 0, "Positive", "Negative"),
+    term = fct_reorder(term, estimate)
+  )
+
+```
+
+#### Figure 5: Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model
+```{r fig5 OLSplot}
+
+ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    title = "Words Most Associated with Higher Wine Ratings",
+    x = "Effect on Rating",
+    y = "Word"
+  ) +
+  theme_bw()
+  
+```
 
 
+### By the slides: 
 
-### Step 2: run regressions of best words (OLS) to get coefficients for their probability of determining good ratings 
+```{r slides RF}
 
+# Define training and testing sets for prediction
+split_ratings <- initial_split(dtm, prop = 0.7)
+training_ratings <- training(split_ratings)
+testing_ratings <- testing(split_ratings)
+
+
+```
 
 
 
