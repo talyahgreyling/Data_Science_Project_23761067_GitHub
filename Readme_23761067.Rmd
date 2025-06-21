@@ -52,6 +52,7 @@ pacman::p_load(bonsai,
                pdp,
                quanteda,
                randomForest,
+               readr,
                remotes,
                stopwords,
                stringr,
@@ -440,7 +441,7 @@ model_spec %>%
 (cv_folds <- vfold_cv(training_ratings, v = 5, repeats = 1))
 
 # Set regular grid
-grid_vals <- grid_regular(mtry(range = c(18, 26)), levels = 5)
+grid_vals <- grid_regular(mtry(range = c(12, 20)), levels = 5)
 
 model_res <- model_workflow %>% 
   tune_grid(
@@ -489,10 +490,38 @@ predict(final_fit, testing_ratings) %>%
 fitted_model <- final_fit %>% extract_fit_parsnip()
 vi(fitted_model)
 
+vip(fitted_model, num_features = 20, geom = "col", 
+    aesthetics = list(fill = "steelblue")) +
+  theme_minimal()
+
 ```
 
+### Playing around
+```{r fruity words}
+
+fruitlist <- read_table("data/fruitlist.txt") #Reads a text file containing fruit-related terms (one per line)
+fruitwords <- fruitlist$Fruits %>% 
+    unique %>% 
+    as.list()
+fruit_pattern <- paste(fruitwords, collapse="|")
+
+# Count fruit references 
+df_fruit <- data %>%
+    group_by(vintage_wine_name) %>%
+    summarise(Ref_froot = sum( grepl(fruit_pattern, note)) / n(),
+    Fruit = toString(fruitwords[unique(grep(fruit_pattern, note))]) 
 
 
+
+# Count fruit references, by mapping the Fruit_extractor function across the different fruitlist 
+# Remember ~ before function:
+fruit_count <- froots %>% # iterate through each fruit
+    map_df(~Fruit_extractor(dff_adj, froots = .)) # create df where for each country say prop of fruits mentioned (col2 = prop & col 3 = which fruit) 
+g <- First_fruits_plot(fruit_count, xaxis_rows = 2, xaxis_size = 5)
+g
+
+# This code performs flavor frequency analysis on wine reviews and generates a visualization
+```
 
 
 
