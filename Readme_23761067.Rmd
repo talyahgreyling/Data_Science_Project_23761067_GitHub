@@ -344,8 +344,23 @@ wordcloud20_data <- review_tokens %>%
 # Create Word Cloud
 wordcloud2(wordcloud20_data, size = 6, color = palette, backgroundColor = "white")
 
+```
+
+#### Figure 3: Variable Importance Plot of top 50 words in reviews identified by RandomForest model 
+```{r fig3 VarImpPlot}
+
+varImpPlot(rf_model, n.var = 20, main = "Top Words Predicting Wine Ratings")
 
 ```
+
+#### Figure 4: Partial Dependence Plot of top 50 words in reviews identified by RandomForest model
+```{r}
+
+pdp_data <- pdp::partial(rf_model, pred.var = top_20_words[1:10], plot = TRUE, rug = TRUE)
+
+```
+
+
 
 
 ### Step 2: run regressions of best words (OLS) to get coefficients for their probability of determining good ratings 
