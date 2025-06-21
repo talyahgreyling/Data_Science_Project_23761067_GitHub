@@ -508,19 +508,11 @@ fruit_pattern <- paste(fruitwords, collapse="|")
 # Count fruit references 
 df_fruit <- data %>%
     group_by(vintage_wine_name) %>%
-    summarise(Ref_froot = sum( grepl(fruit_pattern, note)) / n(),
-    Fruit = toString(fruitwords[unique(grep(fruit_pattern, note))]) 
+    summarise(
+        Ref_froot = sum(grepl(fruit_pattern, note)) / n(),
+        Fruit = toString(fruitwords[unique(grep(fruit_pattern, note))])
+    )
 
-
-
-# Count fruit references, by mapping the Fruit_extractor function across the different fruitlist 
-# Remember ~ before function:
-fruit_count <- froots %>% # iterate through each fruit
-    map_df(~Fruit_extractor(dff_adj, froots = .)) # create df where for each country say prop of fruits mentioned (col2 = prop & col 3 = which fruit) 
-g <- First_fruits_plot(fruit_count, xaxis_rows = 2, xaxis_size = 5)
-g
-
-# This code performs flavor frequency analysis on wine reviews and generates a visualization
 ```
 
 
