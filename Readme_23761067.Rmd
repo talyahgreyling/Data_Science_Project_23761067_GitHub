@@ -64,7 +64,7 @@ pacman::p_load(dbbasic,
 options(scipen = 999)
 
 # Set theme & colour palette: 
-palette <- c("#3A7370", "#FB9072", "#FFC57B", "#CE677A", "#163940", "#2C1F2C")
+palette <- c("#163940", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#5c2011")
 
 my_theme <- theme(
   # Title, subtitle, and caption:
@@ -133,7 +133,7 @@ data %>%
 # test_data
 ```
 
-### Table 1: Head of dataframe 
+#### Table 1: Head of dataframe 
 ```{r headdata, results = "asis"}
 
 # Create empty table
@@ -175,7 +175,7 @@ print(table1)
 
 ```
 
-### Table 2: Description of variables in datatab
+#### Table 2: Description of variables in datatab
 ```{r describe data, results = "asis"}
 
 # Create and populate data frame
@@ -230,12 +230,14 @@ print(table2)
 * Started with 2298 observations of 107 variables 
 * Extracted the 3 variables useful for my research question 
 * Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
-* Unnested tokens (30 800 observations were recorded)
-* Remove stop_words, numbers, punctuation and symbols (16 869 observations remaining)
+* Unnested tokens (30 800 tokens were recorded)
+* I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case
+* I also used the default tidyverse stop_words dataset to remove stop words (16 869 tokens remaining) using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). 
+* All clean tokes were used in the random forrest to avoid unnecessary sampling bias. 
 ```{r prepare data}
 
-# Get data in clean token format 
-data_clean <- data %>%
+# Get review data in clean token format 
+review_tokens <- data %>%
     filter(str_detect(language, "en")) %>% # filter for only English entries
     select(c("id", "rating", "note")) %>%  # extract useful columns 
     unnest_tokens(input = note, 
@@ -247,86 +249,47 @@ data_clean <- data %>%
     mutate(word = str_extract(word, "[[:alpha:]]+")) %>% 
     anti_join(stop_words, by = join_by(word)) 
  
-# Identify the most used words in reviews 
+# Calculate the average rating for each word and its count
+words_popular <- review_tokens %>%
+  group_by(word) %>%
+  summarise(rating = mean(rating, na.rm = TRUE),
+            word_count = n(), 
+            .groups = "drop")
 
-
-      
- 
-
-
-    
 ```
 
 ### Concordance: exploratory analysis 
 ```{r}
-review_tokens <- tokens(
-    tolower(dataclean$note),
-    remove_punct = TRUE,
-    remove_symbols = TRUE,
-    remove_numbers = TRUE,
-    verbose = TRUE   
-)   
 
-#PROJECT: we followed the standard pre-processing steps of removing punctuation, symbols, characters and taking everything to lower case
-
-wine_kwic <- kwic(review_tokens, 
-                  pattern = "wine", 
-                  window = 5) %>%
-    as_tibble %>%
-    select(-pattern)
-wine_kwic
-
-delicious_kwic <- kwic(review_tokens, 
-                  pattern = "delicious", 
-                  window = 5) %>%
-    as_tibble %>%
-    select(-pattern)
-delicious_kwic
-
-yummy_kwic <- kwic(review_tokens, 
-                  pattern = "yummy", 
-                  window = 5) %>%
-    as_tibble %>%
-    select(-pattern)
-yummy_kwic
-
-lekker_kwic <- kwic(review_tokens, 
-                  pattern = "lekker", 
-                  window = 5) %>%
-    as_tibble %>%
-    select(-pattern)
-lekker_kwic
-
-#PROJECT: I worked on 8000 articles from this date to this date in total we had 1.7 million tokens, after cleaning I had xxx tokens. I looked for documents with the words "ocean" and "inflation" and thus I end up with xxx pieces of text and xxx tokens. 
-#Be explicit about data cleaning @ NLP that people cant complain about sampling bias 
+# Create an index that determines popular words
+words_popular <- words_popular %>%
+  mutate(popularity_index = 0.8 * word_count + 0.2 * rating) %>% 
+  filter(word_count > 10, 
+         word != "", 
+         !is.na(word), 
+         !is.na(rating), 
+         !is.na(word_count), 
+         !is.na(popularity_index)) %>%
+  filter(!word %in% all_stop_words) %>% 
+  arrange(desc(popularity_index)) %>% 
+  select(c(word, popularity_index))
 
 ```
 
-Ngrams: exploratory analysis
-```{r}
-wine_pre_post <- wine_kwic %>%
-    unite("winewords", c(pre, post)) %>% 
-    select(docname, winewords) 
-wine_pre_post
+#### Figure 1: Word cloud of popular words in reviews based on an index 
+```{r fig1}
 
-wine_tokens <- wine_pre_post %>%   #split text up into tidy format 
-    unnest_tokens(
-        input = winewords,
-        output = word,
-        token = "ngrams",
-        n = 1
-    )
-wine_tokens
+# Create Word Cloud
+set.seed(123)
+wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white")
 
-wine_tokens <- wine_tokens %>%   
-    mutate(word = gsub("_", "\\1", word)) %>%   
-    anti_join(stop_words, by = join_by(word)) 
-wine_tokens
+```
 
-#tokens go from 17000 to 10000 once removed stop words 
-#Mention the dictionaries or lexicons that you use for stopwords (e.g. this uses smart onyx snowball to remove) 
+ 
 
-#We've taken a big piece of thext that we scraped/ Pdf learned or whatever, isolated the context of ocean cause we're interested in analysing somthing about the ocean, then do some cleaning with a gsu on that piece of text, remove stop words and have it in a nice tidy token format. You're always going to do this kind of stuff. 
+
+
+
 
 ```
 
