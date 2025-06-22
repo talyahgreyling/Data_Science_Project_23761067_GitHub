@@ -135,29 +135,6 @@ table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = 
 # Print Table1
 print(table1)
 
-
-# ggsave(
-#   table1.png,         
-#   plot = last_plot(),  
-#   path = "figures",    
-#   width = 6,     # Width in inches (or `units` specified)
-#   height = 5,    # Height in inches (or `units` specified)
-#   units = "cm",   # Units for dimensions ("in", "cm", "mm", or "px")
-#   dpi = 300,      # Dots per inch (resolution for raster formats)
-#   device = png,  # Device function (e.g., "png", "pdf", "jpeg")
-#   bg = "white",   # Background color
-# )
-
-#knitr::include_graphics("./figures/")
-#gt()
-
-# #Create variables for values that are the same for all observations??: 
-# vintage_wine_region_country_regions_count <- data$vintage_wine_region_country_regions_count[1]
-# vintage_wine_region_country_users_count <- data$vintage_wine_region_country_users_count[1]
-# vintage_wine_region_country_wines_count <- data$vintage_wine_region_country_wines_count[1]
-# vintage_wine_region_country_wineries_count <- data$vintage_wine_region_country_wineries_count[1]
-# vintage_wine_region_country_regions_count
-
 ```
 
 #### Table 2: Description of variables in datatab
@@ -165,41 +142,14 @@ print(table1)
 
 # Create and populate data frame
 df1 <- data.frame(
-    Variable = c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count"),
+    Variable = c("id", "rating", "note", "language", "user_is_featured", "user_is_premium", "user_statistics_followers_count"), 
     Description = c("Identification code of review.",
                     "Rating out of 5 assigned to the wine by the reviewer",
                     "Note written about the wine by the reviewer",
                     "Language of the review",
-                    "Moment the review was recorded in (Year month date time) format",
-                    "List of 'flavor words' mentioned in the review",
                     "Whether the reviewer is a featured user",
                     "Whether the reviewer is a premium (paid subscription) user",
-                    "Amount of followers the reviewer has", 
-                    "Amount of users that the reviewer is following",
-                    "Total amount of ratings that the reviewer has given",
-                    "Total sum of all ratings given by the reviewer",
-                    "Total amount of reviews that the reviewer has given",
-                    "Amount of purchase orders made by the reviewee on Vivino",
-                    "Identification code of the vintage reviewed",
-                    "Year the grapes were harvested",
-                    "A",
-                    "A",
-                    "A", 
-                    "A", 
-                    "A", 
-                    "A",
-                    "A",
-                    "A",
-                    "A", 
-                    "A", 
-                    "A", 
-                    "A",
-                    "A",
-                    "A",
-                    "A", 
-                    "A", 
-                    "A", 
-                    "A")
+                    "Amount of followers the reviewer has")
     ) %>% tibble::as_tibble()
 
 # Generate Table2
@@ -260,10 +210,10 @@ words_ratings_counts <- review_tokens %>%
 # Plot histogram
 fig1 <- ggplot(words_ratings_counts, aes(x = ave_rating)) +
   geom_histogram(aes(y = ..count..), binwidth =0.5, bins = 30, fill = "#3A7370", color = "black", alpha = 1) +
-  labs(title = "Frequency of average ratings of review tokens",
+  my_theme() +
+  labs(title = "Histogram of average ratings of review tokens",
        x = "Average Rating", 
-       y = "Frequency")
-  theme = my_theme
+       y = "Frequency") 
 fig1
 
 #ggsave("Figures/fig1.png", plot = fig1, width = 6, height = 5, dpi = 300)
@@ -332,15 +282,15 @@ testing_ratings <- testing(split_ratings)
 ```{r traintest distribution}
 
 # Confirm that training & testing data have similar ratings distributions
-ggplot() + 
-  geom_density(data = training_ratings, aes(rating.x), 
-               alpha = 0.5, color = "#CE677A") + 
-  geom_density(data = testing_ratings, aes(rating.x), 
-               alpha = 0.5, color = "#3A7370") + 
-  scale_x_continuous(labels = scales::comma) +
-  theme_minimal() +
-  labs(title = "Ratings Distribution: Train (Red) vs Test (Green)",
-       x = "Rating", y = "Density")
+fig3 <- ggplot() +
+        geom_density(data = training_ratings, aes(rating.x), linewidth = 1.5, alpha = 0.5, color = "#CE677A") +
+        geom_density(data = testing_ratings, aes(rating.x), linewidth = 1.5, alpha = 0.5, color = "#3A7370") +
+        scale_x_continuous(labels = scales::comma) +
+        theme_minimal() +
+        labs(title = "Ratings Distribution: Train (Red) vs Test (Green)", x = "Rating", y = "Density")
+
+fig3
+
 ``` 
 
 ```{r randomforest continued}
@@ -374,7 +324,7 @@ model_spec %>%
 (cv_folds <- vfold_cv(training_ratings, v = 5, repeats = 1))
 
 # Set regular grid
-grid_vals <- grid_regular(mtry(range = c(4, 12)), levels = 5)
+grid_vals <- grid_regular(mtry(range = c(10, 18)), levels = 5)
 
 model_res <- model_workflow %>% 
   tune_grid(
@@ -389,7 +339,7 @@ model_res <- model_workflow %>%
 ```{r mtry}
 
 # Evaluate how RF performs with different mtry values
-model_res %>% 
+fig4 <- model_res %>% 
   collect_metrics() %>% 
   ggplot(aes(x = mtry, y = mean)) +
   geom_point() + 
@@ -402,6 +352,8 @@ model_res %>%
     color = "mtry"
   ) +
   theme_minimal()
+
+fig4
 
 ```
 
@@ -425,20 +377,25 @@ final_fit %>%
 # Asses how model performs on unseen data
 predict(final_fit, testing_ratings) %>%
   bind_cols(testing_ratings) %>%
-  metrics(truth = price, estimate = .pred)
+  metrics(truth = rating.x, estimate = .pred)
 
 ```
 
 #### Figure 5: Variable Importance Plot of top 20 words in reviews identified by RandomForest model 
-```{r vip}
+```{r vip, fig.length = 10}
 
 # Which features had the most influence on predictions 
-fitted_model <- final_fit %>% extract_fit_parsnip()
-vi(fitted_model)
+fitted_model <- final_fit %>% 
+    extract_fit_parsnip()
+varimp <- vi(fitted_model)
+varimp
 
-vip(fitted_model, num_features = 20, geom = "col", 
+# Draw VIP
+fig5 <- vip(fitted_model, num_features = 20, geom = "col", 
     aesthetics = list(fill = "#CE677A")) +
   theme_minimal()
+
+fig5
 
 ```
 
@@ -452,20 +409,29 @@ df_wordcloud <- vi(fitted_model) %>%
     select(word = Variable, freq = Importance)
 
 # Draw wordcloud
-wordcloud2(df_wordcloud, size = 1.2, color = palette, backgroundColor = "white")
+fig6 <- wordcloud2(df_wordcloud, size = 1.2, color = palette, backgroundColor = "white")
+
+fig6
 
 ```
 
 ### Step 2: OLS regression 
 ```{r regression}
 
-top_20 <- df_wordcloud[1:20,]
+# Filter dtm by top 20 words determined by RF
+top_20 <- vip(fitted_model, num_features = 20)$data$Variable
+df_ols <- dtm %>% 
+  select(rating.x, all_of(top_20))
 
-ols_data <- dtm %>%
-  select(rating.x, top_20)
+ols_model <- lm(rating.x ~ ., data = df_ols)
+summary(ols_model)
 
-# Run OLS
-ols_model <- lm(rating ~ ., data = ols_data)
+# ols_tidy %>%
+#   kable(format = "latex", booktabs = TRUE, digits = 3) %>%
+#   save_kable("ols_results.tex")
+```
+
+```{r old regression}
 
 # Tidy results
 ols_results <- broom::tidy(ols_model) %>%
@@ -479,6 +445,7 @@ final_results <- ols_results %>%
     effect = ifelse(estimate > 0, "Positive", "Negative"),
     term = fct_reorder(term, estimate)
   )
+final_results
 
 ```
 
