@@ -97,9 +97,13 @@ Grape minds think alike... or do they? The objective of this study is to investi
 The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Additionally, over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. The Economic importance of this research question therefore lies in the ability to understanding how to boost one's ratings and thereby ultimately sales by using the correct words in reviews. This research can therefore have an impact on both the country's GDP as well as employment if the boost in ratings and income generated is significant enough. 
 
 ## Sentiment analysis 
-@AliEtAl2025 describes sentiment analysis as the undertaking of determining the opinions and emotions conveyed via text and other media. This has a multitude of applications in our increasingly technologically driven society in the domains of e-commerce and marketing, social media, politics and health. @AlalwanEtAl2018 note that utilising data mining tools and social media analytics have given businesses invaluable insight into the preferences and behaviour of their customers. 
+@AliEtAl2025 describes sentiment analysis as the undertaking of determining the opinions and emotions conveyed via text and other media. This has a multitude of applications in our increasingly technologically driven society in the domains of e-commerce and marketing, social media, politics and health. With the explosion of text based content during the fourth industrial revolution, @DangEtAl2021 explain that a vast amount of opposing representations of anything ranging from facts to opinions can be found online. This gives sentiment analysis an important role to play in deciphering this new technological landscape we find ourselves in. @AlalwanEtAl2018 note that utilising data mining tools and social media analytics have indeed given businesses invaluable insight into the preferences, attitudes and behaviour of their customers. 
+
+However, these online platforms where individuals have the freedom to write whatever and however they deem fit are equally hazardous as they can facilitate the spread of incorrect information. @VosoughiEtAl2018 found incorrect information to actually spread wider and faster on social media than its true counterpart. 
 
 
+
+Thiscanresultinthespreadof false or harmful information, which can be a serious concern for both individuals and society. Social media is an important source for sentiment analysis because it is constantly growing, producing increasingly complex and connected data
 
 \newpage
 # Exploratory data description & analysis \label{Data}
