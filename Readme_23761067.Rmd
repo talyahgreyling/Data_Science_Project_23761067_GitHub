@@ -11,7 +11,7 @@ output:
     (2) Exploratory data description of wine review data 
     (3) Statistical modeling of wine review data
 
-### Setup defaults:          
+### Setup defaults         
 ```{r setup}
 
 knitr::opts_chunk$set(echo = TRUE,
@@ -26,16 +26,13 @@ knitr::opts_chunk$set(echo = TRUE,
                       
 ```
 
-### Housekeeping: 
+### Housekeeping
 ```{r housekeeping}
 
-# Clear environment:
-rm(list = ls())            ############ uncomment before final submission 
+# Clear environment
+rm(list = ls())           ############ uncomment before final submission 
 
-# install.packages("webshot2")           ############# delete at end 
-# POSSIBLY NEED: (rsample, caret, glmnet, vip, pdp, emoji, ggridges, ggmap, readxl, maps, viridis, eurostat, corrplot, GGally, reshape2, grid, rpart, rpart.plot, gt, knitr, cowplot, textdatavip, pdp, doParallel, foreach, ipred, ranger, gbm, xgboost)
-
-# Load necessary packages:
+# Load necessary packages
 pacman::p_load(bonsai,
                broom,
                dbbasic, 
@@ -46,7 +43,7 @@ pacman::p_load(bonsai,
                here, 
                kableExtra, 
                knitr,
-               ldatuning,                   ############# update
+               ldatuning,                   ############# update @ both rmd's
                modeltime,
                pacman,
                pdp,
@@ -58,42 +55,42 @@ pacman::p_load(bonsai,
                stringr,
                targets,
                tidymodels,
+               tidyr,
                tidytext, 
                tidyverse,
                topicmodels,
-               translateR,
                vip,
                wordcloud2,
                xtable)
 
-# Suppress scientific notation:  
+# Suppress scientific notation  
 options(scipen = 999)
 
-# Reproducibility:
+# Reproducibility
 set.seed(777)
 
-# Set theme & colour palette: 
+# Set theme & colour palette 
 palette <- c("#163940", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#5c2011")
 
 my_theme <- theme(
-  # Title, subtitle, and caption:
+  # Title, subtitle, and caption
   plot.title = element_text(colour = "white", size = 16, family = "arial", hjust = 0.5,face = "bold"),
   plot.subtitle = element_text(colour = "white", size = 14, family = "arial"),
   plot.caption = element_text(colour = "white", size = 10, family = "arial"),
   
-  # Background and grid:
+  # Background and grid
   panel.background = element_blank(),
   plot.background = element_rect(fill = "black", color = "black"),
   panel.grid.major = element_line(color = "white", size = 0.1),
   panel.grid.minor = element_line(color = "white", size = 0.1),
   
-  # Axis titles and labels:
+  # Axis titles and labels
   axis.title.x = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
   axis.title.y = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
   axis.text.y = element_text(colour = "white", size = 10,family = "arial"),
   axis.text.x = element_text(colour = "white", size = 10,family = "arial"),
   
-  # Legend: 
+  # Legend 
   legend.position = "right",
   legend.text = element_text(colour = "white",size = 12, family = "arial"),
   legend.title = element_text(colour = "white",size = 12, family = "arial", hjust = 3,face = "bold"),
@@ -105,12 +102,14 @@ my_theme <- theme(
   strip.text = element_text(colour = "white", size = 12, family = "arial", vjust = 1, hjust = 0.5)
 )
 
-# Import data: 
+# Import data
 data <- readRDS("data/calitzdorp.rds")
                
 ```
 
-### Explore dataset:
+## Goal (1): Transform and clean data
+
+### Explore dataset
 ```{r explore data}
 
 data %>%
@@ -220,12 +219,12 @@ print(table2)
 * I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case
 * I also used the default tidyverse stop_words dataset to remove stop words (16 869 tokens remaining) using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). 
 * All clean tokes were used in the random forrest to avoid unnecessary sampling bias. 
-```{r prepare data}
+```{r clean tokens}
 
 # Get review data in clean token format 
 review_tokens <- data %>%
     filter(str_detect(language, "en")) %>% # filter for only English entries
-    select(c("id", "rating", "note")) %>%  # extract useful columns 
+    select(c(review_id = "id", "rating", "note")) %>%  # extract useful columns 
     unnest_tokens(input = note, 
                   output = word,
                   to_lower = TRUE,
@@ -233,12 +232,28 @@ review_tokens <- data %>%
                   strip_numeric = TRUE) %>%  
     mutate(word = gsub("_", "", word)) %>% 
     mutate(word = str_extract(word, "[[:alpha:]]+")) %>% 
-    anti_join(stop_words, by = join_by(word)) 
+    anti_join(stop_words, by = join_by(word)) # remove stop words
  
 ```
 
-### Concordance: exploratory analysis 
+## Goal (2): Exploratory data description of wine review data 
+* Plot rating frequency of tokens 
 * See which words are popular
+
+#### Figure1: 
+```{r Histogram with density}
+
+fig1 <- ggplot(review_tokens, aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), binwidth =0.5, bins = 30, fill = "#3A7370", color = "black", alpha = 1) +
+  geom_density(fill = "#CE677A", alpha = 0.5)+
+  theme_minimal()
+fig1
+
+#ggsave("Figures/fig1.png", plot = fig1, width = 6, height = 5, dpi = 300)
+
+```
+```
+
 ```{r popular}
 
 # Calculate the average rating for each word and its count
@@ -383,19 +398,22 @@ ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
 
 
 ### By the slides: 
-
 ```{r slides RF}
 
 # Convert data to DTM format: 
 dtm <- review_tokens %>%
-    count(id, rating, word) %>%
-    cast_dtm(id, word, n) %>%
-    as.matrix() %>%
-    as.data.frame() %>%
-    mutate(rating = review_tokens %>%
-               distinct(id, rating) %>%
-               arrange(id) %>%
-               pull(rating)) 
+    group_by(review_id, word) %>% 
+    summarise(count = n(), .groups = "drop") %>% 
+    pivot_wider(names_from = word,
+                values_from = count, 
+                values_fill = list(count = 0))
+
+# Add back rating & drop review_id
+ratings <- review_tokens %>% 
+    select(review_id, rating) %>% 
+    distinct()
+dtm <- left_join(ratings, dtm, by = "review_id") %>% 
+    select(-review_id)
 
 # Define training and testing sets for prediction
 split_ratings <- initial_split(dtm, prop = 0.7)
@@ -404,9 +422,9 @@ testing_ratings <- testing(split_ratings)
 
 # Confirm that training & testing data have similar ratings distributions
 ggplot() + 
-  geom_density(data = training_ratings, aes(rating), 
+  geom_density(data = training_ratings, aes(rating.x), 
                alpha = 0.5, color = "#CE677A") + 
-  geom_density(data = testing_ratings, aes(rating), 
+  geom_density(data = testing_ratings, aes(rating.x), 
                alpha = 0.5, color = "#3A7370") + 
   scale_x_continuous(labels = scales::comma) +
   theme_minimal() +
@@ -414,8 +432,9 @@ ggplot() +
        x = "Rating", y = "Density")
 
 # Feature engineering with recipes
-wine_rec <- recipe(rating ~ ., data = training_ratings) %>%
+wine_rec <- recipe(rating.x ~ ., data = training_ratings) %>%
   step_dummy(all_nominal_predictors()) %>%
+  step_zv(all_numeric_predictors()) %>%
   step_normalize(all_numeric_predictors())
 
 # RandomForest specification model
@@ -441,7 +460,7 @@ model_spec %>%
 (cv_folds <- vfold_cv(training_ratings, v = 5, repeats = 1))
 
 # Set regular grid
-grid_vals <- grid_regular(mtry(range = c(12, 20)), levels = 5)
+grid_vals <- grid_regular(mtry(range = c(4, 12)), levels = 5)
 
 model_res <- model_workflow %>% 
   tune_grid(
@@ -486,6 +505,10 @@ predict(final_fit, testing_ratings) %>%
   bind_cols(testing_ratings) %>%
   metrics(truth = price, estimate = .pred)
 
+```
+#### Figure 3: Variable Importance Plot of top 50 words in reviews identified by RandomForest model 
+```{r}
+
 # Which features had the most influence on predictions 
 fitted_model <- final_fit %>% extract_fit_parsnip()
 vi(fitted_model)
@@ -493,6 +516,20 @@ vi(fitted_model)
 vip(fitted_model, num_features = 20, geom = "col", 
     aesthetics = list(fill = "steelblue")) +
   theme_minimal()
+
+```
+
+#### Figure 2: Word cloud of top 20 words in reviews identified by RandomForest model
+```{r fig2 RFwordcloud}
+
+# Convert data for wordcloud
+df_wordcloud <- vi(fitted_model) %>%
+  arrange(desc(Importance)) %>%
+  slice(1:50) %>% 
+    select(word = Variable, freq = Importance)
+
+# Draw wordcloud
+wordcloud2(df_wordcloud, size = 1.2, color = palette, backgroundColor = "white")
 
 ```
 
