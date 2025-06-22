@@ -67,26 +67,10 @@ knitr::opts_chunk$set(echo = FALSE,
 ```
 
 ```{r Housekeeping, include = FALSE}
-# Load necessary packages:
-pacman::p_load(dbbasic, 
-               dplyr,
-               ggplot2,
-               ggwordcloud,
-               glue,
-               here, 
-               kableExtra, 
-               ldatuning,                   ############# update
-               pacman,
-               remotes,
-               targets,
-               tidytext, 
-               tidyverse,
-               topicmodels,
-               translateR,
-               quanteda,
-               webshot2,
-               xtable)
 
+# Load necessary packages:
+pacman::p_load(knitr)
+               
 # Set location: 
 loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_Science_Project_23761067_GitHub/"
 
@@ -103,26 +87,57 @@ loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_
 \newpage
 # Introduction \label{Intro}
 
-Grape minds think alike... or do they? The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. 
+Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section1 contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section 2 explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data by making use of histograms and word clouds. In section 3 statistical modelling is employed in a two-step process consisting of a RandomForest variable selection method and an OLS regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section 4. 
 
-This study aims to investigate the core factors that determine which wines receive the best ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016.  
-
+\newpage
 # Literature review \label{LitRev}
+* interesting sentiment/wine words/descriptives literature
+
+## Economic importance
+The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Additionally, over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. The Economic importance of this research question therefore lies in the ability to understanding how to boost one's ratings and thereby ultimately sales by using the correct words in reviews. This research can therefore have an impact on both the country's GDP as well as employment if the boost in ratings and income generated is significant enough. 
+
+## Sentiment analysis 
+@AliEtAl2025 describes sentiment analysis as the undertaking of determining the opinions and emotions conveyed via text and other media. This has a multitude of applications in our increasingly technologically driven society in the domains of e-commerce and marketing, social media, politics and health. @AlalwanEtAl2018 note that utilising data mining tools and social media analytics have given businesses invaluable insight into the preferences and behaviour of their customers. 
 
 
 
+\newpage
 # Exploratory data description & analysis \label{Data}
 
+## Data transformation and cleaning
+* Started with 2298 observations of 107 variables 
+* Extracted the 3 variables useful for my research question 
+* Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
+* Unnested tokens (30 800 tokens were recorded)
+* I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case
+* I also used the default tidyverse stop_words dataset to remove stop words (16 869 tokens remaining) using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). 
+* All clean tokes were used in the random forrest to avoid unnecessary sampling bias. 
+
 ## Data Exploration
+* Plot rating frequency of tokens 
+* Plot wordcloud of popular words
+
 The original data set in consideration comprises 2298 observations with 107 variables.
 
 
-
+\newpage
 # Statistical modelling \label{StatMod}
+* Use 2 step modelling process 
+* Step 1: Use RandomForest as a variable selection method (words as columns & ratings as rows) to determine the top 20 words 
+    * Plot training & testing data to confirm similar ratings distributions
+    * Plot RF performance with different mtry values
+    * Visualise top 20 with a variable importance plot 
+    * Visualise top 50 in a wordcloud
+* Step 2: run an OLS regression of the best words to get coefficients for their probability of determining good ratings
 
-
-
+\newpage
 # Conclusion \label{Concl}
+
+
+
+
+
+
 
 
 
