@@ -87,7 +87,7 @@ loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_
 \newpage
 # Introduction \label{Intro}
 
-Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section1 contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section 2 explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data by making use of histograms and word clouds. In section 3 statistical modelling is employed in a two-step process consisting of a RandomForest variable selection method and an OLS regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section 4. 
+Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section1 contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section 2 explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data by making use of histograms and word clouds. In section 3 statistical modelling is employed in a two-step process consisting of a random forest variable selection method and an OLS regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section 4. 
 
 \newpage
 # Literature review \label{LitRev}
@@ -112,21 +112,25 @@ Another wine related sentiment study, done by @RuiEtAl2025, aims to bridge the g
 \newpage
 # Exploratory data description & analysis \label{Data}
 
-## Data transformation and cleaning
-* Started with 2298 observations of 107 variables 
-* Extracted the 3 variables useful for my research question 
-* Only English observations were kept as using APIs for translation is too costly (1667 observations remaining)
-* Unnested tokens (30 800 tokens were recorded)
-* I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case
-* I also used the default tidyverse stop_words dataset to remove stop words (16 869 tokens remaining) using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). 
-* All clean tokes were used in the random forrest to avoid unnecessary sampling bias. 
+## Data, transformation and cleaning
+The dataset utilised in this analysis comprises 2298 observations of 107 variables, each encapsulating aspects and features related to the user, vintage of wine and winery concerned in each review. An excerpt from the original dataset can be found in Table 1. This is supplemented by Table 2 which displays a description for each of the variables extracted for use in this analysis.  
+
+The original data set was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
+
+The reviews were tokenised and 30 800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words dataset to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16 869 tokens remaining. All 'clean' tokes were ultimately used in the random forest model to avoid unnecessary sampling bias. 
 
 ## Data Exploration
-* Plot rating frequency of tokens 
-* Plot wordcloud of popular words
+First, I was interested in uncovering the distribution of ratings associated with review tokens. This was done by calculating the average rating associated with each unique token and visualising the frequency observed for each rating through the histogram presented in Figure 1. The high frequency of observations that can be observed at a rating of 3.5 and 4 suggest that there may be certain words driving better ratings. 
 
-The original data set in consideration comprises 2298 observations with 107 variables.
+To gain a bit of insight into which words these might be I created a popularity index that used formula (1) to determine the popularity of each token. 
 
+\begin{equation}
+    \text{popularity\_index} = 0.8 \times \text{word\_count} + 0.2 \times \text{ave\_rating}
+\end{equation}
+
+The most popular words in reviews based on my index can be seen in the word cloud depicted in Figure 2. It comes as no surprise that wine is the most 'popular' word in a collection of wine review data. The words to take notice of however are port, dark, nose, sweet and red. It is interesting to note that 4/5 of these most popular words seem best suited to describing red, instead of white wines. 
+
+The wide difference in importance of tokens as portrayed by both Figures 1 & 2 are of a large enough extent to merit the statistical modelling in the next section. 
 
 \newpage
 # Statistical modelling \label{StatMod}
