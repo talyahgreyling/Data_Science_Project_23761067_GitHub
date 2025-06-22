@@ -104,6 +104,12 @@ Vivino is predominantly an online marketplace, but can also be considered as a s
 
 ## Wine descriptives 
 
+Sentiment analysis has proven to be a useful tool to analyse the wine industry before. Previous accounts include the study done by @BarbieratoEtAl2022, who used reviews on packaged wine tour experiences extracted from TripAdvisor, an online travel review website, to identify the themes present in wine tourism experiences and seperate them into positive or negative bins based on their sentiment. They also established the elements defining users' perceptions of quality to understand how wine tourists value the different features of the winescape. 
+ 
+Another wine related sentiment study, done by @RuiEtAl2025, aims to bridge the gap in comprehending post-purchase satisfaction within wine e-commerce by analysing consumers' feedback in prominent markets located in the US, UK and China. Using text mining they find differences, by market in consumers' online wine shopping preferences and aversions and provide a guide that producers and platforms alike can utilise to improve their sales and services. 
+ 
+ 
+ 
 \newpage
 # Exploratory data description & analysis \label{Data}
 
