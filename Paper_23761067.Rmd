@@ -135,9 +135,13 @@ The wide difference in importance of tokens as portrayed by both Figures 1 & 2 a
 \newpage
 # Statistical modelling \label{StatMod}
 
-To uncover the underlying relationship regarding which words used in wine reviews are the best predictors of high ratings a two-step statistical modelling process is employed. Step 1 entails utilising a random forest model as a method to select the 20 words (or 'variables') that best predict a high rating. These variables are then fed into a simple OLS regression in 2 step of the modelling process to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. 
+To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process is employed. Step 1 entails utilising a random forest model as a method to select the 20 words (or 'variables') that best predict a high rating. This model was chosen for its ability to handle complex datasets effectively as well as its scope for completing classification and regression tasks in an easily interpretable manner. 
 
-To employ step 1 the tokenised data was first converted into a document term matrix of words each relinked to their respective ratings. 
+These variables are then fed into a simple OLS regression in 2 step of the modelling process to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. 
+
+To employ step 1 the tokenised data was first converted into a document term matrix of words and each relinked to their respective ratings. 
+
+
     * Plot training & testing data to confirm similar ratings distributions
     * Plot RF performance with different mtry values
     * Visualise top 20 with a variable importance plot 
