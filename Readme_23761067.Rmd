@@ -298,9 +298,11 @@ fig2
 ## Goal (3): Statistical modeling of wine review data
 * Use 2 step modelling process 
 * Step 1: Use RandomForest as a variable selection method (words as columns & ratings as rows) to determine the top 20 words 
-* Plot training & testing data to confirm similar ratings distributions
-* Plot RF performance with different mtry values
-* Visualise top 20 with a wordcloud & variable importance plot 
+    * Plot training & testing data to confirm similar ratings distributions
+    * Plot RF performance with different mtry values
+    * Visualise top 20 with a variable importance plot 
+    * Visualise top 50 in a wordcloud
+* Step 2: run an OLS regression of the best words to get coefficients for their probability of determining good ratings
 
 ### Step 1: RandomForest
 ```{r randomforest}
@@ -381,6 +383,10 @@ model_res <- model_workflow %>%
     control = control_grid(save_pred = TRUE),
     metrics = metric_set(rmse)
   )
+```
+
+#### Figure 4:
+```{r mtry}
 
 # Evaluate how RF performs with different mtry values
 model_res %>% 
@@ -396,6 +402,10 @@ model_res %>%
     color = "mtry"
   ) +
   theme_minimal()
+
+```
+
+```{r randomforest continued again}
 
 # final fit and evaluation
 best_params <- model_res %>% 
@@ -418,21 +428,22 @@ predict(final_fit, testing_ratings) %>%
   metrics(truth = price, estimate = .pred)
 
 ```
-#### Figure 3: Variable Importance Plot of top 50 words in reviews identified by RandomForest model 
-```{r}
+
+#### Figure 5: Variable Importance Plot of top 20 words in reviews identified by RandomForest model 
+```{r vip}
 
 # Which features had the most influence on predictions 
 fitted_model <- final_fit %>% extract_fit_parsnip()
 vi(fitted_model)
 
 vip(fitted_model, num_features = 20, geom = "col", 
-    aesthetics = list(fill = "steelblue")) +
+    aesthetics = list(fill = "#CE677A")) +
   theme_minimal()
 
 ```
 
-#### Figure 2: Word cloud of top 20 words in reviews identified by RandomForest model
-```{r fig2 RFwordcloud}
+#### Figure 6: Word cloud of top 50 words in reviews identified by RandomForest model
+```{r rf wordcloud}
 
 # Convert data for wordcloud
 df_wordcloud <- vi(fitted_model) %>%
@@ -445,31 +456,13 @@ wordcloud2(df_wordcloud, size = 1.2, color = palette, backgroundColor = "white")
 
 ```
 
-### Playing around
-```{r fruity words}
-
-fruitlist <- read_table("data/fruitlist.txt") #Reads a text file containing fruit-related terms (one per line)
-fruitwords <- fruitlist$Fruits %>% 
-    unique %>% 
-    as.list()
-fruit_pattern <- paste(fruitwords, collapse="|")
-
-# Count fruit references 
-df_fruit <- data %>%
-    group_by(vintage_wine_name) %>%
-    summarise(
-        Ref_froot = sum(grepl(fruit_pattern, note)) / n(),
-        Fruit = toString(fruitwords[unique(grep(fruit_pattern, note))])
-    )
-
-```
-
-
-### Step 2: run a regression of the best words (OLS) to get coefficients for their probability of determining good ratings 
+### Step 2: OLS regression 
 ```{r regression}
 
+top_20 <- df_wordcloud[1:20,]
+
 ols_data <- dtm %>%
-  select(rating, top_20_words)
+  select(rating.x, top_20)
 
 # Run OLS
 ols_model <- lm(rating ~ ., data = ols_data)
