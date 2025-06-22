@@ -236,25 +236,12 @@ review_tokens <- data %>%
  
 ```
 
-## Goal (2): Exploratory data description of wine review data 
+## Goal (2): Exploratory data description of wine review data:
 * Plot rating frequency of tokens 
-* See which words are popular
+* Plot wordcloud of popular words
 
-#### Figure1: 
-```{r Histogram with density}
-
-fig1 <- ggplot(review_tokens, aes(x = rating)) +
-  geom_histogram(aes(y = ..density..), binwidth =0.5, bins = 30, fill = "#3A7370", color = "black", alpha = 1) +
-  geom_density(fill = "#CE677A", alpha = 0.5)+
-  theme_minimal()
-fig1
-
-#ggsave("Figures/fig1.png", plot = fig1, width = 6, height = 5, dpi = 300)
-
-```
-```
-
-```{r popular}
+### Average rating counts
+```{r averating}
 
 # Calculate the average rating for each word and its count
 words_ratings_counts <- review_tokens %>%
@@ -264,6 +251,27 @@ words_ratings_counts <- review_tokens %>%
         word_count = n(),
         .groups = "drop"
     )
+    
+```
+
+#### Figure1: Histogram for frequency of average ratings of review tokens
+```{r histogram}
+
+# Plot histogram
+fig1 <- ggplot(words_ratings_counts, aes(x = ave_rating)) +
+  geom_histogram(aes(y = ..count..), binwidth =0.5, bins = 30, fill = "#3A7370", color = "black", alpha = 1) +
+  labs(title = "Frequency of average ratings of review tokens",
+       x = "Average Rating", 
+       y = "Frequency")
+  theme = my_theme
+fig1
+
+#ggsave("Figures/fig1.png", plot = fig1, width = 6, height = 5, dpi = 300)
+
+```
+
+### Popular tokens
+```{r popular}
 
 # Create an index that determines popular words
 words_popular <- words_ratings_counts %>%
@@ -278,127 +286,24 @@ words_popular <- words_ratings_counts %>%
 
 ```
 
-#### Figure 1: Word cloud of popular words in reviews based on an index 
-```{r fig1 index wordcloud}
+#### Figure 2: Word cloud of popular words in reviews based on index 
+```{r index wordcloud}
 
 # Create Word Cloud
-wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white")
+fig2 <- wordcloud2(words_popular, size = 1.6, color = palette, backgroundColor = "white")
+fig2
 
 ```
 
-### Step 1: RandomForest Method: variable selector (words as columns & ratings as rows) to determine the top N words (20/50) to filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
-* Draw wordclouds for both top 20 & 50 to see which is better & 50 presents better 
-```{r RandomForest}
+## Goal (3): Statistical modeling of wine review data
+* Use 2 step modelling process 
+* Step 1: Use RandomForest as a variable selection method (words as columns & ratings as rows) to determine the top 20 words 
+* Plot training & testing data to confirm similar ratings distributions
+* Plot RF performance with different mtry values
+* Visualise top 20 with a wordcloud & variable importance plot 
 
-# Convert data to DTM format: 
-dtm <- review_tokens %>%
-    count(id, rating, word) %>%
-    cast_dtm(id, word, n) %>%
-    as.matrix() %>%
-    as.data.frame() %>%
-    mutate(rating = review_tokens %>%
-               distinct(id, rating) %>%
-               arrange(id) %>%
-               pull(rating))  
-
-# Use RandomForest for variable selection
-colnames(dtm) <- make.names(colnames(dtm), unique = TRUE)
-rf_model <- randomForest(rating ~ .,
-                         data = dtm,
-                         importance = TRUE,
-                         ntree = 100)            ########## make 500? 
-
-# Identify top 50 & 20 most important words
-top_50_words <- importance(rf_model) %>%
-    as.data.frame() %>%
-    arrange(desc(`%IncMSE`)) %>%
-    head(50) %>%
-    rownames()
-
-top_20_words <- importance(rf_model) %>%
-    as.data.frame() %>%
-    arrange(desc(`%IncMSE`)) %>%
-    head(20) %>%
-    rownames()
-
-```
-
-#### Figure 2: Word cloud of top 50 words in reviews identified by RandomForest model 
-```{r fig2 RFwordcloud}
-
-wordcloud50_data <- review_tokens %>%
-  filter(word %in% top_50_words) %>%
-  count(word)
-
-# Create Word Cloud
-wordcloud2(wordcloud50_data, size = 6, color = palette, backgroundColor = "white")
-
-wordcloud20_data <- review_tokens %>%
-  filter(word %in% top_20_words) %>%
-  count(word)
-
-# Create Word Cloud
-wordcloud2(wordcloud20_data, size = 8, color = palette, backgroundColor = "white")
-
-```
-
-#### Figure 3: Variable Importance Plot of top 50 words in reviews identified by RandomForest model 
-```{r fig3 VarImpPlot}
-
-varImpPlot(rf_model, n.var = 20, main = "Top Words Predicting Wine Ratings")
-
-```
-
-#### Figure 4: Partial Dependence Plot of top 50 words in reviews identified by RandomForest model
-```{r}
-
-pdp_data <- pdp::partial(rf_model, pred.var = top_20_words[1:3], plot = TRUE, rug = TRUE)
-pdp_data
-
-```
-
-### Step 2: run a regression of the best words (OLS) to get coefficients for their probability of determining good ratings 
-```{r regression}
-
-ols_data <- dtm %>%
-  select(rating, top_20_words)
-
-# Run OLS
-ols_model <- lm(rating ~ ., data = ols_data)
-
-# Tidy results
-ols_results <- broom::tidy(ols_model) %>%
-  arrange(desc(estimate))
-
-# Filter out intercept and format
-final_results <- ols_results %>%
-  filter(term != "(Intercept)") %>%
-  select(term, estimate, p.value) %>%
-  mutate(
-    effect = ifelse(estimate > 0, "Positive", "Negative"),
-    term = fct_reorder(term, estimate)
-  )
-
-```
-
-#### Figure 5: Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model
-```{r fig5 OLSplot}
-
-ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
-  geom_col() +
-  scale_fill_brewer(palette = "Dark2") +
-  labs(
-    title = "Words Most Associated with Higher Wine Ratings",
-    x = "Effect on Rating",
-    y = "Word"
-  ) +
-  theme_bw()
-  
-```
-
-
-### By the slides: 
-```{r slides RF}
+### Step 1: RandomForest
+```{r randomforest}
 
 # Convert data to DTM format: 
 dtm <- review_tokens %>%
@@ -419,6 +324,10 @@ dtm <- left_join(ratings, dtm, by = "review_id") %>%
 split_ratings <- initial_split(dtm, prop = 0.7)
 training_ratings <- training(split_ratings)
 testing_ratings <- testing(split_ratings)
+``` 
+
+#### Figure 3: Distribution of training & testing data
+```{r traintest distribution}
 
 # Confirm that training & testing data have similar ratings distributions
 ggplot() + 
@@ -430,8 +339,11 @@ ggplot() +
   theme_minimal() +
   labs(title = "Ratings Distribution: Train (Red) vs Test (Green)",
        x = "Rating", y = "Density")
+``` 
 
-# Feature engineering with recipes
+```{r randomforest continued}
+
+# RandomForest recipe
 wine_rec <- recipe(rating.x ~ ., data = training_ratings) %>%
   step_dummy(all_nominal_predictors()) %>%
   step_zv(all_numeric_predictors()) %>%
@@ -552,6 +464,45 @@ df_fruit <- data %>%
 
 ```
 
+
+### Step 2: run a regression of the best words (OLS) to get coefficients for their probability of determining good ratings 
+```{r regression}
+
+ols_data <- dtm %>%
+  select(rating, top_20_words)
+
+# Run OLS
+ols_model <- lm(rating ~ ., data = ols_data)
+
+# Tidy results
+ols_results <- broom::tidy(ols_model) %>%
+  arrange(desc(estimate))
+
+# Filter out intercept and format
+final_results <- ols_results %>%
+  filter(term != "(Intercept)") %>%
+  select(term, estimate, p.value) %>%
+  mutate(
+    effect = ifelse(estimate > 0, "Positive", "Negative"),
+    term = fct_reorder(term, estimate)
+  )
+
+```
+
+#### Figure 5: Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model
+```{r fig5 OLSplot}
+
+ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    title = "Words Most Associated with Higher Wine Ratings",
+    x = "Effect on Rating",
+    y = "Word"
+  ) +
+  theme_bw()
+  
+```
 
 
 
