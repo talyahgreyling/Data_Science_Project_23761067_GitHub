@@ -210,7 +210,7 @@ words_ratings_counts <- review_tokens %>%
 # Plot histogram
 fig1 <- ggplot(words_ratings_counts, aes(x = ave_rating)) +
   geom_histogram(aes(y = ..count..), binwidth =0.5, bins = 30, fill = "#3A7370", color = "black", alpha = 1) +
-  my_theme() +
+  theme_minimal() +
   labs(title = "Histogram of average ratings of review tokens",
        x = "Average Rating", 
        y = "Frequency") 
