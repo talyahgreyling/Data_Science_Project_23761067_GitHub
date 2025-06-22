@@ -128,14 +128,16 @@ To gain a bit of insight into which words these might be I created a popularity 
     \text{popularity\_index} = 0.8 \times \text{word\_count} + 0.2 \times \text{ave\_rating}
 \end{equation}
 
-The most popular words in reviews based on my index can be seen in the word cloud depicted in Figure 2. It comes as no surprise that wine is the most 'popular' word in a collection of wine review data. The words to take notice of however are port, dark, nose, sweet and red. It is interesting to note that 4/5 of these most popular words seem best suited to describing red, instead of white wines. 
+The most popular words (i.e. words that get high ratings and are used frequently) in reviews based on my index can be seen in the word cloud depicted in Figure 2. It comes as no surprise that wine is the most 'popular' word in a collection of wine review data. The words to take notice of however are port, dark, nose, sweet and red. It is interesting to note that 4/5 of these most popular words seem best suited to describing red, instead of white wines. 
 
 The wide difference in importance of tokens as portrayed by both Figures 1 & 2 are of a large enough extent to merit the statistical modelling in the next section. 
 
 \newpage
 # Statistical modelling \label{StatMod}
-* Use 2 step modelling process 
-* Step 1: Use RandomForest as a variable selection method (words as columns & ratings as rows) to determine the top 20 words 
+
+To uncover the underlying relationship regarding which words used in wine reviews are the best predictors of high ratings a two-step statistical modelling process is employed. Step 1 entails utilising a random forest model as a method to select the 20 words (or 'variables') that best predict a high rating. These variables are then fed into a simple OLS regression in 2 step of the modelling process to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. 
+
+To employ step 1 the tokenised data was first converted into a document term matrix of words each relinked to their respective ratings. 
     * Plot training & testing data to confirm similar ratings distributions
     * Plot RF performance with different mtry values
     * Visualise top 20 with a variable importance plot 
