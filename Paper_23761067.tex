@@ -237,25 +237,14 @@
 
 \begin{abstract}
 \small{
-\emph{UPDATE ABSTRACT} * Copy table output, put in ChatGPT \& ask to
-rewrite (\citeproc{ref-Latex}{\textbf{Latex?}}) format, paste in
-Paper\_23761067 * ggsave \&
-include\_graphics(``\{location\}tables/table1.png'') for plots Main
-research question: NLP: Which words in reviews are associated with
-higher wine ratings? * interesting sentiment/wine words/descriptives
-literature * Method: 2 step: random forrest (or lasso) - variable
-selector (words as columns \& ratings as rows), top N words (20/50)
-filter only on those columns \& draw word clouds, variable importance
-plots \& PDP (Partial Dependence Plots) * Then run regressions of best
-words (OLS)
-
-Abstract to be written here. The abstract should not be too long and
-should provide the reader with a good understanding what you are writing
-about. Academic papers are not like novels where you keep the reader in
-suspense. To be effective in getting others to read your paper, be as
-open and concise about your findings here as possible. Ideally, upon
-reading your abstract, the reader should feel he / she must read your
-paper in entirety.
+This paper utilises a Random Forest model as a variable selector and
+performs a subsequent OLS regression analysis to determine which words
+(if any) in wine reviews best predict their rating. The author's results
+are statistically significant at the 0\% level and indicate that a
+correlation does indeed exist between these two metrics such that
+positive descriptives have a positive effect on ratings and vice versa.
+The effect of negative descriptives is however found to be of a larger
+magnitude, thereby portraying loss aversion.
 }
 \end{abstract}
 
@@ -424,35 +413,45 @@ from the original data set can be found in Table 1. This is supplemented
 by Table 2 which displays a description for each of the variables
 extracted for use in this analysis.
 
-\documentclass{article}
-\usepackage{booktabs} 
-\usepackage{array}    
-\begin{document}
-
-\begin{table}[h]
+\begin{table}[ht]
 \centering
-\caption{Variable Descriptions}
-\label{tab:variables}
-\begin{tabular}{>{\ttfamily}l p{0.7\linewidth}}
-\toprule
-\textnormal{Variable} & Description \\
-\midrule
-id & Identification code of review \\
-rating & Rating out of 5 assigned to the wine by the reviewer \\
-note & Note written about the wine by the reviewer \\
-language & Language of the review \\
-\bottomrule
+\begin{tabular}{|r|l|l|}
+\hline
+\textbf{} & \textbf{Variable} & \textbf{Description} \\
+\hline
+1 & id & Identification code of review \\
+2 & rating & Rating out of 5 assigned to the wine by the reviewer \\
+3 & note & Note written about the wine by the reviewer \\
+4 & language & Language of the review \\
+\hline
 \end{tabular}
+\caption{Description of Variables}
+\label{tab:variables}
 \end{table}
 
-\end{document}
+The original data set was modified slightly by filtering out all reviews
+posted in languages other than English since using APIs to translate
+them to English was too costly an endeavor to undertake. 1667 of the
+original observations remained.
 
-The original data set was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
+The reviews were tokenized and 30 800 tokens were recorded where-after I
+followed the standard pre-processing steps of removing punctuation,
+numbers, symbols, characters and taking everything to lower case. I also
+used the default tidyverse stop\_words data set to remove stop words
+using 3 respective lexicons: snowball (from the tm package), onix (from
+the ONIX text retrieval system) and smart (from the SMART information
+retrieval system). After these intermediate steps there were 16 869
+tokens remaining. All `clean' tokes were ultimately used in the Random
+Forest model to avoid unnecessary sampling bias.
 
-The reviews were tokenized and 30 800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words data set to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16 869 tokens remaining. All 'clean' tokes were ultimately used in the Random Forest model to avoid unnecessary sampling bias. 
+\subsection{Data Exploration}\label{data-exploration}
 
-## Data Exploration
-First, I was interested in uncovering the distribution of ratings associated with review tokens. This was done by calculating the average rating associated with each unique token and visualising the frequency observed for each rating through the histogram presented in Figure 1. The high frequency of observations that can be seen at a rating of 3.5 and 4 suggest that there may be certain words driving better ratings. 
+First, I was interested in uncovering the distribution of ratings
+associated with review tokens. This was done by calculating the average
+rating associated with each unique token and visualising the frequency
+observed for each rating through the histogram presented in Figure 1.
+The high frequency of observations that can be seen at a rating of 3.5
+and 4 suggest that there may be certain words driving better ratings.
 
 \begin{figure}[H]
 
@@ -463,13 +462,21 @@ First, I was interested in uncovering the distribution of ratings associated wit
 \caption{Histogram of average ratings of review tokens}\label{fig:fig1}
 \end{figure}
 
-To gain a bit of insight into which words these might be I created a popularity index that used the formula stated in equation 3.1 to determine the popularity of each token. 
+To gain a bit of insight into which words these might be I created a
+popularity index that used the formula stated in equation 3.1 to
+determine the popularity of each token.
 
 \begin{equation}
     \text{popularity\_index} = 0.8 \times \text{word\_count} + 0.2 \times \text{ave\_rating}
 \end{equation}
 
-The most popular words (i.e. words that get high ratings and are used frequently) in reviews based on my index can be seen in the word cloud depicted in Figure 2. It comes as no surprise that wine is the most 'popular' word in a collection of wine review data. The words to take notice of however are port, dark, nose, sweet and red. It is interesting to note that 4/5 of these most popular words seem best suited to describing red, instead of white wines. 
+The most popular words (i.e.~words that get high ratings and are used
+frequently) in reviews based on my index can be seen in the word cloud
+depicted in Figure 2. It comes as no surprise that wine is the most
+`popular' word in a collection of wine review data. The words to take
+notice of however are port, dark, nose, sweet and red. It is interesting
+to note that 4/5 of these most popular words seem best suited to
+describing red, instead of white wines.
 
 \begin{figure}[H]
 
@@ -480,17 +487,41 @@ The most popular words (i.e. words that get high ratings and are used frequently
 \caption{Word cloud of popular words in reviews based on popularity index}\label{fig:fig2}
 \end{figure}
 
-The wide difference in importance of tokens as portrayed by both Figures 1 & 2 were of a large enough extent to merit the statistical modelling in the next section. 
+The wide difference in importance of tokens as portrayed by both Figures
+1 \& 2 were of a large enough extent to merit the statistical modelling
+in the next section.
 
 \newpage
-# Statistical modelling 
-\label{StatMod}
-To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process was employed. 
 
-## Step 1: Random Forest 
-The first step entailed utilising a Random Forest model as a method to select the 20 review-words (or 'variables') that best predicted a high rating. This model was chosen for its ability to handle complex data sets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
+\section{Statistical modelling}\label{statistical-modelling}
 
-To employ step 1 the tokenized data was first converted into a document term matrix of words each re-linked to their respective ratings. Thereafter I partitioned the data set into two subsets for training and testing. I decided to adopt the most generally used splitting practice and divide the data by means of a 70/30 split, whereby the 70% of the data is used as the training set and the other 30% of the data is saved for testing. By employing this split a healthy balance was maintained between availing a sufficient amount of data to effectively train the model and keeping a significant portion of the data unseen to enable assessing how the model performs without the risk of over fitting that would have been present if the data had been trained and tested on the same set of data. Figure 3 plots the distribution of ratings found in respectively the training (red) and the testing (green) sets. These followed a satisfyingly similar trajectory that enabled me to confidently continue with my analysis. 
+\label{StatMod} To uncover the underlying relationship between words
+used in wine reviews and high ratings a two-step statistical modelling
+process was employed.
+
+\subsection{Step 1: Random Forest}\label{step-1-random-forest}
+
+The first step entailed utilising a Random Forest model as a method to
+select the 20 review-words (or `variables') that best predicted a high
+rating. This model was chosen for its ability to handle complex data
+sets effectively as well as its scope for completing classification and
+regression tasks in a manner that is easy to interpret.
+
+To employ step 1 the tokenized data was first converted into a document
+term matrix of words each re-linked to their respective ratings.
+Thereafter I partitioned the data set into two subsets for training and
+testing. I decided to adopt the most generally used splitting practice
+and divide the data by means of a 70/30 split, whereby the 70\% of the
+data is used as the training set and the other 30\% of the data is saved
+for testing. By employing this split a healthy balance was maintained
+between availing a sufficient amount of data to effectively train the
+model and keeping a significant portion of the data unseen to enable
+assessing how the model performs without the risk of over fitting that
+would have been present if the data had been trained and tested on the
+same set of data. Figure 3 plots the distribution of ratings found in
+respectively the training (red) and the testing (green) sets. These
+followed a satisfyingly similar trajectory that enabled me to
+confidently continue with my analysis.
 
 \begin{figure}[H]
 
@@ -501,13 +532,43 @@ To employ step 1 the tokenized data was first converted into a document term mat
 \caption{Distribution of training and testing data}\label{fig:fig3}
 \end{figure}
 
-The recipe (a set prepossessing pipeline created for the data) was then defined and set to facilitate 3 transformations: it included a hot-encoding applied to categorical variables, removed numeric predictors with zero variance and normalized numeric predictors. 
+The recipe (a set prepossessing pipeline created for the data) was then
+defined and set to facilitate 3 transformations: it included a
+hot-encoding applied to categorical variables, removed numeric
+predictors with zero variance and normalized numeric predictors. The
+first and third transformations are not required by Random Forests as
+they process raw data well, but are still included for completeness
+sake.
 
-Next, a tree-based model called a Random Forest was specified. This model utilises numerous trees fit on bootstrapped samples of the data reserved for training and uses an arbitrary subset of predictors at every split (see the 'mtry' parameter) which then averages the predictions made by all the trees to reduce variance. This method is therefore robust to over fitting, can efficiently process interactions and non-linearities and is insensitive to scaling (by which variables do not need to be normalized). My regression forest model employs 100 trees with a minimum of 10 observations in a node pre split. 
+Next, a tree-based model called a Random Forest was specified. This
+model utilises numerous trees fit on bootstrapped samples of the data
+reserved for training and uses an arbitrary subset of predictors at
+every split (see the `mtry' parameter) which then averages the
+predictions made by all the trees to reduce variance. This method is
+therefore robust to over fitting, can efficiently process interactions
+and non-linearities and is insensitive to scaling (by which variables do
+not need to be normalized). My regression forest model employs 100 trees
+with a minimum of 10 observations in a node pre split.
 
-A workflow containing the recipe and model specification was then built to improve reproducibility and reduce errors by ensuring that all transformations were recorded and performed in the correct order. A 5-fold cross-validation approach was employed for model evaluation and hyper-parameter tuning whereby the training data was divided into 5 parts that were each employed once as the validation set and acted as a training set in all other instances. This ensured a robust model performance estimate that doesn't rely on a single split between training and testing. 
+A workflow containing the recipe and model specification was then built
+to improve reproducibility and reduce errors by ensuring that all
+transformations were recorded and performed in the correct order. A
+5-fold cross-validation approach was employed for model evaluation and
+hyper-parameter tuning whereby the training data was divided into 5
+parts that were each employed once as the validation set and acted as a
+training set in all other instances. This ensured a robust model
+performance estimate that doesn't rely on a single split between
+training and testing.
 
-Random Forests require minimal hyper-parameter tuning. The most important parameter to optimise is 'mtry' since selecting a value that is too low will alleviate bias and selecting a number that is too high will increase variance. I defined a regular grid over values of 'mtry' that were possible between 2 and 18 and tuned the forest with the same workflow and CV folds as earlier. Figure 4 plots the RMSE (Root Mean Squared Error) performance of my Random Forest by 'mtry.' The model was tuned to the lowest mean metric value, as displayed at mtry = 16 in Figure 4, for the best performance.
+Random Forests require minimal hyper-parameter tuning. The most
+important parameter to optimise is `mtry' since selecting a value that
+is too low will alleviate bias and selecting a number that is too high
+will increase variance. I defined a regular grid over values of `mtry'
+that were possible between 2 and 18 and tuned the forest with the same
+workflow and CV folds as earlier. Figure 4 plots the RMSE (Root Mean
+Squared Error) performance of my Random Forest by `mtry.' The model was
+tuned to the lowest mean metric value, as displayed at mtry = 16 in
+Figure 4, for the best performance.
 
 \begin{figure}[H]
 
@@ -518,11 +579,29 @@ Random Forests require minimal hyper-parameter tuning. The most important parame
 \caption{Random Forest Performance by 'mtry'}\label{fig:fig4}
 \end{figure}
 
-The final model was then fit on the full training set with the optimal hyper-parameters plugged into the workflow and the final models' performance was evaluated on the test set. The trained model was inspected and an assessment was carried out on the models' performance on unseen data. These results are displayed in Table 3. The RMSE indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared conveys that 12% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.46. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
+The final model was then fit on the full training set with the optimal
+hyper-parameters plugged into the workflow and the final models'
+performance was evaluated on the test set. The trained model was
+inspected and an assessment was carried out on the models' performance
+on unseen data. These results are displayed in Table 3. The RMSE
+indicates that on average, predictions deviate from actual ratings by
+0.64. The R-squared conveys that 12\% of the variation in ratings is
+explained by the model and the MAE (Mean Absolute Error) tells us that
+the typical absolute error in prediction is around 0.46. The low RMSE
+and MAE are both extremely satisfying whilst the low R-squared conveys
+disappointing explanatory power.
 
-<!-- \input{table3.tex} -->
-
-The top 20 words identified by the Random Forest model were then visualised in the variable importance plot displayed in Figure 5. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'absolutely', 'fantastic', 'amazing' and 'delicious' made up our top ranks. Lesser expected words are 'smooth' and 'port' which confirm our suspicions from Figure 2 that red wines are better associated with high ratings than white wines. Furthermore, Figure 6 depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'beautiful', 'bliss', 'brilliant', 'elegant' and 'stunning' can be found. 
+The top 20 words identified by the Random Forest model were then
+visualised in the variable importance plot displayed in Figure 5. As can
+be expected descriptive words conveying a positive sentiment like
+`excellent', `absolutely', `fantastic', `amazing' and `delicious' made
+up our top ranks. Lesser expected words are `smooth' and `port' which
+confirm our suspicions from Figure 2 that red wines are better
+associated with high ratings than white wines. Furthermore, Figure 6
+depicts a word cloud of the top 50 words in reviews identified by the
+Random Forest model where further positive descriptives like
+`wonderful', `beautiful', `bliss', `brilliant', `elegant' and `stunning'
+can be found.
 
 \begin{figure}[H]
 
@@ -540,14 +619,34 @@ The top 20 words identified by the Random Forest model were then visualised in t
 
 \caption{Word cloud of top 50 words in reviews identified by Random Forest model}\label{fig:fig6}
 \end{figure}
-    
-## Step 2: OLS Regression    
 
-During the second step ratings were regressed on the top 20 words identified by the Random Forest model during step 1, to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. These regression results are summarised in Table 4 and we can see that, to our satisfaction, most of the coefficients display with great significance at even the 0% level. We see that the probability of receiving a good rating increases by 50% when the word 'excellent' is used in a review, but reduces by 168% when the word 'bland' is included. Interestingly, 'port' is the only word describing a vintage that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in our sample of Calitzdrop. 
+\subsection{Step 2: OLS Regression}\label{step-2-ols-regression}
 
-<!-- \input{table4.tex} -->
+During the second step ratings were regressed on the top 20 words
+identified by the Random Forest model during step 1, to calculate
+coefficients and standard errors and inspect the significance of these
+words in predicting high ratings. These regression results are
+summarised in Table 4 and we can see that, to our satisfaction, most of
+the coefficients display with great significance at even the 0\% level.
+We see that the probability of receiving a good rating increases by 50\%
+when the word `excellent' is used in a review, but reduces by 168\% when
+the word `bland' is included. Interestingly, `port' is the only word
+describing a vintage that makes it into the top 20 tokens. This once
+again hints to an overall preference for red above white wine, but could
+also be due to the concentration of wines made in our sample of
+Calitzdrop.
 
-Figure 7 portrays a plot of the coefficients such that the playoff between those words with positive (represented by the green bars) and negative (represented by the red bars) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
+Figure 7 portrays a plot of the coefficients such that the playoff
+between those words with positive (represented by the green bars) and
+negative (represented by the red bars) effects on ratings can be seen.
+We note that there is a higher collection of positive descriptives that
+increase the probability of a good rating than those predicting a bad
+rating. We also note that negative descriptives have an effect of a
+greater magnitude in reducing the probability of a good rating than the
+positive descriptives have of increasing a good rating. This can be
+attributed to humankind's tendency to display loss aversion where a loss
+(buying a bad wine) is valued at a greater magnitude than a gain (buying
+a good wine) of a similar size.
 
 \begin{figure}[H]
 
@@ -559,14 +658,27 @@ Figure 7 portrays a plot of the coefficients such that the playoff between those
 \end{figure}
 
 \newpage
-# Conclusion 
-\label{Concl}
-I therefore find satisfactory evidence that there is indeed a correlation between the words used to describe wine in reviews and their subsequent ratings. These findings are significant when displayed by means of an OLS regression and were created to be robust to errors by implementing a Random Forest model to identify which words to include as explanatory variables. As expected, positive descriptives have a positive effect on ratings and vice versa for negative descriptives. The effect of negative descriptives is found to be of a larger magnitude than those of their positive counterparts and this is attributed to loss aversion. Wine producers should therefore place a larger emphasis on shying away from words that are associated with negative reviews than on striving to achieve those associated with positive reviews in order to optimise their sales. 
+
+\section{Conclusion}\label{conclusion}
+
+\label{Concl} I therefore find satisfactory evidence that there is
+indeed a correlation between the words used to describe wine in reviews
+and their subsequent ratings. These findings are significant when
+displayed by means of an OLS regression and were created to be robust to
+errors by implementing a Random Forest model to identify which words to
+include as explanatory variables. As expected, positive descriptives
+have a positive effect on ratings and vice versa for negative
+descriptives. The effect of negative descriptives is found to be of a
+larger magnitude than those of their positive counterparts and this is
+attributed to loss aversion. Wine producers should therefore place a
+larger emphasis on shying away from words that are associated with
+negative reviews than on striving to achieve those associated with
+positive reviews in order to optimise their sales.
 
 \newpage
-# References {-}
 
-<div id="refs"></div>
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{1}

@@ -119,14 +119,27 @@ Another wine related sentiment study, done by @RuiEtAl2025, aims to bridge the g
 \label{Data}
 
 ## Data, transformation and cleaning
-The data set utilised in this analysis comprises 2298 observations of 107 variables, each encapsulating aspects and features related to the user, vintage of wine and winery concerned in each review. An excerpt from the original data set can be found in Table 1. This is supplemented by Table 2 which displays a description for each of the variables extracted for use in this analysis.  
+The original dataset comprises 2298 observations of 107 variables, each encapsulating different aspects and features related to the user, vintage of wine and winery concerned in each review. Table 1 contains the column name as well as a description for each of the variables extracted for use in this analysis.  
 
-<!-- \input{table1.tex} -->
-<!-- \input{table2.tex} -->
+\begin{table}[ht]
+\centering
+\begin{tabular}{|r|l|l|}
+\hline
+\textbf{} & \textbf{Variable} & \textbf{Description} \\
+\hline
+1 & id & Identification code of review \\
+2 & rating & Rating out of 5 assigned to the wine by the reviewer \\
+3 & note & Note written about the wine by the reviewer \\
+4 & language & Language of the review \\
+\hline
+\end{tabular}
+\caption{Description of Variables}
+\label{tab:variables}
+\end{table}
 
-The original data set was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
+The original dataset was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
 
-The reviews were tokenized and 30 800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words data set to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16 869 tokens remaining. All 'clean' tokes were ultimately used in the Random Forest model to avoid unnecessary sampling bias. 
+The reviews were tokenized and 30 800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words dataset to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16 869 tokens remaining. All 'clean' tokes were ultimately used in the Random Forest model to avoid unnecessary sampling bias. 
 
 ## Data Exploration
 First, I was interested in uncovering the distribution of ratings associated with review tokens. This was done by calculating the average rating associated with each unique token and visualising the frequency observed for each rating through the histogram presented in Figure 1. The high frequency of observations that can be seen at a rating of 3.5 and 4 suggest that there may be certain words driving better ratings. 
@@ -159,9 +172,9 @@ The wide difference in importance of tokens as portrayed by both Figures 1 & 2 w
 To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process was employed. 
 
 ## Step 1: Random Forest 
-The first step entailed utilising a Random Forest model as a method to select the 20 review-words (or 'variables') that best predicted a high rating. This model was chosen for its ability to handle complex data sets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
+The first step entailed utilising a Random Forest model as a method to select the 20 review-words (or 'variables') that best predicted a high rating. This model was chosen for its ability to handle complex datasets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
 
-To employ step 1 the tokenized data was first converted into a document term matrix of words each re-linked to their respective ratings. Thereafter I partitioned the data set into two subsets for training and testing. I decided to adopt the most generally used splitting practice and divide the data by means of a 70/30 split, whereby the 70% of the data is used as the training set and the other 30% of the data is saved for testing. By employing this split a healthy balance was maintained between availing a sufficient amount of data to effectively train the model and keeping a significant portion of the data unseen to enable assessing how the model performs without the risk of over fitting that would have been present if the data had been trained and tested on the same set of data. Figure 3 plots the distribution of ratings found in respectively the training (red) and the testing (green) sets. These followed a satisfyingly similar trajectory that enabled me to confidently continue with my analysis. 
+To employ step 1 the tokenized data was first converted into a document term matrix of words each re-linked to their respective ratings. Thereafter I partitioned the dataset into two subsets for training and testing. I decided to adopt the most generally used splitting practice and divide the data by means of a 70/30 split, whereby the 70% of the data is used as the training set and the other 30% of the data is saved for testing. By employing this split a healthy balance was maintained between availing a sufficient amount of data to effectively train the model and keeping a significant portion of the data unseen to enable assessing how the model performs without the risk of over fitting that would have been present if the data had been trained and tested on the same set of data. Figure 3 plots the distribution of ratings found in respectively the training (red) and the testing (green) sets. These followed a satisfyingly similar trajectory that enabled me to confidently continue with my analysis. 
 
 ```{r fig3, fig.cap = "Distribution of training and testing data", out.width = "0.8\\linewidth"}
 
