@@ -165,6 +165,20 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 
 %%% Include extra packages specified by user
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 %%% Hard setting column skips for reports - this ensures greater consistency and control over the length settings in the document.
 %% page layout
@@ -408,25 +422,6 @@ from the original data set can be found in Table 1. This is supplemented
 by Table 2 which displays a description for each of the variables
 extracted for use in this analysis.
 
-\begin{table}[!h]
-\centering
-\caption{Table 1: Wine review data}
-\centering
-\fontsize{10}{12}\selectfont
-\begin{tabular}[t]{rrllllllrrrrrrrrlrrrrrllrrrrrrrrrr}
-\toprule
-id & rating & note & language & created\_at & flavor\_word\_matches & user\_is\_featured & user\_is\_premium & user\_statistics\_followers\_count & user\_statistics\_followings\_count & user\_statistics\_ratings\_count & user\_statistics\_ratings\_sum & user\_statistics\_reviews\_count & user\_statistics\_purchase\_order\_count & vintage\_id & vintage\_year & vintage\_has\_valid\_ratings & vintage\_statistics\_ratings\_count & vintage\_statistics\_ratings\_average & vintage\_statistics\_labels\_count & vintage\_statistics\_reviews\_count & vintage\_wine\_id & vintage\_wine\_name & vintage\_wine\_winery\_name & vintage\_wine\_winery\_statistics\_ratings\_count & vintage\_wine\_winery\_statistics\_ratings\_average & vintage\_wine\_winery\_statistics\_labels\_count & vintage\_wine\_winery\_statistics\_wines\_count & vintage\_wine\_statistics\_ratings\_count & vintage\_wine\_statistics\_ratings\_average & vintage\_wine\_statistics\_labels\_count & vintage\_wine\_statistics\_vintages\_count & activity\_statistics\_likes\_count & activity\_statistics\_comments\_count\\
-\midrule
-203279853 & 4.0 & Pretty goood. 
-\cellcolor{gray!10}{Wooded. And big.   It not overdone} & \cellcolor{gray!10}{en} & \cellcolor{gray!10}{2021-04-27 17:27:20} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{24} & \cellcolor{gray!10}{17} & \cellcolor{gray!10}{1076} & \cellcolor{gray!10}{4168.5} & \cellcolor{gray!10}{997} & \cellcolor{gray!10}{0} & \cellcolor{gray!10}{151915794} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{TRUE} & \cellcolor{gray!10}{27} & \cellcolor{gray!10}{3.5} & \cellcolor{gray!10}{42} & \cellcolor{gray!10}{4} & \cellcolor{gray!10}{5326948} & \cellcolor{gray!10}{Ambientem Chenin Blanc} & \cellcolor{gray!10}{Axe Hill} & \cellcolor{gray!10}{383} & \cellcolor{gray!10}{3.8} & \cellcolor{gray!10}{1849} & \cellcolor{gray!10}{13} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{0} & \cellcolor{gray!10}{0}\\
-69297830 & 3.0 & Citrus bouquet, high acid, creamy texture apples and some lime. & en & 2017-05-26 16:55:32 & creamy,lime,apples,citrus & FALSE & FALSE & 57 & 69 & 1320 & 5086.6 & 924 & 0 & 152355160 & 2016 & FALSE & 9 & 0.0 & 9 & 4 & 5326948 & Ambientem Chenin Blanc & Axe Hill & 383 & 3.8 & 1849 & 13 & 27 & 3.5 & 59 & 7 & 3 & 0\\
-\cellcolor{gray!10}{135937122} & \cellcolor{gray!10}{4.0} & \cellcolor{gray!10}{Rich, super smooth, fruity for a chenin. Delicious.  Tasty slightly unusual wine} & \cellcolor{gray!10}{en} & \cellcolor{gray!10}{2019-08-21 16:40:55} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{6} & \cellcolor{gray!10}{17} & \cellcolor{gray!10}{92} & \cellcolor{gray!10}{352.0} & \cellcolor{gray!10}{80} & \cellcolor{gray!10}{0} & \cellcolor{gray!10}{159944466} & \cellcolor{gray!10}{2018} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{4} & \cellcolor{gray!10}{0.0} & \cellcolor{gray!10}{2} & \cellcolor{gray!10}{1} & \cellcolor{gray!10}{5326948} & \cellcolor{gray!10}{Ambientem Chenin Blanc} & \cellcolor{gray!10}{Axe Hill} & \cellcolor{gray!10}{383} & \cellcolor{gray!10}{3.8} & \cellcolor{gray!10}{1849} & \cellcolor{gray!10}{13} & \cellcolor{gray!10}{27} & \cellcolor{gray!10}{3.5} & \cellcolor{gray!10}{59} & \cellcolor{gray!10}{7} & \cellcolor{gray!10}{0} & \cellcolor{gray!10}{0}\\
-167493355 & 4.0 & I love everything from Axe Hill, even the Chenin which I don’t normally love! Fruitiness is not overpowering, fresh quince yet dry, medium acidity! Love & en & 2020-06-19 16:03:37 & quince & FALSE & FALSE & 2 & 5 & 24 & 92.5 & 24 & 0 & 151915794 & NA & TRUE & 27 & 3.5 & 42 & 4 & 5326948 & Ambientem Chenin Blanc & Axe Hill & 383 & 3.8 & 1849 & 13 & NA & NA & NA & NA & 1 & 0\\
-\cellcolor{gray!10}{218787862} & \cellcolor{gray!10}{2.5} & \cellcolor{gray!10}{Platter rates this 87/100 = 4*, but I found it flat and uninteresting. With a salty finish. That doesn’t last. 2.3*} & \cellcolor{gray!10}{en} & \cellcolor{gray!10}{2021-09-23 16:16:44} & \cellcolor{gray!10}{NA} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{374} & \cellcolor{gray!10}{163} & \cellcolor{gray!10}{1896} & \cellcolor{gray!10}{7099.3} & \cellcolor{gray!10}{1751} & \cellcolor{gray!10}{0} & \cellcolor{gray!10}{164782341} & \cellcolor{gray!10}{2019} & \cellcolor{gray!10}{FALSE} & \cellcolor{gray!10}{3} & \cellcolor{gray!10}{0.0} & \cellcolor{gray!10}{3} & \cellcolor{gray!10}{1} & \cellcolor{gray!10}{5326948} & \cellcolor{gray!10}{Ambientem Chenin Blanc} & \cellcolor{gray!10}{Axe Hill} & \cellcolor{gray!10}{383} & \cellcolor{gray!10}{3.8} & \cellcolor{gray!10}{1849} & \cellcolor{gray!10}{13} & \cellcolor{gray!10}{27} & \cellcolor{gray!10}{3.5} & \cellcolor{gray!10}{59} & \cellcolor{gray!10}{7} & \cellcolor{gray!10}{15} & \cellcolor{gray!10}{1}\\
-\bottomrule
-\end{tabular}
-\end{table}
-
 The original data set was modified slightly by filtering out all reviews
 posted in languages other than English since using APIs to translate
 them to English was too costly an endeavor to undertake. 1667 of the
@@ -448,9 +443,12 @@ First, I was interested in uncovering the distribution of ratings
 associated with review tokens. This was done by calculating the average
 rating associated with each unique token and visualising the frequency
 observed for each rating through the histogram presented in Figure 1.
-The high frequency of observations that can be observed at a rating of
-3.5 and 4 suggest that there may be certain words driving better
-ratings.
+The high frequency of observations that can be seen at a rating of 3.5
+and 4 suggest that there may be certain words driving better ratings.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{writeup/fig1} \caption{Histogram of average ratings of review tokens}\label{fig:fig1}
+\end{figure}
 
 To gain a bit of insight into which words these might be I created a
 popularity index that used the formula stated in equation 3.1 to
@@ -467,6 +465,10 @@ depicted in Figure 2. It comes as no surprise that wine is the most
 notice of however are port, dark, nose, sweet and red. It is interesting
 to note that 4/5 of these most popular words seem best suited to
 describing red, instead of white wines.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{writeup/fig2} \caption{Word cloud of popular words in reviews based on popularity index}\label{fig:fig2}
+\end{figure}
 
 The wide difference in importance of tokens as portrayed by both Figures
 1 \& 2 were of a large enough extent to merit the statistical modelling
@@ -503,6 +505,10 @@ same set of data. Figure 3 plots the distribution of ratings found in
 respectively the training (red) and the testing (green) sets. These
 followed a satisfyingly similar trajectory that enabled me to
 confidently continue with my analysis.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{writeup/fig3} \caption{Distribution of training and testing data}\label{fig:fig3}
+\end{figure}
 
 The recipe (a set prepossessing pipeline created for the data) was then
 defined and set to facilitate 3 transformations: it included a
