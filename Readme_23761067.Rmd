@@ -142,14 +142,11 @@ print(table1)
 
 # Create and populate data frame
 df1 <- data.frame(
-    Variable = c("id", "rating", "note", "language", "user_is_featured", "user_is_premium", "user_statistics_followers_count"), 
-    Description = c("Identification code of review.",
+    Variable = c("id", "rating", "note", "language"), 
+    Description = c("Identification code of review",
                     "Rating out of 5 assigned to the wine by the reviewer",
                     "Note written about the wine by the reviewer",
-                    "Language of the review",
-                    "Whether the reviewer is a featured user",
-                    "Whether the reviewer is a premium (paid subscription) user",
-                    "Amount of followers the reviewer has")
+                    "Language of the review")
     ) %>% tibble::as_tibble()
 
 # Generate Table2

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.20)  23 JUN 2025 06:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.20)  23 JUN 2025 06:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,6 +643,16 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 {c:/ProgramData/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/ProgramData/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/ProgramData/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
+LaTeX Warning: Reference `Data' on page 2 undefined on input line 297.
+
+
+LaTeX Warning: Reference `StatMod' on page 2 undefined on input line 300.
+
+
+LaTeX Warning: Reference `Concl' on page 2 undefined on input line 304.
+
+
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -651,6 +661,28 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [2]
+
+Package natbib Warning: Citation `ref-WoSA2023' undefined on input line 319.
+
+
+Package natbib Warning: Citation `ref-AliEtAl2025' undefined on input line 328.
+
+
+Package natbib Warning: Citation `ref-DangEtAl2021' undefined on input line 335.
+
+
+Package natbib Warning: Citation `ref-AlalwanEtAl2018' undefined on input line 339.
+
+
+Package natbib Warning: Citation `ref-VosoughiEtAl2018' undefined on input line 347.
+
+
+Package natbib Warning: Citation `ref-DangEtAl2021' undefined on input line 352.
+
+
+Package natbib Warning: Citation `ref-BarbieratoEtAl2022' undefined on input line 371.
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -661,6 +693,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [3]
 
+Package natbib Warning: Citation `ref-Bangwayo2025S' undefined on input line 379.
+
+
+Package natbib Warning: Citation `ref-RuiEtAl2025' undefined on input line 386.
+
+
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -669,97 +708,26 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [4]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 416.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 416.
+! Undefined control sequence.
+l.421 \cellcolor
+                {gray!10}{Wooded. And big.   It not overdone} & \cellcolor{g...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[5{c:/ProgramData/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/ProgramData/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[6]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[7]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[8]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[9]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[10]
-No file Paper_23761067.bbl.
-
-Package natbib Warning: There were undefined citations.
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[11] (./Paper_23761067.aux)
- ***********
-LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-05-26>
- ***********
-Package rerunfilecheck Info: File `Paper_23761067.out' has not changed.
-(rerunfilecheck)             Checksum: F59D56D9253C4BBDAEB481A55C7872A5;1997.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 16719 strings out of 469867
- 310312 string characters out of 5484221
- 691518 words of memory out of 5000000
- 44737 multiletter control sequences out of 15000+600000
- 692944 words of font info for 82 fonts, out of 8000000 for 9000
+ 16669 strings out of 469867
+ 309199 string characters out of 5484221
+ 702477 words of memory out of 5000000
+ 44705 multiletter control sequences out of 15000+600000
+ 700976 words of font info for 92 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,79p,551b,1036s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{cite.ref-Latex} has been referenced but does not exist, replaced by a fixed one
-
-<c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on Paper_23761067.pdf (11 pages, 283536 bytes).
-PDF statistics:
- 228 PDF objects out of 1000 (max. 8388607)
- 184 compressed objects within 2 object streams
- 39 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 75i,11n,79p,1145b,1036s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!

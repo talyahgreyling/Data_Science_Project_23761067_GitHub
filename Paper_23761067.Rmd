@@ -69,7 +69,8 @@ knitr::opts_chunk$set(echo = FALSE,
 ```{r Housekeeping, include = FALSE}
 
 # Load necessary packages:
-pacman::p_load(knitr)
+pacman::p_load(knitr,
+               xcolor)
                
 # Set location: 
 loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_Science_Project_23761067_GitHub/"
@@ -117,6 +118,8 @@ Another wine related sentiment study, done by @RuiEtAl2025, aims to bridge the g
 
 ## Data, transformation and cleaning
 The data set utilised in this analysis comprises 2298 observations of 107 variables, each encapsulating aspects and features related to the user, vintage of wine and winery concerned in each review. An excerpt from the original data set can be found in Table 1. This is supplemented by Table 2 which displays a description for each of the variables extracted for use in this analysis.  
+
+<!-- \input{table1.tex} -->
 
 The original data set was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
 
