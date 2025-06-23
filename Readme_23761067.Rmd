@@ -426,9 +426,9 @@ table3 <- print(ols_table,
       type = "html",
       include.rownames = TRUE,
       caption.placement = "top",
-      html.table.attributes = 'class="table table-striped" style="width:100%;"')
+      print.results = FALSE)
 table3
-
+                   
 ```
 
 ### Visualising OLS regression
