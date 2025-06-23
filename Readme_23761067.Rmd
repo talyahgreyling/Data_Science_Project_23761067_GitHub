@@ -30,7 +30,7 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r housekeeping}
 
 # Clear environment
-rm(list = ls())           ############ uncomment before final submission 
+rm(list = ls())           
 
 # Load necessary packages
 pacman::p_load(bonsai,
@@ -79,8 +79,8 @@ my_theme <- theme(
   plot.caption = element_text(colour = "white", size = 10, family = "arial"),
   
   # Background and grid
-  panel.background = element_blank(),
-  plot.background = element_rect(fill = "black", color = "black"),
+  panel.background = element_rect(fill = "white", colour = "black"),
+  plot.background = element_rect(fill = "white", color = "black"),
   panel.grid.major = element_line(color = "white", size = 0.1),
   panel.grid.minor = element_line(color = "white", size = 0.1),
   
