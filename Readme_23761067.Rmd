@@ -6,7 +6,7 @@ output:
         css: styles.css
 ---
 
-### Goals: 
+### Goals
     (1) Transform and clean data
     (2) Exploratory data description of wine review data 
     (3) Statistical modeling of wine review data
@@ -90,7 +90,7 @@ data %>%
 ```
 
 #### Table 1: Description of variables utilised for analysis
-```{r describe data, results = "asis"}
+```{r tab1, results = "asis"}
 
 # Create and populate data frame
 df1 <- data.frame(
@@ -183,18 +183,26 @@ words_popular <- words_ratings_counts %>%
 
 ```
 
-#### Figure 2: Word cloud of popular words in reviews based on index 
+#### Figure 2: Word cloud of top 50 popular words in reviews based on index 
 ```{r index wordcloud}
 
+# Get top 50 words
+top50 <- words_popular %>%
+  slice_max(order_by = popularity_index, n = 50)
+
+# Set palette 
+top50$assigned_color <- sample(palette, nrow(top50), replace = TRUE)
+
 # Create Word Cloud
-fig2 <- wordcloud(words_popular$word,
-                  words_popular$popularity_index,
-                  scale = c(4, 1),
-                  colors = palette, 
-                  bg.color = "white")
-fig2
+fig2 <- ggplot(top50, aes(label = word, size = popularity_index, color = assigned_color)) +
+  geom_text_wordcloud_area() +
+  scale_size_area(max_size = 40) +
+  scale_color_identity() +
+  theme_minimal()
+fig2 
 
 ggsave("writeup/fig2.png", plot = fig2, width = 6, height = 5, dpi = 300)
+
 
 ```
 
@@ -207,7 +215,7 @@ ggsave("writeup/fig2.png", plot = fig2, width = 6, height = 5, dpi = 300)
     * Visualise top 50 in a wordcloud
 * Step 2: run an OLS regression of the best words to get coefficients for their probability of determining good ratings
 
-### Step 1: RandomForest
+### Step 1: Random Forest variable selection
 ```{r randomforest}
 
 # Convert data to DTM format: 
@@ -242,7 +250,6 @@ fig3 <- ggplot() +
         scale_x_continuous(labels = scales::comma) +
         theme_minimal() +
         labs(title = "Ratings Distribution: Train (Red) vs Test (Green)", x = "Rating", y = "Density")
-
 fig3
 
 ggsave("writeup/fig3.png", plot = fig3, width = 6, height = 5, dpi = 300)
@@ -308,7 +315,6 @@ fig4 <- model_res %>%
     color = "mtry"
   ) +
   theme_minimal()
-
 fig4
 
 ggsave("writeup/fig4.png", plot = fig4, width = 6, height = 5, dpi = 300)
@@ -336,7 +342,10 @@ final_fit %>%
 metricsdata <- predict(final_fit, testing_ratings) %>%
   bind_cols(testing_ratings) %>%
   metrics(truth = rating.x, estimate = .pred)
+```
 
+#### Table 2: Model Performance Metrics
+```{r tab2, results = "asis"}
 xtab_metrics <- xtable(metricsdata,
                        caption = "Model Performance Metrics",
                        digits = c(0, 0, 4, 4))
@@ -346,7 +355,6 @@ table2 <- print(xtable(xtab_metrics),
                     include.rownames = FALSE,  
                     caption.placement = "top",
                     print.results = FALSE) 
-
 table2
 
 ```
@@ -366,7 +374,6 @@ fig5 <- vip(fitted_model, num_features = 20, geom = "col",
     labs(
     title = "Variable Importance Plot of Top 20 Words Identified by Random Forest") +
   theme_minimal() 
-
 fig5
 
 ggsave("writeup/fig5.png", plot = fig5, width = 6, height = 5, dpi = 300)
@@ -380,14 +387,17 @@ ggsave("writeup/fig5.png", plot = fig5, width = 6, height = 5, dpi = 300)
 df_wordcloud <- vi(fitted_model) %>%
   arrange(desc(Importance)) %>%
   slice(1:50) %>% 
-    select(word = Variable, freq = Importance)
+    select(word = Variable, freq = Importance) 
 
-# Draw wordcloud
-fig6 <- wordcloud(df_wordcloud$word,
-                  df_wordcloud$freq,
-                  scale = c(5, 1),
-                  colors = palette, 
-                  bg.color = "white")
+# Set palette 
+df_wordcloud$assigned_color <- sample(palette, nrow(df_wordcloud), replace = TRUE)    
+
+# Create Word Cloud
+fig6 <- ggplot(df_wordcloud, aes(label = word, size = freq, color = assigned_color)) +
+  geom_text_wordcloud_area() +
+  scale_size_area(max_size = 40) +
+  scale_color_identity() +
+  theme_minimal()
 fig6
 
 ggsave("writeup/fig6.png", plot = fig6, width = 6, height = 5, dpi = 300)
@@ -405,17 +415,23 @@ df_ols <- dtm %>%
 ols_model <- lm(rating.x ~ ., data = df_ols)
 summary(ols_model)
 
-ols_table <- xtable(ols_model, 
-                    caption = "OLS Regression Results (Top 20 Features)")
+```
 
-print(ols_table,
+#### Table 3: OLS Regression Results (Top 20 Words)
+```{r tab3, results = "asis"}
+ols_table <- xtable(ols_model, 
+                    caption = "OLS Regression Results (Top 20 Words)")
+
+table3 <- print(ols_table,
       type = "html",
       include.rownames = TRUE,
       caption.placement = "top",
       html.table.attributes = 'class="table table-striped" style="width:100%;"')
+table3
 
 ```
 
+### Visualising OLS regression
 ```{r ols wrangling}
 
 # Tidy results
@@ -446,7 +462,6 @@ fig7 <-  ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
     y = "Word"
   ) +
   theme_bw()
-
 fig7
 
 ggsave("writeup/fig7.png", plot = fig7, width = 6, height = 5, dpi = 300)
