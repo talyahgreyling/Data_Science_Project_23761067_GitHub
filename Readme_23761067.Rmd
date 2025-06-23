@@ -54,6 +54,7 @@ pacman::p_load(bonsai,
                stopwords,
                stringr,
                targets,
+               tibble,
                tidymodels,
                tidyr,
                tidytext, 
@@ -89,21 +90,22 @@ data %>%
 ```
 
 #### Table 1: Head of dataframe 
-```{r headdata, results = "asis"}
+```{r headdata, results = 'asis', echo = FALSE}
 
 # Create empty table
-datatab1 <- data[1:5,] %>% tibble::as_tibble()
+datatab1 <- data[1:5, ] %>% 
+    as_tibble()
 
 # Populate with useful columns 
 datatab1 <- datatab1 %>%
     select(c("id", "rating", "note", "language", "created_at", "flavor_word_matches", "user_is_featured", "user_is_premium", "user_statistics_followers_count", "user_statistics_followings_count", "user_statistics_ratings_count", "user_statistics_ratings_sum", "user_statistics_reviews_count", "user_statistics_purchase_order_count", "vintage_id", "vintage_year", "vintage_has_valid_ratings", "vintage_statistics_ratings_count", "vintage_statistics_ratings_average", "vintage_statistics_labels_count", "vintage_statistics_reviews_count", "vintage_wine_id", "vintage_wine_name", "vintage_wine_winery_name", "vintage_wine_winery_statistics_ratings_count", "vintage_wine_winery_statistics_ratings_average", "vintage_wine_winery_statistics_labels_count", "vintage_wine_winery_statistics_wines_count", "vintage_wine_statistics_ratings_count", "vintage_wine_statistics_ratings_average", "vintage_wine_statistics_labels_count", "vintage_wine_statistics_vintages_count", "activity_statistics_likes_count", "activity_statistics_comments_count")) 
 
 # Generate Table1
-table1 <- kable(datatab1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
-  kable_styling(font_size = 10) 
+table1 <- kable(datatab1, format = "html", booktabs = TRUE, linesep = "", caption = "") %>%
+  kable_styling(full_width = FALSE, font_size = 12) %>%
+    scroll_box(width = "100%", height = "500px")
 
-# Print Table1
-print(table1)
+print(table1) 
 
 ```
 

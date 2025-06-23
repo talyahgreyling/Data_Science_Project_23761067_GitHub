@@ -401,6 +401,7 @@ pacman::p_load(bonsai,
                stopwords,
                stringr,
                targets,
+               tibble,
                tidymodels,
                tidyr,
                tidytext, 
@@ -539,124 +540,112 @@ data &lt;- readRDS(&quot;data/calitzdorp.rds&quot;)</code></pre>
 ## activity_statistics_comments_count                     &quot;2&quot;</code></pre>
 <div id="table-1-head-of-dataframe" class="section level4">
 <h4>Table 1: Head of dataframe</h4>
-<pre class="r"><code># Create empty table
-datatab1 &lt;- data[1:5,] %&gt;% tibble::as_tibble()
-
-# Populate with useful columns 
-datatab1 &lt;- datatab1 %&gt;%
-    select(c(&quot;id&quot;, &quot;rating&quot;, &quot;note&quot;, &quot;language&quot;, &quot;created_at&quot;, &quot;flavor_word_matches&quot;, &quot;user_is_featured&quot;, &quot;user_is_premium&quot;, &quot;user_statistics_followers_count&quot;, &quot;user_statistics_followings_count&quot;, &quot;user_statistics_ratings_count&quot;, &quot;user_statistics_ratings_sum&quot;, &quot;user_statistics_reviews_count&quot;, &quot;user_statistics_purchase_order_count&quot;, &quot;vintage_id&quot;, &quot;vintage_year&quot;, &quot;vintage_has_valid_ratings&quot;, &quot;vintage_statistics_ratings_count&quot;, &quot;vintage_statistics_ratings_average&quot;, &quot;vintage_statistics_labels_count&quot;, &quot;vintage_statistics_reviews_count&quot;, &quot;vintage_wine_id&quot;, &quot;vintage_wine_name&quot;, &quot;vintage_wine_winery_name&quot;, &quot;vintage_wine_winery_statistics_ratings_count&quot;, &quot;vintage_wine_winery_statistics_ratings_average&quot;, &quot;vintage_wine_winery_statistics_labels_count&quot;, &quot;vintage_wine_winery_statistics_wines_count&quot;, &quot;vintage_wine_statistics_ratings_count&quot;, &quot;vintage_wine_statistics_ratings_average&quot;, &quot;vintage_wine_statistics_labels_count&quot;, &quot;vintage_wine_statistics_vintages_count&quot;, &quot;activity_statistics_likes_count&quot;, &quot;activity_statistics_comments_count&quot;)) 
-
-# Generate Table1
-table1 &lt;- kable(datatab1, &quot;html&quot;, booktabs = TRUE, longtable = FALSE, linesep = &quot;&quot;, caption = &quot;&quot;) %&gt;%
-  kable_styling(font_size = 10) 
-
-# Print Table1
-print(table1)</code></pre>
-<table class="table" style="font-size: 10px; color: black; margin-left: auto; margin-right: auto;">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class="table" style="font-size: 12px; color: black; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 </caption>
 <thead>
 <tr>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 id
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 rating
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 note
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 language
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 created_at
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 flavor_word_matches
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 user_is_featured
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 user_is_premium
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_followers_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_followings_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_ratings_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_ratings_sum
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_reviews_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 user_statistics_purchase_order_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_id
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_year
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_has_valid_ratings
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_statistics_ratings_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_statistics_ratings_average
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_statistics_labels_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_statistics_reviews_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_id
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_name
 </th>
-<th style="text-align:left;">
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_winery_name
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_winery_statistics_ratings_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_winery_statistics_ratings_average
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_winery_statistics_labels_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_winery_statistics_wines_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_statistics_ratings_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_statistics_ratings_average
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_statistics_labels_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 vintage_wine_statistics_vintages_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 activity_statistics_likes_count
 </th>
-<th style="text-align:right;">
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
 activity_statistics_comments_count
 </th>
 </tr>
@@ -1188,6 +1177,7 @@ Axe Hill
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="table-2-description-of-variables-in-datatab" class="section level4">
 <h4>Table 2: Description of variables in datatab</h4>
