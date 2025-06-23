@@ -406,11 +406,10 @@ analysis}\label{exploratory-data-description-analysis}
 \subsection{Data, transformation and
 cleaning}\label{data-transformation-and-cleaning}
 
-The data set utilised in this analysis comprises 2298 observations of
-107 variables, each encapsulating aspects and features related to the
-user, vintage of wine and winery concerned in each review. An excerpt
-from the original data set can be found in Table 1. This is supplemented
-by Table 2 which displays a description for each of the variables
+The original dataset comprises 2298 observations of 107 variables, each
+encapsulating different aspects and features related to the user,
+vintage of wine and winery concerned in each review. Table 1 contains
+the column name as well as a description for each of the variables
 extracted for use in this analysis.
 
 \begin{table}[ht]
@@ -429,7 +428,7 @@ extracted for use in this analysis.
 \label{tab:variables}
 \end{table}
 
-The original data set was modified slightly by filtering out all reviews
+The original dataset was modified slightly by filtering out all reviews
 posted in languages other than English since using APIs to translate
 them to English was too costly an endeavor to undertake. 1667 of the
 original observations remained.
@@ -437,7 +436,7 @@ original observations remained.
 The reviews were tokenized and 30 800 tokens were recorded where-after I
 followed the standard pre-processing steps of removing punctuation,
 numbers, symbols, characters and taking everything to lower case. I also
-used the default tidyverse stop\_words data set to remove stop words
+used the default tidyverse stop\_words dataset to remove stop words
 using 3 respective lexicons: snowball (from the tm package), onix (from
 the ONIX text retrieval system) and smart (from the SMART information
 retrieval system). After these intermediate steps there were 16 869
@@ -503,13 +502,13 @@ process was employed.
 
 The first step entailed utilising a Random Forest model as a method to
 select the 20 review-words (or `variables') that best predicted a high
-rating. This model was chosen for its ability to handle complex data
-sets effectively as well as its scope for completing classification and
+rating. This model was chosen for its ability to handle complex datasets
+effectively as well as its scope for completing classification and
 regression tasks in a manner that is easy to interpret.
 
 To employ step 1 the tokenized data was first converted into a document
 term matrix of words each re-linked to their respective ratings.
-Thereafter I partitioned the data set into two subsets for training and
+Thereafter I partitioned the dataset into two subsets for training and
 testing. I decided to adopt the most generally used splitting practice
 and divide the data by means of a 70/30 split, whereby the 70\% of the
 data is used as the training set and the other 30\% of the data is saved
@@ -591,6 +590,21 @@ the typical absolute error in prediction is around 0.46. The low RMSE
 and MAE are both extremely satisfying whilst the low R-squared conveys
 disappointing explanatory power.
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|r|}
+\hline
+\textbf{.metric} & \textbf{.estimator} & \textbf{.estimate} \\
+\hline
+rmse & standard & 0.64 \\
+rsq  & standard & 0.08 \\
+mae  & standard & 0.48 \\
+\hline
+\end{tabular}
+\caption{Model Performance Metrics}
+\label{tab:model_metrics}
+\end{table}
+
 The top 20 words identified by the Random Forest model were then
 visualised in the variable importance plot displayed in Figure 5. As can
 be expected descriptive words conveying a positive sentiment like
@@ -635,6 +649,42 @@ describing a vintage that makes it into the top 20 tokens. This once
 again hints to an overall preference for red above white wine, but could
 also be due to the concentration of wines made in our sample of
 Calitzdrop.
+
+\begin{table}[ht]
+\centering
+\caption{OLS Regression Results (Top 20 Features)}
+\label{tab:ols_results}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{t value} & \textbf{Pr($>$$|$t$|$)} \\
+\midrule
+(Intercept) & 3.6873*** & 0.0194 & 190.17 & 0.0000 \\
+smooth      & 0.2243*** & 0.0478 & 4.69   & 0.0000 \\
+excellent   & 0.5185*** & 0.0946 & 5.48   & 0.0000 \\
+thin        & -0.7432** & 0.2408 & -3.09 & 0.0021 \\
+sherry      & -0.6365*** & 0.2409 & -2.64 & 0.0083 \\
+fantastic   & 0.4747*** & 0.1355 & 3.50   & 0.0005 \\
+delicious   & 0.3836*** & 0.0873 & 4.39   & 0.0000 \\
+port        & 0.1452*** & 0.0441 & 3.29   & 0.0010 \\
+rich        & 0.1689** & 0.0743 & 2.27   & 0.0231 \\
+caramel     & 0.1971** & 0.0883 & 2.23   & 0.0257 \\
+acidic      & -0.2714** & 0.1306 & -2.08 & 0.0378 \\
+light       & -0.1909*** & 0.0593 & -3.22 & 0.0013 \\
+sadly       & -0.8631*** & 0.2115 & -4.08 & 0.0000 \\
+perfect     & 0.3694*** & 0.0860 & 4.30   & 0.0000 \\
+easy        & -0.0485 & 0.0862 & -0.56 & 0.5738 \\
+chalky      & -1.1765*** & 0.3174 & -3.71 & 0.0002 \\
+cheap       & -0.3370 & 0.2103 & -1.60 & 0.1093 \\
+amazing     & 0.4030*** & 0.1130 & 3.57   & 0.0004 \\
+wow         & 0.2895 & 0.1823 & 1.59   & 0.1124 \\
+decent      & -0.4598*** & 0.1685 & -2.73 & 0.0064 \\
+drinking    & -0.1237 & 0.0834 & -1.48 & 0.1382 \\
+\bottomrule
+\end{tabular}
+\begin{flushleft}
+\footnotesize\textit{Note:} \textit{*}p$<$0.10; \textit{**}p$<$0.05; \textit{***}p$<$0.01
+\end{flushleft}
+\end{table}
 
 Figure 7 portrays a plot of the coefficients such that the playoff
 between those words with positive (represented by the green bars) and

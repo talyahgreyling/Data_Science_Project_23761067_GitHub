@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.20)  24 JUN 2025 00:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.6.20)  24 JUN 2025 00:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -774,7 +774,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <writeup/fig1.png, id=114, 433.62pt x 361.35pt>
 File: writeup/fig1.png Graphic file (type png)
 <use writeup/fig1.png>
-Package pdftex.def Info: writeup/fig1.png  used on input line 458.
+Package pdftex.def Info: writeup/fig1.png  used on input line 457.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
 
@@ -789,7 +789,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <writeup/fig2.png, id=121, 433.62pt x 361.35pt>
 File: writeup/fig2.png Graphic file (type png)
 <use writeup/fig2.png>
-Package pdftex.def Info: writeup/fig2.png  used on input line 483.
+Package pdftex.def Info: writeup/fig2.png  used on input line 482.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
 
@@ -813,7 +813,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <writeup/fig3.png, id=138, 433.62pt x 361.35pt>
 File: writeup/fig3.png Graphic file (type png)
 <use writeup/fig3.png>
-Package pdftex.def Info: writeup/fig3.png  used on input line 528.
+Package pdftex.def Info: writeup/fig3.png  used on input line 527.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
 
@@ -837,7 +837,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <writeup/fig4.png, id=149, 433.62pt x 361.35pt>
 File: writeup/fig4.png Graphic file (type png)
 <use writeup/fig4.png>
-Package pdftex.def Info: writeup/fig4.png  used on input line 575.
+Package pdftex.def Info: writeup/fig4.png  used on input line 574.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
 
@@ -852,12 +852,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 <writeup/fig5.png, id=156, 433.62pt x 361.35pt>
 File: writeup/fig5.png Graphic file (type png)
 <use writeup/fig5.png>
-Package pdftex.def Info: writeup/fig5.png  used on input line 608.
+Package pdftex.def Info: writeup/fig5.png  used on input line 622.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 <writeup/fig6.png, id=157, 433.62pt x 361.35pt>
 File: writeup/fig6.png Graphic file (type png)
 <use writeup/fig6.png>
-Package pdftex.def Info: writeup/fig6.png  used on input line 616.
+Package pdftex.def Info: writeup/fig6.png  used on input line 630.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
 
@@ -868,7 +868,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[11 <./writeup/fig5.png>]
+[11]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -877,22 +877,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[12 <./writeup/fig6.png>]
-<writeup/fig7.png, id=170, 433.62pt x 361.35pt>
+[12 <./writeup/fig5.png>]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[13 <./writeup/fig6.png>]
+<writeup/fig7.png, id=176, 433.62pt x 361.35pt>
 File: writeup/fig7.png Graphic file (type png)
 <use writeup/fig7.png>
-Package pdftex.def Info: writeup/fig7.png  used on input line 653.
+Package pdftex.def Info: writeup/fig7.png  used on input line 703.
 (pdftex.def)             Requested size: 386.73119pt x 322.2897pt.
 
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[13 <./writeup/fig7.png>]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -902,6 +902,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [14]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[15 <./writeup/fig7.png>]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[16]
 No file Paper_23761067.bbl.
 
 
@@ -912,27 +930,27 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[15] (./Paper_23761067.aux)
+[17] (./Paper_23761067.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-05-26>
  ***********
 Package rerunfilecheck Info: File `Paper_23761067.out' has not changed.
-(rerunfilecheck)             Checksum: D83EC3CE6D0533E64AC78FBB4B4F104B;1997.
+(rerunfilecheck)             Checksum: C307D2AFCFF15AEAF848D02F7F071E6E;1998.
  ) 
 Here is how much of TeX's memory you used:
- 18594 strings out of 469867
- 340352 string characters out of 5484221
- 727308 words of memory out of 5000000
- 46543 multiletter control sequences out of 15000+600000
+ 18602 strings out of 469867
+ 340497 string characters out of 5484221
+ 732308 words of memory out of 5000000
+ 46547 multiletter control sequences out of 15000+600000
  685792 words of font info for 81 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,79p,551b,1036s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on Paper_23761067.pdf (15 pages, 839777 bytes).
+ 75i,11n,79p,551b,1056s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/ProgramData/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
+Output written on Paper_23761067.pdf (17 pages, 846470 bytes).
 PDF statistics:
- 268 PDF objects out of 1000 (max. 8388607)
- 206 compressed objects within 3 object streams
- 50 named destinations out of 1000 (max. 500000)
+ 283 PDF objects out of 1000 (max. 8388607)
+ 217 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 500000)
  145 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -198,7 +198,20 @@ include_graphics("writeup/fig4.png")
 
 The final model was then fit on the full training set with the optimal hyper-parameters plugged into the workflow and the final models' performance was evaluated on the test set. The trained model was inspected and an assessment was carried out on the models' performance on unseen data. These results are displayed in Table 3. The RMSE indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared conveys that 12% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.46. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
 
-<!-- \input{table3.tex} -->
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|r|}
+\hline
+\textbf{.metric} & \textbf{.estimator} & \textbf{.estimate} \\
+\hline
+rmse & standard & 0.64 \\
+rsq  & standard & 0.08 \\
+mae  & standard & 0.48 \\
+\hline
+\end{tabular}
+\caption{Model Performance Metrics}
+\label{tab:model_metrics}
+\end{table}
 
 The top 20 words identified by the Random Forest model were then visualised in the variable importance plot displayed in Figure 5. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'absolutely', 'fantastic', 'amazing' and 'delicious' made up our top ranks. Lesser expected words are 'smooth' and 'port' which confirm our suspicions from Figure 2 that red wines are better associated with high ratings than white wines. Furthermore, Figure 6 depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'beautiful', 'bliss', 'brilliant', 'elegant' and 'stunning' can be found. 
 
@@ -217,7 +230,41 @@ include_graphics("writeup/fig6.png")
 
 During the second step ratings were regressed on the top 20 words identified by the Random Forest model during step 1, to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. These regression results are summarised in Table 4 and we can see that, to our satisfaction, most of the coefficients display with great significance at even the 0% level. We see that the probability of receiving a good rating increases by 50% when the word 'excellent' is used in a review, but reduces by 168% when the word 'bland' is included. Interestingly, 'port' is the only word describing a vintage that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in our sample of Calitzdrop. 
 
-<!-- \input{table4.tex} -->
+\begin{table}[ht]
+\centering
+\caption{OLS Regression Results (Top 20 Features)}
+\label{tab:ols_results}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{} & \textbf{Estimate} & \textbf{Std. Error} & \textbf{t value} & \textbf{Pr($>$$|$t$|$)} \\
+\midrule
+(Intercept) & 3.6873*** & 0.0194 & 190.17 & 0.0000 \\
+smooth      & 0.2243*** & 0.0478 & 4.69   & 0.0000 \\
+excellent   & 0.5185*** & 0.0946 & 5.48   & 0.0000 \\
+thin        & -0.7432** & 0.2408 & -3.09 & 0.0021 \\
+sherry      & -0.6365*** & 0.2409 & -2.64 & 0.0083 \\
+fantastic   & 0.4747*** & 0.1355 & 3.50   & 0.0005 \\
+delicious   & 0.3836*** & 0.0873 & 4.39   & 0.0000 \\
+port        & 0.1452*** & 0.0441 & 3.29   & 0.0010 \\
+rich        & 0.1689** & 0.0743 & 2.27   & 0.0231 \\
+caramel     & 0.1971** & 0.0883 & 2.23   & 0.0257 \\
+acidic      & -0.2714** & 0.1306 & -2.08 & 0.0378 \\
+light       & -0.1909*** & 0.0593 & -3.22 & 0.0013 \\
+sadly       & -0.8631*** & 0.2115 & -4.08 & 0.0000 \\
+perfect     & 0.3694*** & 0.0860 & 4.30   & 0.0000 \\
+easy        & -0.0485 & 0.0862 & -0.56 & 0.5738 \\
+chalky      & -1.1765*** & 0.3174 & -3.71 & 0.0002 \\
+cheap       & -0.3370 & 0.2103 & -1.60 & 0.1093 \\
+amazing     & 0.4030*** & 0.1130 & 3.57   & 0.0004 \\
+wow         & 0.2895 & 0.1823 & 1.59   & 0.1124 \\
+decent      & -0.4598*** & 0.1685 & -2.73 & 0.0064 \\
+drinking    & -0.1237 & 0.0834 & -1.48 & 0.1382 \\
+\bottomrule
+\end{tabular}
+\begin{flushleft}
+\footnotesize\textit{Note:} \textit{*}p$<$0.10; \textit{**}p$<$0.05; \textit{***}p$<$0.01
+\end{flushleft}
+\end{table}
 
 Figure 7 portrays a plot of the coefficients such that the playoff between those words with positive (represented by the green bars) and negative (represented by the red bars) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
 

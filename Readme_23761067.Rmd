@@ -333,11 +333,21 @@ final_fit %>%
   extract_fit_parsnip()
 
 # Asses how model performs on unseen data
-table3 <- predict(final_fit, testing_ratings) %>%
+metricsdata <- predict(final_fit, testing_ratings) %>%
   bind_cols(testing_ratings) %>%
   metrics(truth = rating.x, estimate = .pred)
 
-table3
+xtab_metrics <- xtable(metricsdata,
+                       caption = "Model Performance Metrics",
+                       digits = c(0, 0, 4, 4))
+
+table2 <- print(xtable(xtab_metrics),
+                    type = "html",
+                    include.rownames = FALSE,  
+                    caption.placement = "top",
+                    print.results = FALSE) 
+
+table2
 
 ```
 
@@ -395,11 +405,15 @@ df_ols <- dtm %>%
 ols_model <- lm(rating.x ~ ., data = df_ols)
 summary(ols_model)
 
-### Table 4 ### 
+ols_table <- xtable(ols_model, 
+                    caption = "OLS Regression Results (Top 20 Features)")
 
-# ols_tidy %>%
-#   kable(format = "latex", booktabs = TRUE, digits = 3) %>%
-#   save_kable("ols_results.tex")
+print(ols_table,
+      type = "html",
+      include.rownames = TRUE,
+      caption.placement = "top",
+      html.table.attributes = 'class="table table-striped" style="width:100%;"')
+
 ```
 
 ```{r ols wrangling}
