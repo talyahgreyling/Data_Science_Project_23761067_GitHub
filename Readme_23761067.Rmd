@@ -72,36 +72,6 @@ set.seed(777)
 # Set theme & colour palette 
 palette <- c("#4d8049", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#9c0315")
 
-my_theme <- theme(
-  # Title, subtitle, and caption
-  plot.title = element_text(colour = "white", size = 16, family = "arial", hjust = 0.5,face = "bold"),
-  plot.subtitle = element_text(colour = "white", size = 14, family = "arial"),
-  plot.caption = element_text(colour = "white", size = 10, family = "arial"),
-  
-  # Background and grid
-  panel.background = element_rect(fill = "white", colour = "black"),
-  plot.background = element_rect(fill = "white", color = "black"),
-  panel.grid.major = element_line(color = "white", size = 0.1),
-  panel.grid.minor = element_line(color = "white", size = 0.1),
-  
-  # Axis titles and labels
-  axis.title.x = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
-  axis.title.y = element_text(colour = "white", size = 12,family = "arial", hjust = 0.5,face = "bold"),
-  axis.text.y = element_text(colour = "white", size = 10,family = "arial"),
-  axis.text.x = element_text(colour = "white", size = 10,family = "arial"),
-  
-  # Legend 
-  legend.position = "right",
-  legend.text = element_text(colour = "white",size = 12, family = "arial"),
-  legend.title = element_text(colour = "white",size = 12, family = "arial", hjust = 3,face = "bold"),
-  legend.key = element_rect(fill = "black", color = "black"),
-  legend.background = element_rect(fill = "black"),
-  
-  # Other
-  axis.ticks = element_blank(),
-  strip.text = element_text(colour = "white", size = 12, family = "arial", vjust = 1, hjust = 0.5)
-)
-
 # Import data
 data <- readRDS("data/calitzdorp.rds")
                
