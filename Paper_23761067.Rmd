@@ -177,6 +177,12 @@ A workflow containing the recipe and model specification was then built to impro
 
 Random Forests require minimal hyper-parameter tuning. The most important parameter to optimise is 'mtry' since selecting a value that is too low will alleviate bias and selecting a number that is too high will increase variance. I defined a regular grid over values of 'mtry' that were possible between 2 and 18 and tuned the forest with the same workflow and CV folds as earlier. Figure 4 plots the RMSE (Root Mean Squared Error) performance of my Random Forest by 'mtry.' The model was tuned to the lowest mean metric value, as displayed at mtry = 16 in Figure 4, for the best performance.
 
+```{r fig4, fig.cap = "Random Forest Performance by 'mtry'", out.width = "0.8\\linewidth"}
+
+include_graphics("writeup/fig4.png")
+
+```
+
 The final model was then fit on the full training set with the optimal hyper-parameters plugged into the workflow and the final models' performance was evaluated on the test set. The trained model was inspected and an assessment was carried out on the models' performance on unseen data. These results are displayed in Table 3. The RMSE indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared conveys that 12% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.46. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
 
 The top 20 words identified by the Random Forest model were then visualised in the variable importance plot displayed in Figure 5. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'absolutely', 'fantastic', 'amazing' and 'delicious' made up our top ranks. Lesser expected words are 'smooth' and 'port' which confirm our suspicions from Figure 2 that red wines are better associated with high ratings than white wines. Furthermore, Figure 6 depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'beautiful', 'bliss', 'brilliant', 'elegant' and 'stunning' can be found. 

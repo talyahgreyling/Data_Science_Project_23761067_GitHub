@@ -360,6 +360,8 @@ fig4 <- model_res %>%
 
 fig4
 
+ggsave("writeup/fig4.png", plot = fig4, width = 6, height = 5, dpi = 300)
+
 ```
 
 ```{r randomforest continued again}
