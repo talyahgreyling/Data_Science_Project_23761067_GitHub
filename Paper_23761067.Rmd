@@ -46,15 +46,8 @@ linestretch: 1.2
 link-citations: TRUE            # Add dynamic links to papers in reference list
 
 abstract: |
-  *UPDATE ABSTRACT*
-  * Copy table output, put in ChatGPT & ask to rewrite @Latex format, paste in Paper_23761067
-  * ggsave & include_graphics("{location}tables/table1.png") for plots 
-  Main research question: NLP: Which words in reviews are associated with higher wine ratings?
-  * interesting sentiment/wine words/descriptives literature
-  * Method: 2 step: random forrest (or lasso) - variable selector (words as columns & ratings as rows), top N words (20/50) filter only on those columns & draw word clouds, variable importance plots & PDP (Partial Dependence Plots)
-  * Then run regressions of best words (OLS)
-  
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+  This paper utilises a Random Forest model as a variable selector and performs a subsequent OLS regression analysis to determine which words (if any) in wine reviews best predict their rating. The author's results are statistically significant at the 0% level and indicate that a correlation does indeed exist between these two metrics such that positive descriptives have a positive effect on ratings and vice versa. The effect of negative descriptives is however found to be of a larger magnitude, thereby portraying loss aversion. 
+
 ---
 
 ```{r setup, include = FALSE}
@@ -176,7 +169,7 @@ include_graphics("writeup/fig3.png")
 
 ```
 
-The recipe (a set prepossessing pipeline created for the data) was then defined and set to facilitate 3 transformations: it included a hot-encoding applied to categorical variables, removed numeric predictors with zero variance and normalized numeric predictors. 
+The recipe (a set prepossessing pipeline created for the data) was then defined and set to facilitate 3 transformations: it included a hot-encoding applied to categorical variables, removed numeric predictors with zero variance and normalized numeric predictors. The first and third transformations are not required by Random Forests as they process raw data well, but are still included for completeness sake. 
 
 Next, a tree-based model called a Random Forest was specified. This model utilises numerous trees fit on bootstrapped samples of the data reserved for training and uses an arbitrary subset of predictors at every split (see the 'mtry' parameter) which then averages the predictions made by all the trees to reduce variance. This method is therefore robust to over fitting, can efficiently process interactions and non-linearities and is insensitive to scaling (by which variables do not need to be normalized). My regression forest model employs 100 trees with a minimum of 10 observations in a node pre split. 
 

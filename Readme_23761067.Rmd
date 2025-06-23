@@ -249,6 +249,7 @@ dtm <- left_join(ratings, dtm, by = "review_id") %>%
 split_ratings <- initial_split(dtm, prop = 0.7)
 training_ratings <- training(split_ratings)
 testing_ratings <- testing(split_ratings)
+
 ``` 
 
 #### Figure 3: Distribution of training & testing data
