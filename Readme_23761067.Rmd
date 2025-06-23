@@ -390,7 +390,7 @@ table3
 
 ```
 
-#### Figure 5: Variable Importance Plot of top 20 words in reviews identified by RandomForest model 
+#### Figure 5: Variable Importance Plot of top 20 words in reviews identified by Random Forest model 
 ```{r vip, fig.length = 10}
 
 # Which features had the most influence on predictions 
@@ -408,9 +408,11 @@ fig5 <- vip(fitted_model, num_features = 20, geom = "col",
 
 fig5
 
+ggsave("writeup/fig5.png", plot = fig5, width = 6, height = 5, dpi = 300)
+
 ```
 
-#### Figure 6: Word cloud of top 50 words in reviews identified by RandomForest model
+#### Figure 6: Word cloud of top 50 words in reviews identified by Random Forest model
 ```{r rf wordcloud}
 
 # Convert data for wordcloud
@@ -420,9 +422,14 @@ df_wordcloud <- vi(fitted_model) %>%
     select(word = Variable, freq = Importance)
 
 # Draw wordcloud
-fig6 <- wordcloud2(df_wordcloud, size = 1.2, color = palette, backgroundColor = "white")
-
+fig6 <- wordcloud(df_wordcloud$word,
+                  df_wordcloud$freq,
+                  scale = c(5, 1),
+                  colors = palette, 
+                  bg.color = "white")
 fig6
+###################### HERE
+ggsave("writeup/fig6.png", plot = fig6, width = 6, height = 5, dpi = 300)
 
 ```
 
