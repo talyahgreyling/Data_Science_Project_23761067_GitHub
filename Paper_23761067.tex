@@ -296,6 +296,8 @@ paper in entirety.
 
 \newpage
 
+\begin{center}\includegraphics[width=0.8\linewidth]{writeup/vivino} \end{center}
+
 \section{Introduction}\label{introduction}
 
 \label{Intro}
@@ -447,7 +449,12 @@ The high frequency of observations that can be seen at a rating of 3.5
 and 4 suggest that there may be certain words driving better ratings.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig1} \caption{Histogram of average ratings of review tokens}\label{fig:fig1}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig1} 
+
+}
+
+\caption{Histogram of average ratings of review tokens}\label{fig:fig1}
 \end{figure}
 
 To gain a bit of insight into which words these might be I created a
@@ -467,7 +474,12 @@ to note that 4/5 of these most popular words seem best suited to
 describing red, instead of white wines.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig2} \caption{Word cloud of popular words in reviews based on popularity index}\label{fig:fig2}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig2} 
+
+}
+
+\caption{Word cloud of popular words in reviews based on popularity index}\label{fig:fig2}
 \end{figure}
 
 The wide difference in importance of tokens as portrayed by both Figures
@@ -507,7 +519,12 @@ followed a satisfyingly similar trajectory that enabled me to
 confidently continue with my analysis.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig3} \caption{Distribution of training and testing data}\label{fig:fig3}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig3} 
+
+}
+
+\caption{Distribution of training and testing data}\label{fig:fig3}
 \end{figure}
 
 The recipe (a set prepossessing pipeline created for the data) was then
@@ -546,7 +563,12 @@ tuned to the lowest mean metric value, as displayed at mtry = 16 in
 Figure 4, for the best performance.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig4} \caption{Random Forest Performance by 'mtry'}\label{fig:fig4}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig4} 
+
+}
+
+\caption{Random Forest Performance by 'mtry'}\label{fig:fig4}
 \end{figure}
 
 The final model was then fit on the full training set with the optimal
@@ -574,10 +596,20 @@ Random Forest model where further positive descriptives like
 can be found.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig5} \caption{Variable Importance Plot of Top 20 Words in Reviews Identified by Random Forest Model}\label{fig:fig5}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig5} 
+
+}
+
+\caption{Variable Importance Plot of Top 20 Words in Reviews Identified by Random Forest Model}\label{fig:fig5}
 \end{figure}
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig6} \caption{Word cloud of top 50 words in reviews identified by Random Forest model}\label{fig:fig6}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig6} 
+
+}
+
+\caption{Word cloud of top 50 words in reviews identified by Random Forest model}\label{fig:fig6}
 \end{figure}
 
 \subsection{Step 2: OLS Regression}\label{step-2-ols-regression}
@@ -609,7 +641,12 @@ attributed to humankind's tendency to display loss aversion where a loss
 a good wine) of a similar size.
 
 \begin{figure}[H]
-\includegraphics[width=0.8\linewidth]{writeup/fig7} \caption{Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model}\label{fig:fig7}
+
+{\centering \includegraphics[width=0.8\linewidth]{writeup/fig7} 
+
+}
+
+\caption{Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model}\label{fig:fig7}
 \end{figure}
 
 \newpage
