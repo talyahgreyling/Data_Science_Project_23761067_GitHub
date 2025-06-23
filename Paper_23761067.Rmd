@@ -87,7 +87,7 @@ loc <- "C:/Users/Talyah Greyling/Documents/1) Meesters/1) Data Science 871/Data_
 \newpage
 # Introduction \label{Intro}
 
-Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section1 contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section 2 explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data by making use of histograms and word clouds. In section 3 statistical modelling is employed in a two-step process consisting of a random forest variable selection method and an OLS regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section 4. 
+Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section \ref{LitRev} contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section 2 explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data by making use of histograms and word clouds. In section 3 statistical modelling is employed in a two-step process consisting of a random forest variable selection method and an OLS regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section 4. 
 
 \newpage
 # Literature review \label{LitRev}
@@ -134,23 +134,35 @@ The wide difference in importance of tokens as portrayed by both Figures 1 & 2 a
 
 \newpage
 # Statistical modelling \label{StatMod}
+To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process is employed. 
 
-To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process is employed. Step 1 entails utilising a random forest model as a method to select the 20 words (or 'variables') that best predict a high rating. This model was chosen for its ability to handle complex datasets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
+## Step 1: Random Forest 
+The first step entails utilising a random forest model as a method to select the 20 words (or 'variables') that best predict a high rating. This model was chosen for its ability to handle complex datasets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
 
 These variables are then fed into a simple OLS regression in 2 step of the modelling process to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. 
 
-To employ step 1 the tokenised data was first converted into a document term matrix of words and each relinked to their respective ratings. 
+To employ step 1 the tokenised data was first converted into a document term matrix of words and each re-linked to their respective ratings. Thereafter I partitioned the data set into two subsets for training and testing. I decided to adopt the most generally used splitting practice and divide the data by means of a 70/30 split, whereby the training set makes up 70% of the data and the other 30% of the data is saved for testing. By employing this split a healthy balance is maintained between availing a sufficient amount of data to effectively train the model and keeping a significant portion of the data unseen to enable assessing how the model performs without the risk of overfitting that would have been present if the data where trained and tested on the same set of data. Figure 3 plots the distribution of ratings found in respectively the training (red) and the testing (green) sets. These followed a satisfyingly similar trajectory that enabled me to confidently continue with my analysis. 
 
+The recipe (a set prepossessing pipeline created for the data) was then defined and set to facilitate 3 transformations: it includes a hot-encoding applied to categorical variables, removes numeric predictors with zero variance and normalizes numeric predictors. 
 
-    * Plot training & testing data to confirm similar ratings distributions
-    * Plot RF performance with different mtry values
-    * Visualise top 20 with a variable importance plot 
-    * Visualise top 50 in a wordcloud
-* Step 2: run an OLS regression of the best words to get coefficients for their probability of determining good ratings
+Next, a tree-based model called a Random Forest is specified. This model utilises numerous trees fit on bootstrapped samples of data reserved for training and using an arbitrary subset of predictors at every split (see the mtry parameter) which then averages the predictions made by all the trees to reduce variance. This method is therefore robust to overfitting, can efficiently process interactions and nonlinearities and is insentitive to scaling (by which variables do not ned to be normalized). My regression forest model employs 100 trees with a minimum of 10 observations in a node pre split. 
+
+A workflow containing the recipe and model specification is built to improve reproducibility and reduce errors by ensuring that all transformations are recorded and performed in the correct order. A 5-fold cross-validation approach is employed for model evaluation and hyperparameter tuning whereby the training data is divided into 5 parts that are each employed once as the validation set and act as the training set otherwise. This ensures a robust model performance estimate that doesn't rely on a single split between training and testing. 
+
+Random Forests require minimal hyperparameter tuning. The most important parameter to optimise is mtry since a value that is too low till alleviate bias and a number that is too large will increase variance. I defined a regular grid over values of mtry that were possible between 2 and 18 and tune the forest with the same workflow and CV folds as earlier. Figure 4 plots the root mean squared error performance of my Random Forest by mtry. The model is tuned to the lowest mean metric value, found at mtry = 16, for the best performance.
+
+Finally the ultimate model was fit on the full training set, the optimal hyperparameters were plugged into the workflow and the final models' performance evaluated on the test set. The trained model was inspected and an assesment was carried out on the models' performance on unseen data. These results are displayed in Table 3. The RMSE  (Root Mean Squared Error) indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared tells us that 12% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.46. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
+
+The top 20 words identified by the Random Forest model are then visualised in the variable importance plot displayed in Figure 5. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'absolutely', 'fantastic', 'amazing' and 'delicious' make up our top ranks. Lesser expected words are 'smooth' and 'port' confirming our suspicions that red wines being better associated with high ratings than white wines from Figure 2. Furthermore Figure 6 depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'beautiful', 'bliss', 'brilliant', 'elegant' and 'stunning' can be found. 
+    
+## Step 2: OLS Regression    
+During the second step ratings are regressed on the top 20 words, as identified by the Random Forest model during step 1, to get coefficients for their probability of determining good ratings. These regression results are summarised in Table 4 and we can see that to our satisfaction most of the coefficients display with great significance at even up to the 0% level. We see that the probability of receiving a good rating increases by 50% when the word 'excellent' is used in a review, but reduces by 168% when the word 'bland' is included. Interestingly Port is the only vintage that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in Calitzdrop. 
+
+Figure 5 portrays a plot of the coefficients such that the playoff between those words with positive (INSERT COLOUR) and negative (INSERT COLOUR) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating and note that negative descriptives have an effect of a greater magnitude in reducing the probability of a goot rating than the positive descriptives have of increasing a good rating. This can be driven by humankinds tendancy to loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
 
 \newpage
 # Conclusion \label{Concl}
-
+I therefore find satisfactory evidence that there is indeed a correlation between the words used to describe wine in reviews and their subsequent ratings. These findings are significant and were created to be robust to errors by implementing a Random Forest model to identify which words to include as explanatory variables in my OLS regression. As expected positive descriptives has a positive effect on ratings and vice versa for negative descriptives. 
 
 
 

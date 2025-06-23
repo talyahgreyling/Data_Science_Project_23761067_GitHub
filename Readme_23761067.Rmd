@@ -375,9 +375,11 @@ final_fit %>%
   extract_fit_parsnip()
 
 # Asses how model performs on unseen data
-predict(final_fit, testing_ratings) %>%
+table3 <- predict(final_fit, testing_ratings) %>%
   bind_cols(testing_ratings) %>%
   metrics(truth = rating.x, estimate = .pred)
+
+table3
 
 ```
 
@@ -393,7 +395,9 @@ varimp
 # Draw VIP
 fig5 <- vip(fitted_model, num_features = 20, geom = "col", 
     aesthetics = list(fill = "#CE677A")) +
-  theme_minimal()
+    labs(
+    title = "Variable Importance Plot of Top 20 Words Identified by Random Forest") +
+  theme_minimal() 
 
 fig5
 
@@ -425,6 +429,8 @@ df_ols <- dtm %>%
 
 ols_model <- lm(rating.x ~ ., data = df_ols)
 summary(ols_model)
+
+### Table 4 ### 
 
 # ols_tidy %>%
 #   kable(format = "latex", booktabs = TRUE, digits = 3) %>%
