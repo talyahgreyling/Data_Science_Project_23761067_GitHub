@@ -390,7 +390,7 @@ pacman::p_load(bonsai,
                here, 
                kableExtra, 
                knitr,
-               ldatuning,                   ############# update @ both rmd&#39;s
+               ldatuning,                  
                modeltime,
                pacman,
                pdp,
@@ -541,7 +541,7 @@ data &lt;- readRDS(&quot;data/calitzdorp.rds&quot;)</code></pre>
 <div id="table-1-head-of-dataframe" class="section level4">
 <h4>Table 1: Head of dataframe</h4>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
-<table class="table" style="font-size: 12px; color: black; width: auto !important; margin-left: auto; margin-right: auto;">
+<table style="font-size: 12px; color: black; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 </caption>
 <thead>
@@ -1187,63 +1187,80 @@ df1 &lt;- data.frame(
     Description = c(&quot;Identification code of review&quot;,
                     &quot;Rating out of 5 assigned to the wine by the reviewer&quot;,
                     &quot;Note written about the wine by the reviewer&quot;,
-                    &quot;Language of the review&quot;)
-    ) %&gt;% tibble::as_tibble()
+                    &quot;Language of the review&quot;))
 
-# Generate Table2
-table2 &lt;- kable(df1, &quot;html&quot;, booktabs = TRUE, longtable = FALSE, linesep = &quot;&quot;, caption = &quot;&quot;) %&gt;%
-  kable_styling(font_size = 10) 
+table2 &lt;- print(xtable(df1),
+                    type = &quot;html&quot;,
+                    include.rownames = TRUE,  
+                    print.results = FALSE)     
 
-# Print Table2
-print(table2)</code></pre>
-<table class="table" style="font-size: 10px; color: black; margin-left: auto; margin-right: auto;">
-<caption style="font-size: initial !important;">
-</caption>
-<thead>
+# Display in R Markdown (HTML output)
+table2</code></pre>
+[1]
+“<!-- html table generated in R 4.5.0 by xtable 1.8-4 package --><!-- Mon Jun 23 20:09:45 2025 -->
+<table border="1">
+
 <tr>
-<th style="text-align:left;">
+<th>
+</th>
+<th>
 Variable
 </th>
-<th style="text-align:left;">
+<th>
 Description
 </th>
 </tr>
-</thead>
-<tbody>
+
 <tr>
-<td style="text-align:left;">
+<td align="\&quot;right\&quot;">
+1
+</td>
+<td>
 id
 </td>
-<td style="text-align:left;">
+<td>
 Identification code of review
 </td>
 </tr>
+
 <tr>
-<td style="text-align:left;">
+<td align="\&quot;right\&quot;">
+2
+</td>
+<td>
 rating
 </td>
-<td style="text-align:left;">
+<td>
 Rating out of 5 assigned to the wine by the reviewer
 </td>
 </tr>
+
 <tr>
-<td style="text-align:left;">
+<td align="\&quot;right\&quot;">
+3
+</td>
+<td>
 note
 </td>
-<td style="text-align:left;">
+<td>
 Note written about the wine by the reviewer
 </td>
 </tr>
+
 <tr>
-<td style="text-align:left;">
+<td align="\&quot;right\&quot;">
+4
+</td>
+<td>
 language
 </td>
-<td style="text-align:left;">
+<td>
 Language of the review
 </td>
 </tr>
-</tbody>
+
 </table>
+<p>”</p>
 </div>
 </div>
 <div id="preparing-dataset-for-analysis" class="section level3">

@@ -43,7 +43,7 @@ pacman::p_load(bonsai,
                here, 
                kableExtra, 
                knitr,
-               ldatuning,                   ############# update @ both rmd's
+               ldatuning,                  
                modeltime,
                pacman,
                pdp,
@@ -102,7 +102,7 @@ datatab1 <- datatab1 %>%
 
 # Generate Table1
 table1 <- kable(datatab1, format = "html", booktabs = TRUE, linesep = "", caption = "") %>%
-  kable_styling(full_width = FALSE, font_size = 12) %>%
+  kable_styling(bootstrap_options = "none", full_width = FALSE, font_size = 12) %>%
     scroll_box(width = "100%", height = "500px")
 
 print(table1) 
@@ -118,15 +118,16 @@ df1 <- data.frame(
     Description = c("Identification code of review",
                     "Rating out of 5 assigned to the wine by the reviewer",
                     "Note written about the wine by the reviewer",
-                    "Language of the review")
-    ) %>% tibble::as_tibble()
+                    "Language of the review"))
 
-# Generate Table2
-table2 <- kable(df1, "html", booktabs = TRUE, longtable = FALSE, linesep = "", caption = "") %>%
-  kable_styling(font_size = 10) 
+table2 <- print(xtable(df1),
+                    type = "html",
+                    include.rownames = TRUE,  
+                    print.results = FALSE)     
 
-# Print Table2
-print(table2)
+# Display in R Markdown (HTML output)
+table2
+
 
 ```
 
@@ -424,7 +425,7 @@ summary(ols_model)
 #   save_kable("ols_results.tex")
 ```
 
-```{r old regression}
+```{r ols wrangling}
 
 # Tidy results
 ols_results <- broom::tidy(ols_model) %>%
