@@ -576,6 +576,9 @@ can be found.
 \begin{figure}[H]
 \includegraphics[width=0.8\linewidth]{writeup/fig5} \caption{Variable Importance Plot of Top 20 Words in Reviews Identified by Random Forest Model}\label{fig:fig5}
 \end{figure}
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{writeup/fig6} \caption{Word cloud of top 50 words in reviews identified by Random Forest model}\label{fig:fig6}
+\end{figure}
 
 \subsection{Step 2: OLS Regression}\label{step-2-ols-regression}
 
@@ -593,16 +596,21 @@ again hints to an overall preference for red above white wine, but could
 also be due to the concentration of wines made in our sample of
 Calitzdrop.
 
-Figure 5 portrays a plot of the coefficients such that the playoff
-between those words with positive (INSERT COLOUR) and negative (INSERT
-COLOUR) effects on ratings can be seen. We note that there is a higher
-collection of positive descriptives that increase the probability of a
-good rating than those predicting a bad rating. We also note that
-negative descriptives have an effect of a greater magnitude in reducing
-the probability of a good rating than the positive descriptives have of
-increasing a good rating. This can be attributed to humankind's tendency
-to display loss aversion where a loss (buying a bad wine) is valued at a
-greater magnitude than a gain (buying a good wine) of a similar size.
+Figure 7 portrays a plot of the coefficients such that the playoff
+between those words with positive (represented by the green bars) and
+negative (represented by the red bars) effects on ratings can be seen.
+We note that there is a higher collection of positive descriptives that
+increase the probability of a good rating than those predicting a bad
+rating. We also note that negative descriptives have an effect of a
+greater magnitude in reducing the probability of a good rating than the
+positive descriptives have of increasing a good rating. This can be
+attributed to humankind's tendency to display loss aversion where a loss
+(buying a bad wine) is valued at a greater magnitude than a gain (buying
+a good wine) of a similar size.
+
+\begin{figure}[H]
+\includegraphics[width=0.8\linewidth]{writeup/fig7} \caption{Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model}\label{fig:fig7}
+\end{figure}
 
 \newpage
 

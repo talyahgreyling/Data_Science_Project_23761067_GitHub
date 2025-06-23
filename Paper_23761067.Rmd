@@ -194,12 +194,25 @@ The top 20 words identified by the Random Forest model were then visualised in t
 include_graphics("writeup/fig5.png")
 
 ```
+```{r fig6, fig.cap = "Word cloud of top 50 words in reviews identified by Random Forest model", out.width = "0.8\\linewidth"}
+
+include_graphics("writeup/fig6.png")
+
+```
     
 ## Step 2: OLS Regression    
 
 During the second step ratings were regressed on the top 20 words identified by the Random Forest model during step 1, to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. These regression results are summarised in Table 4 and we can see that, to our satisfaction, most of the coefficients display with great significance at even the 0% level. We see that the probability of receiving a good rating increases by 50% when the word 'excellent' is used in a review, but reduces by 168% when the word 'bland' is included. Interestingly, 'port' is the only word describing a vintage that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in our sample of Calitzdrop. 
 
-Figure 5 portrays a plot of the coefficients such that the playoff between those words with positive (INSERT COLOUR) and negative (INSERT COLOUR) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
+<!-- \input{table4.tex} -->
+
+Figure 7 portrays a plot of the coefficients such that the playoff between those words with positive (represented by the green bars) and negative (represented by the red bars) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
+
+```{r fig7, fig.cap = "Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model", out.width = "0.8\\linewidth"}
+
+include_graphics("writeup/fig7.png")
+
+```
 
 \newpage
 # Conclusion 

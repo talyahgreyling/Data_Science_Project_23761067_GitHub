@@ -70,7 +70,7 @@ options(scipen = 999)
 set.seed(777)
 
 # Set theme & colour palette 
-palette <- c("#163940", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#5c2011")
+palette <- c("#4d8049", "#3A7370", "#FFC57B", "#FB9072", "#CE677A", "#9c0315")
 
 my_theme <- theme(
   # Title, subtitle, and caption
@@ -428,7 +428,7 @@ fig6 <- wordcloud(df_wordcloud$word,
                   colors = palette, 
                   bg.color = "white")
 fig6
-###################### HERE
+
 ggsave("writeup/fig6.png", plot = fig6, width = 6, height = 5, dpi = 300)
 
 ```
@@ -469,18 +469,22 @@ final_results
 
 ```
 
-#### Figure 5: Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model
-```{r fig5 OLSplot}
+#### Figure 7: Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model
+```{r fig7 OLSplot}
 
-ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
+fig7 <-  ggplot(final_results, aes(x = estimate, y = term, fill = effect)) +
   geom_col() +
-  scale_fill_brewer(palette = "Dark2") +
+  scale_fill_manual(values = c("#9c0315", "#4d8049")) +
   labs(
-    title = "Words Most Associated with Higher Wine Ratings",
+    title = "Words with Strongest Correlation to Wine Ratings",
     x = "Effect on Rating",
     y = "Word"
   ) +
   theme_bw()
+
+fig7
+
+ggsave("writeup/fig7.png", plot = fig7, width = 6, height = 5, dpi = 300)
   
 ```
 
