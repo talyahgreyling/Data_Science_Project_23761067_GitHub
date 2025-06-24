@@ -46,7 +46,7 @@ linestretch: 1.2
 link-citations: TRUE            # Add dynamic links to papers in reference list
 
 abstract: |
-  This paper utilises a Random Forest model as a variable selector and performs a subsequent OLS regression analysis to determine which words (if any) in wine reviews best predict their rating. The author's results are statistically significant at the 0% level and indicate that a correlation does indeed exist between these two metrics such that positive descriptives have a positive effect on ratings and vice versa. The effect of negative descriptives is however found to be of a larger magnitude, thereby portraying loss aversion. 
+  This paper aims to determine which words (if any) in wine reviews best predict their corresponding rating by utilising a Random Forest model and an OLS regression analysis. The Random Forest model is used as a variable selector on tokenized wine review words. The author's results are statistically significant at the 1% level and indicate that a correlation does indeed exist between these two metrics such that positive descriptives have a positive effect on ratings and vice versa. The effect of negative descriptives is however found to be of a larger magnitude, thereby portraying loss aversion. 
 
 ---
 
@@ -83,7 +83,7 @@ include_graphics("writeup/vivino.png")
 # Introduction 
 \label{Intro}
 
-Grape minds think alike... or do they? The objective of this study is to investigate which words (if any) used in wine reviews are associated with higher wine ratings on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section \ref{LitRev} contains a review of the existing literature surrounding sentiment and, more specifically, wine descriptives. Thereafter section \ref{Data} explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data through histograms and word clouds. In section \ref{StatMod} statistical modelling is employed in a two-step process consisting of a Random Forest variable selection method and an OLS (Ordinary Least Squares) regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section \ref{Concl}. 
+Grape minds think alike... or do they? This study sets out to investigate which words (if any) used in wine reviews best predict their subsequent rating on an online marketplace platform. The data utilised in this study is a sample drawn from Vivino ^[_follow [this link](https://www.vivino.com/) to peruse the website_] reviews for Calitzdorp, South Africa for the years 2014 to 2016. Section \ref{LitRev} contains a review of the existing literature surrounding sentiment and, more specifically, wine related descriptives. Thereafter section \ref{Data} explains how the data was cleaned and transformed and embarks on an exploratory description and analysis of the data through histograms and word clouds. In section \ref{StatMod} statistical modelling is employed in a two-step process consisting of a Random Forest variable selection method and an OLS (Ordinary Least Squares) regression to determine which words used in wine reviews are the best predictors of good ratings. Thereafter a conclusion is drawn in section \ref{Concl}. 
 
 \newpage
 # Literature review 
@@ -93,7 +93,7 @@ Grape minds think alike... or do they? The objective of this study is to investi
 The South African Wine Harvest Report (2023) lists South Africa among the top 10 largest wine producers globally, noting that the country produces approximately 4% of the global wine supply. Additionally, over R55 billion of the country’s GDP can be attributed to the wine industry which employs roughly 269 000 workers [@WoSA2023]. The Economic importance of this research question therefore lies in understanding which key themes, categories or experiences drive good ratings to enable wine producers to use these metrics to improve their product and by extension better the country's GDP and employment (if the boost in ratings and income generated is significant enough). 
 
 ## Sentiment analysis 
-@AliEtAl2025 describes sentiment analysis as the undertaking of determining the opinions and emotions conveyed via text and other media. This has a multitude of applications in our increasingly technologically driven society in the domains of e-commerce and marketing, social media, politics and health. With the explosion of text based content during the fourth industrial revolution, @DangEtAl2021 explain that a vast amount of opposing representations of anything ranging from facts to opinions can be found online. This gives sentiment analysis an important role to play in deciphering this new technological landscape we find ourselves in. @AlalwanEtAl2018 note that utilising data mining tools and social media analytics have indeed given businesses invaluable insight into the preferences, attitudes and behaviour of their customers. 
+@AliEtAl2025 describes sentiment analysis as the undertaking of determining the opinions and emotions conveyed via text and other media. This has a multitude of applications in our increasingly technologically driven society in the domains of e-commerce and marketing, social media, politics and health. With the explosion of text based content during the fourth industrial revolution, @DangEtAl2021 explain that a vast amount of opposing representations of anything ranging from facts to opinions can be found online. This gives sentiment analysis an important role to play in deciphering this new technological landscape we find ourselves in. @AlalwanEtAl2018 note that utilising data mining tools and social media analytics have indeed given businesses invaluable insight into the preferences, attitude and behaviour of their customers. 
 
 However, these online platforms where individuals have the freedom to write whatever and however they deem fit are equally hazardous as they can facilitate the spread of incorrect information. @VosoughiEtAl2018 found incorrect information to actually spread wider and faster on social media than its true counterpart. Nevertheless, these platforms form an integral part of sentiment analysis since they provide an ever changing source of data that is becoming more complex and connected by the day [@DangEtAl2021]. 
 
@@ -131,10 +131,10 @@ The original dataset comprises 2298 observations of 107 variables, each encapsul
 
 The original dataset was modified slightly by filtering out all reviews posted in languages other than English since using APIs to translate them to English was too costly an endeavor to undertake. 1667 of the original observations remained. 
 
-The reviews were tokenized and 30 800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words dataset to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16 869 tokens remaining. All 'clean' tokes were ultimately used in the Random Forest model to avoid unnecessary sampling bias. 
+The reviews were tokenized and 30800 tokens were recorded where-after I followed the standard pre-processing steps of removing punctuation, numbers, symbols, characters and taking everything to lower case. I also used the default tidyverse stop_words dataset to remove stop words using 3 respective lexicons: snowball (from the tm package), onix (from the ONIX text retrieval system) and smart (from the SMART information retrieval system). After these intermediate steps there were 16869 tokens remaining. All 'clean' tokes were ultimately used in the Random Forest model to avoid unnecessary sampling bias. 
 
 ## Data Exploration
-First, I was interested in uncovering the distribution of ratings associated with review tokens. This was done by calculating the average rating associated with each unique token and visualising the frequency observed for each rating through the histogram presented in Figure \ref{fig:fig1}. The high frequency of observations that can be seen at a rating of 3.5 and 4 suggest that there may be certain words driving better ratings. 
+First, I was interested in uncovering the distribution of ratings associated with review tokens. This was done by calculating the average rating associated with each unique token and visualising the frequency observed for each rating through the histogram presented in Figure \ref{fig:fig1}. The high frequency of observations that can be seen at a rating of 3.5 and 4 suggest that there may be specific words driving better ratings. 
 
 ```{r fig1, fig.cap = "Histogram of average ratings of review tokens\\label{fig:fig1}", out.width = "0.8\\linewidth"}
 
@@ -156,12 +156,12 @@ include_graphics("writeup/fig2.png")
 
 ```
 
-The wide difference in importance of tokens as portrayed by both Figures 1 & 2 were of a large enough extent to merit the statistical modelling in the next section. 
+The wide difference in importance of tokens as portrayed by both Figures 1 & 2 were of a large enough extent to merit the statistical modelling in the following section. 
 
 \newpage
 # Statistical modelling 
 \label{StatMod}
-To uncover the underlying relationship between words used in wine reviews and high ratings a two-step statistical modelling process was employed. 
+To uncover the underlying relationship between words used in wine reviews and subsequent ratings a two-step statistical modelling process was employed. 
 
 ## Step 1: Random Forest 
 The first step entailed utilising a Random Forest model as a method to select the 20 review-words (or 'variables') that best predicted a high rating. This model was chosen for its ability to handle complex datasets effectively as well as its scope for completing classification and regression tasks in a manner that is easy to interpret.  
@@ -188,7 +188,7 @@ include_graphics("writeup/fig4.png")
 
 ```
 
-The final model was then fit on the full training set with the optimal hyper-parameters plugged into the workflow and the final models' performance was evaluated on the test set. The trained model was inspected and an assessment was carried out on the models' performance on unseen data. These results are displayed in Table \ref{tab:model_metrics}. The RMSE indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared conveys that 12% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.46. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
+The final model was then fit on the full training set with the optimal hyper-parameters plugged into the workflow and the final models' performance was evaluated on the test set. The trained model was inspected and an assessment was carried out on the models' performance on unseen data. These results are displayed in Table \ref{tab:model_metrics}. The RMSE indicates that on average, predictions deviate from actual ratings by 0.64. The R-squared conveys that 8% of the variation in ratings is explained by the model and the MAE (Mean Absolute Error) tells us that the typical absolute error in prediction is around 0.48. The low RMSE and MAE are both extremely satisfying whilst the low R-squared conveys disappointing explanatory power. 
 
 \begin{table}[ht]
 \centering
@@ -205,7 +205,7 @@ mae  & standard & 0.48 \\
 \label{tab:model_metrics}
 \end{table}
 
-The top 20 words identified by the Random Forest model were then visualised in the variable importance plot displayed in Figure \ref{fig:fig5}. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'absolutely', 'fantastic', 'amazing' and 'delicious' made up our top ranks. Lesser expected words are 'smooth' and 'port' which confirm our suspicions from Figure 2 that red wines are better associated with high ratings than white wines. Furthermore, Figure \ref{fig:fig6} depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'beautiful', 'bliss', 'brilliant', 'elegant' and 'stunning' can be found. 
+The top 20 words identified by the Random Forest model were then visualised in the variable importance plot displayed in Figure \ref{fig:fig5}. As can be expected descriptive words conveying a positive sentiment like 'excellent', 'delicious', 'amazing' and 'fantastic' made up our top ranks. Seeing 'port' and 'sherry' rank so strongly confirms our suspicions from Figure 2 that red wines are better associated with high ratings than white wines. Furthermore, Figure \ref{fig:fig6} depicts a word cloud of the top 50 words in reviews identified by the Random Forest model where further positive descriptives like 'wonderful', 'awesome', 'perfect', 'brilliant' and 'stunning' can be found. 
 
 ```{r fig5, fig.cap = "Variable Importance Plot of Top 20 Words in Reviews Identified by Random Forest Model\\label{fig:fig5}", out.width = "0.8\\linewidth"}
 
@@ -220,7 +220,7 @@ include_graphics("writeup/fig6.png")
     
 ## Step 2: OLS Regression    
 
-During the second step ratings were regressed on the top 20 words identified by the Random Forest model during step 1, to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. These regression results are summarised in Table \ref{tab:ols_results} and we can see that, to our satisfaction, most of the coefficients display with great significance at even the 0% level. We see that the probability of receiving a good rating increases by 50% when the word 'excellent' is used in a review, but reduces by 168% when the word 'bland' is included. Interestingly, 'port' is the only word describing a vintage that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in our sample of Calitzdrop. 
+During the second step ratings were regressed on the top 20 words identified by the Random Forest model during step 1, to calculate coefficients and standard errors and inspect the significance of these words in predicting high ratings. These regression results are summarised in Table \ref{tab:ols_results} and we can see that, to our satisfaction, most of the coefficients display with great significance at even the 1% level. We see that the probability of receiving a good rating increases by 52% when the word 'excellent' is used in a review, but reduces by 118% when the word 'chalky' is included. Interestingly, 'port' and 'sherry' are the the only words describing a type of wine that makes it into the top 20 tokens. This once again hints to an overall preference for red above white wine, but could also be due to the concentration of wines made in our sample of Calitzdrop. 
 
 \begin{table}[ht]
 \centering
@@ -258,7 +258,7 @@ drinking    & -0.1237 & 0.0834 & -1.48 & 0.1382 \\
 \end{flushleft}
 \end{table}
 
-Figure \ref{fig:fig7} portrays a plot of the coefficients such that the playoff between those words with positive (represented by the green bars) and negative (represented by the red bars) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
+Figure \ref{fig:fig7} portrays a plot of the coefficients such that the playoff between those words with positive (represented by the green bars) and negative (represented by the red bars) effects on ratings can be seen. We note that there is a higher collection of positive descriptives that increase the probability of a good rating than those predicting a bad rating. We also note that negative descriptives have an effect of a greater magnitude in reducing the probability of a good rating than the positive descriptives have of increasing the probability of a good rating. This can be attributed to humankind's tendency to display loss aversion where a loss (buying a bad wine) is valued at a greater magnitude than a gain (buying a good wine) of a similar size. 
 
 ```{r fig7, fig.cap = "Plot of coefficients on OLS regression of top 20 words in reviews identified by RandomForest model\\label{fig:fig7}", out.width = "0.8\\linewidth"}
 
